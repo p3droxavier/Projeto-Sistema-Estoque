@@ -1,0 +1,94 @@
+Anot Project 4
+
+Pegando os dados do Cliente do banco(O usuario tem que estar cadastradado)
+
+
+1°Em ClientesDao é preciso criar o metodo pesquisar clientes.
+public Clientes BuscarCliente(String nome) {
+     try {
+               String sql = "SELECT * FROM tb_clientes WHERE nome =?";
+               PreparedStatement stmt = conn.prepareStatement(sql);
+               stmt.setString(1, nome);
+               //'RS' RESULT SET
+               ResultSet rs = stmt.executeQuery();
+               //INSTANCIANDO MODELO DE CLIENTES
+               Clientes obj = new Clientes();
+               //'NEXT' PERCORRE A TABELA NO BANCO DE DADOS 
+	if(rs.next()) {
+		obj.setId(rs.getInt("id"));
+		obj.setNome(rs.getString("nome"));
+		obj.setRg(rs.getString("rg"));
+		obj.setCpf(rs.getString("cpf"));
+		obj.setEmail(rs.getString("email"));
+		obj.setTelefone(rs.getString("telefone"));
+		obj.setCelular(rs.getString("celular"));
+		obj.setCep(rs.getString("Cep"));
+		obj.setEndereco(rs.getString("endereco"));
+		obj.setNumero(rs.getInt("numero"));
+		obj.setComplemento(rs.getString("complemento"));
+		obj.setBairro(rs.getString("bairro"));
+		obj.setCidade(rs.getString("cidade"));
+		obj.setEstado(rs.getString("estado"));
+	}
+	//RETORNA OBJETO DO TIPO CLIENTE
+	return obj;
+     } catch (SQLException erro) {
+               JOptionPane.showMessageDialog(null, "ERRO: Erro ao buscar Cliente!! " +  erro);
+     }
+               //PEDE QUE RETORNE ALGO, MAS NÃO PRECISO, POR ISSO RETORNA NULL
+               return null;
+}
+
+
+2°Em FormsCliente no botão pesquisar, precisa adicionar um evento e settar o que sera feito quando clicar no botão
+
+ JButton btnPesquisar = new JButton("pesquisar");
+        btnPesquisar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String nome = txtNome.getText();
+        		Clientes obj = new Clientes();
+        		ClientesDao dao = new ClientesDao();
+        		
+        		obj = dao.BuscarCliente(nome);
+        		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+        		if(obj.getNome() != null) {
+        			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
+        			txtNome.setText(obj.getNome());
+        			txtRg.setText(obj.getRg());
+        			txtCpf.setText(obj.getCpf());
+        			txtEmail.setText(obj.getEmail());
+        			txtTelefone.setText(obj.getTelefone());
+        			txtCelular.setText(obj.getCelular());
+        			txtCep.setText(obj.getCep());
+        			txtEndereco.setText(obj.getEndereco());
+        			txtNumero.setText(String.valueOf(obj.getNumero()));
+        			txtComplemento.setText(obj.getComplemento());
+        			txtBairro.setText(obj.getBairro());
+        			txtCidade.setText(obj.getCidade());
+        			
+        			
+        			//PEGANDO O CBUF
+        			String estado = obj.getEstado();
+        			String estadoSelecionado = null;
+        			
+        			//PELO FATO DO NOME SER 'SÃO PAULO (SP)'
+        			//PRECISA LAÇO PARA PERCORRER OS ITENS DA CB, SABENDO A QUANTIDADE E PEGANDO-OS
+        			for(int i = 0; i < cbUf.getItemCount(); i++) {
+        				String item = cbUf.getItemAt(i);
+        				//VERIFICA SE 'ITEM(ESTADO)' CONTEM O VALOR ARMAZENADO EM 'ESTADO'
+        				if(item.contains(estado)) {
+        					estadoSelecionado = item;
+        					break;
+        				}
+        			}
+        			//SE O ESTADO FOR ENCONTRADO NA LISTA DO CB, SERA AUTOMATICAMENTE SELECIONADO
+        			//SE 'ESTADOSELECIONADO == NULL' O CODIGO NÃO FARA NADA. O CB PERMANECERA COM A SELEÇÃO ANTERIOR
+        			if(estadoSelecionado != null) {
+        				cbUf.setSelectedItem(estadoSelecionado);
+        			}
+        			
+        		} else {
+        			JOptionPane.showMessageDialog(null, "ERRO: Cliente não encontradao! ");
+        		}
+        	}
+        });

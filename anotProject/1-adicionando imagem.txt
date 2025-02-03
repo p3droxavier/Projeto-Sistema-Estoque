@@ -1,0 +1,11 @@
+Anotts Project
+
+Colocando imagens no projeto.
+-iconfinder(site onde é baixado os icones)
+
+1° baixa a imagem
+2°copia as imagens do download e cola na pasta de img do projeto
+3° no elemento que quer inserir a imagem procura por 'icon'
+4°procure por 'Absolute path in file system...' procure a pasta onde esta as imagens
+5°procure onde esta sendo salvo o seu projeto no java
+

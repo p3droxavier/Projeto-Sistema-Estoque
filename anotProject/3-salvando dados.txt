@@ -1,0 +1,35 @@
+Anot Projetc
+
+Salvando os dados do frame(tela)
+-apos ter feito os getters e setter + conexão com o banco
+
+-adiciona-se um eveto via Jframe, que criara o segunte codigo
+       btnNovo.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+	     //Aqui que vai os codigos
+        	}
+        });
+
+por exemplo o de salvar...
+ JButton btnSalvar = new JButton("Salvar");
+        btnSalvar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		Clientes obj = new Clientes();
+        		obj.setNome(txtNome.getText());
+        		obj.setRg(txtRg.getText());
+        		obj.setCpf(txtCpf.getText());
+        		obj.setEmail(txtEmail.getText());
+        		obj.setTelefone(txtTelefone.getText());
+        		obj.setCelular(txtCelular.getText());
+        		obj.setCep(txtCep.getText());
+        		obj.setEndereco(txtEndereco.getText());
+        		obj.setNumero(Integer.valueOf(txtNumero.getText()));
+        		obj.setComplemento(txtComplemento.getText());
+        		obj.setBairro(txtBairro.getText());
+        		obj.setCidade(txtCidade.getText());
+        		obj.setEstado(cbUf.getSelectedItem().toString());
+        	}
+        });
+
+
+OBS; pega os dados colocados nas caixas de texto via nome do elemento.

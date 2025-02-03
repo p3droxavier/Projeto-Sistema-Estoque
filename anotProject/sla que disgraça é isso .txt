@@ -1,0 +1,2 @@
+colação phpmyadmim 
+phpmyadmim banco de dados->operações->colação (utf8_general_ci)

@@ -1,0 +1,13 @@
+debug Java( eclipse )
+
+1° seleciona a linha de onde vc que começar o debug (ctrl+shift+B)
+  ° para desmarcar seleciona a linha selecionada e faça (ctrl+shift+B) na linha
+
+2°precisa iniciar a execução passo a passo faça
+botão direito na classe->debug as->java aplication
+°ira começar a executar até a linha
+°apos isso perguntara se quer ir para a tela de debug(yes)
+
+3°apos entrar na tela de debug, clique (F6) ou (STEP OVER) para continuar
+
+4°apos execução para sair clique na perspectiva java(canto superior direito, 2° icone da direita para esqierda) ou  nas opções(window->perspective->open Perspective->Java)
