@@ -1,0 +1,44 @@
+Anot Project
+
+- e.getKeyCode -> Obtém o código da tecla pressionada.
+- KeyEvent.VK_ENTER -> Representa o código da tecla Enter.
+- txtNome.getText() -> Obtém o texto inserido no campo de texto txtNome.
+
+
+Buscando as demais informações do banco clicando enter ao digitar o nome completo.
+
+1° na 1° aba, cria-se uma key pressed para 'txtNome' onde sera inserido o mesmo codigo do botão 'btnPesquisar' porem com uma condição.
+
+(FormCliente)
+ txtNome.addKeyListener(new KeyAdapter() {
+       @Override
+        public void keyPressed(KeyEvent e) {
+        	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+        		String nome = txtNome.getText();
+            	Clientes obj = new Clientes();
+            	ClientesDao dao = new ClientesDao();
+            	
+            	obj = dao.BuscarCliente(nome);
+            	//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+            	if(obj.getNome() != null) {
+            		txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
+           		txtNome.setText(obj.getNome());
+            		txtRg.setText(obj.getRg());
+            		txtCpf.setText(obj.getCpf());
+            		txtEmail.setText(obj.getEmail());
+            		txtTelefone.setText(obj.getTelefone());
+            		txtCelular.setText(obj.getCelular());
+            		txtCep.setText(obj.getCep());
+            		txtEndereco.setText(obj.getEndereco());
+            		txtNumero.setText(String.valueOf(obj.getNumero()));
+            		txtComplemento.setText(obj.getComplemento());
+            		txtBairro.setText(obj.getBairro());
+            		txtCidade.setText(obj.getCidade());
+            		cbUf.setSelectedItem(obj.getEstado());	
+            	} else {
+            		JOptionPane.showMessageDialog(null, "ERRO: Cliente não encontradao! \nVerifique se não a erros ao digitar o nome. ");
+           	}
+        		
+        	}
+        }
+});

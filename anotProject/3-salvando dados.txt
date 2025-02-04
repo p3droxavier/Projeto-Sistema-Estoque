@@ -10,7 +10,7 @@ Salvando os dados do frame(tela)
         	}
         });
 
-por exemplo o de salvar...
+por exemplo onde salvar...
  JButton btnSalvar = new JButton("Salvar");
         btnSalvar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {

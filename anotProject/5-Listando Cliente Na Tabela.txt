@@ -1,0 +1,81 @@
+Anot Project
+
+Listando dados dos clientes
+
+- ResultSet usa-se quanso vai trabalhar com tabelas, ele percorre toda a tabela.
+- Junto do Next, que percorre linha por linha até acabar todos os registros.
+
+OBS:'<>' serve para representar umtipo generico de array;
+
+(ClienteDao)
+1° Faz o metodo para listar o  cliente
+public List<Clientes>listar(){
+	List<Clientes> lista = new ArrayList<>();
+	try {
+		String sql = "SELECT * FROM tb_clientes";
+		PreparedStatement stmt = conn.prepareStatement(sql); 
+		ResultSet rs = stmt.executeQuery();
+		//PERCORRERA TODA A LISTA
+		while(rs.next()) {
+			Clientes obj = new Clientes();
+			obj.setId(rs.getInt("id"));
+			obj.setNome(rs.getString("nome"));
+			obj.setRg(rs.getString("rg"));
+			obj.setCpf(rs.getString("cpf"));
+			obj.setEmail(rs.getString("email"));
+			obj.setTelefone(rs.getString("telefone")); 
+			obj.setCelular(rs.getString("celular"));
+			obj.setCep(rs.getString("cep"));
+			obj.setEndereco(rs.getString("endereco"));
+			obj.setNumero(rs.getInt("numero"));
+			obj.setComplemento(rs.getString("complemento"));
+			obj.setBairro(rs.getString("bairro"));
+			obj.setCidade(rs.getString("cidade"));
+			obj.setEstado(rs.getString("estado"));
+			
+			lista.add(obj);
+		}
+			return lista; 
+	} catch (SQLException e) {
+		JOptionPane.showMessageDialog(null, "ERRO, ao criar a lista: " + e);
+	}
+	return null; //PEDE QUE RETORNE ALGO, COMO NÃO PRECISA, RETORNA NULL;
+}
+
+
+(FormsCliente)
+-Antes do 'initialize', cri-se o metodo 'listar' que ira listar os clientes na tabela
+    public void listar() {
+    	ClientesDao dao = new ClientesDao();
+    	List<Clientes> lista = dao.listar();
+    	DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
+    	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
+    	for(Clientes c : lista) {
+    		dados.addRow(new Object[]{
+    			c.getId(),
+    			c.getNome(),
+    			c.getRg(),
+    			c.getCpf(),
+    			c.getEmail(),
+    			c.getTelefone(),
+    			c.getCelular(),
+    			c.getCep(),
+    			c.getEndereco(),
+    			c.getNumero(),
+    			c.getComplemento(),
+    			c.getBairro(),
+    			c.getCidade(),
+    			c.getEstado()	
+    		});
+    	}
+    }
+
+
+-Logo apos, ainda no FormsCliente, logo abaixo do  'frame = new JFrame();'(linha118), dentro de 'initialize()'
+-Cria-se um 'windowListener'
+  frame.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowActivated(WindowEvent e) {
+	listar();
+        }
+});
