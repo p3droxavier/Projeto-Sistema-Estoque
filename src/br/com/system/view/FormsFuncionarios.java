@@ -8,7 +8,9 @@
 package br.com.system.view;
 
 import br.com.system.dao.ClientesDao;
+import br.com.system.dao.FuncionariosDao;
 import br.com.system.model.Clientes;
+import br.com.system.model.Funcionarios;
 import br.com.system.utilitarios.Utilitarios;
 import java.util.List;
 
@@ -45,11 +47,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JPasswordField;
 
 
 
 
-public class FormsCliente extends javax.swing.JFrame{
+public class FormsFuncionarios extends javax.swing.JFrame{
     /**
 	 * 
 	 */
@@ -71,9 +74,12 @@ public class FormsCliente extends javax.swing.JFrame{
     private JTextField txtBairro;
     private JTextField txtCidade;
     private JComboBox<String> cbUf; //ESTADO
-    private JTextField txtNomeConsultaCliente;
+    private JComboBox<String> cbNivel; //NIVEL_ACESSO
+    private JTextField txtNomeConsultaFuncionarios;
 
     private JTable tabela;
+    private JPasswordField txtSenha;
+    private JTextField txtCargo;
     
 
     public static void main(String[] args) {
@@ -82,7 +88,7 @@ public class FormsCliente extends javax.swing.JFrame{
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-                    FormsCliente window = new FormsCliente();
+                    FormsFuncionarios window = new FormsFuncionarios();
                     window.FormularioDeClientes.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -92,19 +98,22 @@ public class FormsCliente extends javax.swing.JFrame{
     }
     
     
-    //LISTAGEM DE USUARIOS NA TABELA
+    //LISTAGEM DE FUNCIONARIOS NA TABELA
     public void listar() {
-    	ClientesDao dao = new ClientesDao();
-    	List<Clientes> lista = dao.Listar();
+    	FuncionariosDao dao = new FuncionariosDao();
+    	List<Funcionarios> lista = dao.Listar();
     	DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
     	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
-    	for(Clientes c : lista) {
+    	for(Funcionarios c : lista) {
     		dados.addRow(new Object[]{
     			c.getId(),
     			c.getNome(),
     			c.getRg(),
     			c.getCpf(),
     			c.getEmail(),
+    			c.getSenha(),
+    			c.getCargo(),
+    			c.getNivel_acesso(),
     			c.getTelefone(),
     			c.getCelular(),
     			c.getCep(),
@@ -120,7 +129,7 @@ public class FormsCliente extends javax.swing.JFrame{
     
 
     //INICIALIZAÇÃO
-    public FormsCliente() {
+    public FormsFuncionarios() {
         initialize();
     }
     
@@ -138,7 +147,7 @@ public class FormsCliente extends javax.swing.JFrame{
         });
         
         FormularioDeClientes.setResizable(false);
-        FormularioDeClientes.setBounds(100, 100, 875, 492);
+        FormularioDeClientes.setBounds(100, 100, 875, 523);
         // CENTRALIZA A JANELA NA TELA
         FormularioDeClientes.setLocationRelativeTo(null);
         FormularioDeClientes.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -151,8 +160,8 @@ public class FormsCliente extends javax.swing.JFrame{
         panel.setLayout(null);
 
         // TITLE LABEL
-        JLabel lblNewLabel = new JLabel("Cadastro de Clientes");
-        lblNewLabel.setBounds(0, 0, 320, 420);
+        JLabel lblNewLabel = new JLabel("Cadastro de Funcionarios");
+        lblNewLabel.setBounds(0, 0, 320, 445);
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setForeground(Color.WHITE);
         lblNewLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -179,7 +188,7 @@ public class FormsCliente extends javax.swing.JFrame{
         
         txtCodigo = new JTextField();
         txtCodigo.setEditable(false);
-        txtCodigo.setBounds(66, 36, 108, 20);
+        txtCodigo.setBounds(65, 36, 108, 20);
         txtCodigo.setColumns(10);
         
         JLabel lblNome = new JLabel("Nome : ");
@@ -192,10 +201,10 @@ public class FormsCliente extends javax.swing.JFrame{
         btnPesquisar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String nome = txtNome.getText();
-        		Clientes obj = new Clientes();
-        		ClientesDao dao = new ClientesDao();
+        		Funcionarios obj = new Funcionarios();
+        		FuncionariosDao dao = new FuncionariosDao();
         		
-        		obj = dao.BuscarCliente(nome);
+        		obj = dao.BuscarFuncionario(nome);
         		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
         		if(obj.getNome() != null) {
         			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
@@ -203,6 +212,11 @@ public class FormsCliente extends javax.swing.JFrame{
         			txtRg.setText(obj.getRg());
         			txtCpf.setText(obj.getCpf());
         			txtEmail.setText(obj.getEmail());
+        			
+        			txtSenha.setText(obj.getSenha());
+        			txtCargo.setText(obj.getCargo());
+        			cbNivel.setSelectedItem(obj.getNivel_acesso());
+        			
         			txtTelefone.setText(obj.getTelefone());
         			txtCelular.setText(obj.getCelular());
         			txtCep.setText(obj.getCep());
@@ -213,7 +227,7 @@ public class FormsCliente extends javax.swing.JFrame{
         			txtCidade.setText(obj.getCidade());
         			cbUf.setSelectedItem(obj.getEstado());	
         		} else {
-        			JOptionPane.showMessageDialog(null, "ERRO: Cliente não encontradao! \nVerifique se não a erros ao digitar o nome. ");
+        			JOptionPane.showMessageDialog(null, "ERRO: Funcionário não encontradao! \nVerifique se não a erros ao digitar o nome. ");
         		}
         	}
         });
@@ -221,7 +235,7 @@ public class FormsCliente extends javax.swing.JFrame{
         
         
         
-        btnPesquisar.setBounds(419, 64, 88, 23);
+        btnPesquisar.setBounds(436, 64, 88, 23);
         btnPesquisar.setBackground(Color.WHITE);
         btnPesquisar.setFont(new Font("Arial", Font.BOLD, 11));
         
@@ -232,10 +246,10 @@ public class FormsCliente extends javax.swing.JFrame{
         	public void keyPressed(KeyEvent e) {
         		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
         			String nome = txtNome.getText();
-            		Clientes obj = new Clientes();
-            		ClientesDao dao = new ClientesDao();
+            		Funcionarios obj = new Funcionarios();
+            		FuncionariosDao dao = new FuncionariosDao();
             		
-            		obj = dao.BuscarCliente(nome);
+            		obj = dao.BuscarFuncionario(nome);
             		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
             		if(obj.getNome() != null) {
             			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
@@ -243,6 +257,11 @@ public class FormsCliente extends javax.swing.JFrame{
             			txtRg.setText(obj.getRg());
             			txtCpf.setText(obj.getCpf());
             			txtEmail.setText(obj.getEmail());
+            			
+            			txtSenha.setText(obj.getSenha());
+            			txtCargo.setText(obj.getCargo());
+            			cbNivel.setSelectedItem(obj.getNivel_acesso());
+            			
             			txtTelefone.setText(obj.getTelefone());
             			txtCelular.setText(obj.getCelular());
             			txtCep.setText(obj.getCep());
@@ -259,7 +278,7 @@ public class FormsCliente extends javax.swing.JFrame{
         		}
         	}
         });
-        txtNome.setBounds(65, 67, 338, 20);
+        txtNome.setBounds(64, 67, 340, 20);
         txtNome.setToolTipText("");
         txtNome.setFont(new Font("Arial", Font.PLAIN, 11));
         txtNome.setColumns(10);
@@ -269,7 +288,7 @@ public class FormsCliente extends javax.swing.JFrame{
         lblEmail.setFont(new Font("Arial", Font.BOLD, 12));
         
         txtEmail = new JTextField();
-        txtEmail.setBounds(65, 96, 338, 20);
+        txtEmail.setBounds(64, 96, 340, 20);
         txtEmail.setFont(new Font("Arial", Font.PLAIN, 11));
         txtEmail.setColumns(10);
         
@@ -281,12 +300,12 @@ public class FormsCliente extends javax.swing.JFrame{
 		
         
         // Campo de celular
-        JLabel lblCelular = new JLabel("Celular :");
+        JLabel lblCelular = new JLabel("Celular:");
         lblCelular.setBounds(20, 160, 46, 14);
         lblCelular.setFont(new Font("Arial", Font.BOLD, 12));
         
         txtCelular = new JFormattedTextField();
-        txtCelular.setBounds(76, 157, 125, 20);
+        txtCelular.setBounds(65, 157, 125, 20);
         txtCelular.setFont(new Font("Arial", Font.PLAIN, 12));
         
         // Máscara do campo celular
@@ -301,11 +320,11 @@ public class FormsCliente extends javax.swing.JFrame{
         
         // Campo de telefone
         JLabel lblTelefone = new JLabel("Telefone :");
-        lblTelefone.setBounds(212, 160, 55, 14);
+        lblTelefone.setBounds(201, 160, 55, 14);
         lblTelefone.setFont(new Font("Arial", Font.BOLD, 12));
                 
         txtTelefone = new JFormattedTextField();
-        txtTelefone.setBounds(278, 157, 125, 20);
+        txtTelefone.setBounds(267, 157, 137, 20);
         txtTelefone.setFont(new Font("Arial", Font.PLAIN, 12));
         
         // Máscara do campo telefone
@@ -324,7 +343,7 @@ public class FormsCliente extends javax.swing.JFrame{
         lblCep.setFont(new Font("Arial", Font.BOLD, 12));
         
         txtCep = new JFormattedTextField();
-        txtCep.setBounds(66, 217, 75, 20);
+        txtCep.setBounds(65, 217, 75, 20);
         txtCep.setFont(new Font("Arial", Font.PLAIN, 12));
         
         //Mascara do campo Cep
@@ -339,21 +358,21 @@ public class FormsCliente extends javax.swing.JFrame{
         
         //Area Endereço etc
 		txtEndereco = new JTextField();
-		txtEndereco.setBounds(221, 217, 182, 20);
+		txtEndereco.setBounds(232, 217, 172, 20);
 		txtEndereco.setColumns(10);
 		
 		
 		JLabel lblEndereco = new JLabel("Endereço : ");
-		lblEndereco.setBounds(151, 220, 71, 14);
+		lblEndereco.setBounds(163, 220, 63, 14);
 		lblEndereco.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		
 		JLabel lblNumero = new JLabel("N° :");
-		lblNumero.setBounds(419, 220, 26, 14);
+		lblNumero.setBounds(436, 220, 26, 14);
 		lblNumero.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		txtNumero = new JTextField();
-		txtNumero.setBounds(461, 217, 46, 20);
+		txtNumero.setBounds(478, 217, 46, 20);
 		txtNumero.setColumns(10);
 		
 		
@@ -372,16 +391,16 @@ public class FormsCliente extends javax.swing.JFrame{
 		lblBairro.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		txtBairro = new JTextField();
-		txtBairro.setBounds(66, 247, 120, 20);
+		txtBairro.setBounds(65, 247, 120, 20);
 		txtBairro.setColumns(10);
 		
 		
 		JLabel lblCidade = new JLabel("Cidade : ");
-		lblCidade.setBounds(217, 249, 56, 14);
+		lblCidade.setBounds(206, 249, 56, 14);
 		lblCidade.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		txtCidade = new JTextField();
-		txtCidade.setBounds(268, 246, 135, 20);
+		txtCidade.setBounds(257, 246, 147, 20);
 		txtCidade.setColumns(10);
 		
 		
@@ -390,7 +409,7 @@ public class FormsCliente extends javax.swing.JFrame{
 		lblComplemento.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		txtComplemento = new JTextField();
-		txtComplemento.setBounds(116, 275, 287, 20);
+		txtComplemento.setBounds(116, 275, 288, 20);
 		txtComplemento.setColumns(10);
 		
 		
@@ -405,7 +424,7 @@ public class FormsCliente extends javax.swing.JFrame{
 		}));
 
 		// Configurações do JComboBox
-		cbUf.setBounds(419, 245, 88, 22);
+		cbUf.setBounds(436, 245, 88, 22);
 		cbUf.setBackground(Color.WHITE);
 		cbUf.setFont(new Font("Arial", Font.PLAIN, 11));
 		cbUf.setToolTipText("Selecione o estado");
@@ -425,7 +444,7 @@ public class FormsCliente extends javax.swing.JFrame{
 		lblRg.setFont(new Font("Arial", Font.BOLD, 12));
 	
 		txtRg = new JFormattedTextField();
-		txtRg.setBounds(49, 341, 90, 20);
+		txtRg.setBounds(53, 341, 95, 20);
 		
 		
 		//Mascara do RG
@@ -440,11 +459,11 @@ public class FormsCliente extends javax.swing.JFrame{
 		
 		//Camp CPF
 		JLabel lblCpf = new JLabel("CPF :");
-		lblCpf.setBounds(154, 344, 34, 14);
+		lblCpf.setBounds(20, 372, 34, 14);
 		lblCpf.setFont(new Font("Arial", Font.BOLD, 12));
 		
 	    txtCpf = new JFormattedTextField();
-		txtCpf.setBounds(196, 341, 95, 20);
+		txtCpf.setBounds(53, 369, 95, 20);
         
 		//Mascara do CPF
         try {
@@ -491,11 +510,50 @@ public class FormsCliente extends javax.swing.JFrame{
 		painel_dados_pessoais.add(txtEmail); 
 		
 		
+		txtSenha = new JPasswordField();
+		txtSenha.setBounds(427, 341, 97, 20);
+		painel_dados_pessoais.add(txtSenha);
+		
+		
+		cbNivel = new JComboBox<String>();
+		cbNivel.setModel(new DefaultComboBoxModel(new String[] {"ADMINISTRADOR", "USUÁRIO"}));
+		cbNivel.setFont(new Font("Arial", Font.PLAIN, 12));
+		cbNivel.setBackground(Color.WHITE);
+		cbNivel.setBounds(227, 368, 135, 22);
+		painel_dados_pessoais.add(cbNivel);
+		
+		txtCargo = new JTextField();
+		txtCargo.setColumns(10);
+		txtCargo.setBounds(227, 341, 135, 20);
+		painel_dados_pessoais.add(txtCargo);
+		
+		JLabel lblCargo = new JLabel("Cargo :");
+		lblCargo.setFont(new Font("Arial", Font.BOLD, 12));
+		lblCargo.setBounds(179, 344, 43, 14);
+		painel_dados_pessoais.add(lblCargo);
+		
+		JLabel lblFunção = new JLabel("Função:");
+		lblFunção.setFont(new Font("Arial", Font.BOLD, 12));
+		lblFunção.setBounds(179, 372, 56, 14);
+		painel_dados_pessoais.add(lblFunção);
+		
+		JLabel lblSenha = new JLabel("Senha :");
+		lblSenha.setFont(new Font("Arial", Font.BOLD, 12));
+		lblSenha.setBounds(378, 344, 43, 14);
+		painel_dados_pessoais.add(lblSenha);
+		
+		JLabel lblImportanteSenha = new JLabel("Mínimo esperado de 8 caracteres!");
+		lblImportanteSenha.setForeground(Color.GRAY);
+		lblImportanteSenha.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 9));
+		lblImportanteSenha.setBounds(379, 361, 162, 14);
+		painel_dados_pessoais.add(lblImportanteSenha);
+		
+		
 		
 		//2° ABA DO FORMULÁRIO
         JPanel painel_guias = new JPanel();
         painel_guias.setBackground(Color.WHITE);
-        painel_guias_tab.addTab("Consultar de Clientes", null, painel_guias, null);
+        painel_guias_tab.addTab("Consultar de Funcionarios", null, painel_guias, null);
         painel_guias.setLayout(null);
         
         JLabel lblNomeConsultaCliente = new JLabel("Nome : ");
@@ -503,23 +561,26 @@ public class FormsCliente extends javax.swing.JFrame{
         lblNomeConsultaCliente.setBounds(9, 13, 46, 14);
         painel_guias.add(lblNomeConsultaCliente);
         
-        txtNomeConsultaCliente = new JTextField();
-        txtNomeConsultaCliente.addKeyListener(new KeyAdapter() {
+        txtNomeConsultaFuncionarios = new JTextField();
+        txtNomeConsultaFuncionarios.addKeyListener(new KeyAdapter() {
         	@Override
         	//FILTRAGEM DE CLENTES
         	public void keyReleased(KeyEvent e) {
-        		String filtNome = "%"+txtNomeConsultaCliente.getText()+"%";
-        		ClientesDao dao = new ClientesDao();
-            	List<Clientes> lista = dao.Filtrar(filtNome);
+        		String filtNome = "%"+txtNomeConsultaFuncionarios.getText()+"%";
+        		FuncionariosDao dao = new FuncionariosDao();
+            	List<Funcionarios> lista = dao.Filtrar(filtNome);
             	DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
             	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
-            	for(Clientes c : lista) {
+            	for(Funcionarios c : lista) {
             		dados.addRow(new Object[]{
             			c.getId(),
             			c.getNome(),
             			c.getRg(),
             			c.getCpf(),
             			c.getEmail(),
+            			c.getSenha(),
+            			c.getCargo(),
+            			c.getNivel_acesso(),
             			c.getTelefone(),
             			c.getCelular(),
             			c.getCep(),
@@ -533,18 +594,18 @@ public class FormsCliente extends javax.swing.JFrame{
             	}
         	}
         });
+        txtNomeConsultaFuncionarios.setToolTipText("");
+        txtNomeConsultaFuncionarios.setFont(new Font("Arial", Font.PLAIN, 11));
+        txtNomeConsultaFuncionarios.setColumns(10);
+        txtNomeConsultaFuncionarios.setBounds(65, 11, 326, 20);
+        painel_guias.add(txtNomeConsultaFuncionarios);
         
         
-        txtNomeConsultaCliente.setToolTipText("");
-        txtNomeConsultaCliente.setFont(new Font("Arial", Font.PLAIN, 11));
-        txtNomeConsultaCliente.setColumns(10);
-        txtNomeConsultaCliente.setBounds(65, 11, 326, 20);
-        painel_guias.add(txtNomeConsultaCliente);
         //FILTRAGEM DE CLIENTES AO PRECIONAR O BOTÃO
-        JButton btnPesquisaCliente = new JButton("pesquisar");
-        btnPesquisaCliente.addActionListener(new ActionListener() {
+        JButton btnPesquisaFuncionarios = new JButton("pesquisar");
+        btnPesquisaFuncionarios.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		String filtNome = "%"+txtNomeConsultaCliente.getText()+"%";
+        		String filtNome = "%"+txtNomeConsultaFuncionarios.getText()+"%";
         		ClientesDao dao = new ClientesDao();
             	List<Clientes> lista = dao.Filtrar(filtNome);
             	DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
@@ -569,10 +630,10 @@ public class FormsCliente extends javax.swing.JFrame{
             	}
         	}
         });
-        btnPesquisaCliente.setFont(new Font("Arial", Font.BOLD, 11));
-        btnPesquisaCliente.setBackground(Color.WHITE);
-        btnPesquisaCliente.setBounds(436, 9, 88, 23);
-        painel_guias.add(btnPesquisaCliente);
+        btnPesquisaFuncionarios.setFont(new Font("Arial", Font.BOLD, 11));
+        btnPesquisaFuncionarios.setBackground(Color.WHITE);
+        btnPesquisaFuncionarios.setBounds(436, 9, 88, 23);
+        painel_guias.add(btnPesquisaFuncionarios);
         
         
         
@@ -588,15 +649,18 @@ public class FormsCliente extends javax.swing.JFrame{
         		txtRg.setText(tabela.getValueAt(tabela.getSelectedRow(), 2). toString());
         		txtCpf.setText(tabela.getValueAt(tabela.getSelectedRow(), 3). toString());
         		txtEmail.setText(tabela.getValueAt(tabela.getSelectedRow(), 4). toString());
-        		txtTelefone.setText(tabela.getValueAt(tabela.getSelectedRow(), 5). toString());
-        		txtCelular.setText(tabela.getValueAt(tabela.getSelectedRow(), 6). toString());
-        		txtCep.setText(tabela.getValueAt(tabela.getSelectedRow(), 7). toString());
-        		txtEndereco.setText(tabela.getValueAt(tabela.getSelectedRow(), 8). toString());
-        		txtNumero.setText(tabela.getValueAt(tabela.getSelectedRow(), 9). toString());
-        		txtComplemento.setText(tabela.getValueAt(tabela.getSelectedRow(), 10). toString());
-        		txtBairro.setText(tabela.getValueAt(tabela.getSelectedRow(), 11). toString());
-        		txtCidade.setText(tabela.getValueAt(tabela.getSelectedRow(),12). toString());
-        		cbUf.setSelectedItem(tabela.getValueAt(tabela.getSelectedRow(), 13). toString());
+        		txtSenha.setText(tabela.getValueAt(tabela.getSelectedRow(), 5). toString());
+        		txtCargo.setText(tabela.getValueAt(tabela.getSelectedRow(), 6). toString());
+        		cbNivel.setSelectedItem(tabela.getValueAt(tabela.getSelectedRow(), 7). toString());
+        		txtTelefone.setText(tabela.getValueAt(tabela.getSelectedRow(), 8). toString());
+        		txtCelular.setText(tabela.getValueAt(tabela.getSelectedRow(), 9). toString());
+        		txtCep.setText(tabela.getValueAt(tabela.getSelectedRow(), 10). toString());
+        		txtEndereco.setText(tabela.getValueAt(tabela.getSelectedRow(), 11). toString());
+        		txtNumero.setText(tabela.getValueAt(tabela.getSelectedRow(), 12). toString());
+        		txtComplemento.setText(tabela.getValueAt(tabela.getSelectedRow(), 13). toString());
+        		txtBairro.setText(tabela.getValueAt(tabela.getSelectedRow(), 14). toString());
+        		txtCidade.setText(tabela.getValueAt(tabela.getSelectedRow(),15). toString());
+        		cbUf.setSelectedItem(tabela.getValueAt(tabela.getSelectedRow(), 16). toString());
         	}
         });
         tabela.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.GRAY));
@@ -606,7 +670,7 @@ public class FormsCliente extends javax.swing.JFrame{
         DefaultTableModel modelTable1 = new DefaultTableModel(
             new Object[][] {}, //INICIA SEM CELULAS
             new String[] {  // CABEÇALHO DAS COLUNAS
-                "Id", "Nome", "RG", "CPF", "Email", "Telefone", "Celular", "CEP", "Endereco", "Número", "Complemento", "Bairro", "Cidade",  "UF"
+                "Id", "Nome", "RG", "CPF", "Email", "Senha", "Cargo", "Função", "Telefone", "Celular", "CEP", "Endereco", "Número", "Complemento", "Bairro", "Cidade",  "UF"
                 }
         );
         tabela.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));//AJUSTANDO A FONTED O HEADER
@@ -619,22 +683,27 @@ public class FormsCliente extends javax.swing.JFrame{
      	columnModel.getColumn(2).setPreferredWidth(100); // RG
      	columnModel.getColumn(3).setPreferredWidth(100); // CPF
      	columnModel.getColumn(4).setPreferredWidth(180); // E-MAIL
-     	columnModel.getColumn(5).setPreferredWidth(125); // TELEFONE
-     	columnModel.getColumn(6).setPreferredWidth(125); // CELULAR
-     	columnModel.getColumn(7).setPreferredWidth(70);  // CEP
-     	columnModel.getColumn(8).setPreferredWidth(150); // ENDERECO
-     	columnModel.getColumn(9).setPreferredWidth(50);  // NÚMERO
-     	columnModel.getColumn(10).setPreferredWidth(180); // COMPLEMENTO
-     	columnModel.getColumn(11).setPreferredWidth(100); // BAIRRO
-     	columnModel.getColumn(12).setPreferredWidth(100); // CIDADE
-     	columnModel.getColumn(13).setPreferredWidth(100); // UF
+     	
+     	columnModel.getColumn(5).setPreferredWidth(100); // SENHA
+     	columnModel.getColumn(6).setPreferredWidth(100); // CARGO
+     	columnModel.getColumn(7).setPreferredWidth(100); // NIVEL
+     	
+     	columnModel.getColumn(8).setPreferredWidth(125); // TELEFONE
+     	columnModel.getColumn(9).setPreferredWidth(125); // CELULAR
+     	columnModel.getColumn(10).setPreferredWidth(70);  // CEP
+     	columnModel.getColumn(11).setPreferredWidth(150); // ENDERECO
+     	columnModel.getColumn(12).setPreferredWidth(50);  // NÚMERO
+     	columnModel.getColumn(13).setPreferredWidth(180); // COMPLEMENTO
+     	columnModel.getColumn(14).setPreferredWidth(100); // BAIRRO
+     	columnModel.getColumn(15).setPreferredWidth(100); // CIDADE
+     	columnModel.getColumn(16).setPreferredWidth(100); // UF
      	
      	// Ajustar o comportamento de redimensionamento da tabela
      	tabela.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);// DESLIGA O REDIMENCIONAMENTO AUTMATICO 
     	JScrollPane scrollConsultaClientes = new JScrollPane(tabela);// CRIANDO O JSCROLLPANE PARA A TABELA
      	scrollConsultaClientes.setBounds(10, 38, 514, 338);// DEFININDO O TAMANHO DO JSCROLLPANE
      	painel_guias.add(scrollConsultaClientes);// ADICIONANDO O JSCROLLPANE AO PAINEL 
-     	
+     	 
      	
     
      	//CAMPO DE BOTÕES, FOOTER
@@ -660,16 +729,26 @@ public class FormsCliente extends javax.swing.JFrame{
         panel_3.add(btnNovo);
         
         
-        //AÇÃO DO BOTÃO SALVAR CLIENTE
-        //INSTANCIANDO A CLASSE MODELO DE CLIENTES
+        //AÇÃO DO BOTÃO SALVAR FUNCIONARIO
         JButton btnSalvar = new JButton("Salvar"); //SALVAR
         btnSalvar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		Clientes obj = new Clientes();
+        		Funcionarios obj = new Funcionarios();
             	obj.setNome(txtNome.getText());
             	obj.setRg(txtRg.getText());
             	obj.setCpf(txtCpf.getText());
                 obj.setEmail(txtEmail.getText());
+                
+                //RETORNA UM ARRAY DE CARACTERES DA SENHA
+                char[] senhaArray = txtSenha.getPassword();
+                
+                //CONVERTE O ARRAY DE CARACTERES PARA STRING
+                String senha = new String(senhaArray);
+                
+                //CHAMA O MÉTODO SETSENHA, PASSANDO A STRING
+                obj.setSenha(senha);
+                obj.setCargo(txtCargo.getText());
+                obj.setNivel_acesso(cbNivel.getSelectedItem().toString());
             	obj.setTelefone(txtTelefone.getText());
             	obj.setCelular(txtCelular.getText());
            		obj.setCep(txtCep.getText());
@@ -678,12 +757,12 @@ public class FormsCliente extends javax.swing.JFrame{
             	obj.setComplemento(txtComplemento.getText());
            		obj.setBairro(txtBairro.getText());
            		obj.setCidade(txtCidade.getText());
-           		obj.setEstado(cbUf.getSelectedItem().toString());//Pelo fato de ser 'ComboBox' muda a forma de obter ele
+           		obj.setEstado(cbUf.getSelectedItem().toString());
            		
-           		//AQUI PODE ADICIONAR A VERIFICAÇÃO SE ESTA DEIXANDO ALGUM CAMPO VAZIO
+
            		
-           		ClientesDao dao = new ClientesDao();
-           		dao.Salvar(obj); //SALVAR
+           		FuncionariosDao dao = new FuncionariosDao();
+           		dao.Salvar(obj); 
            		
            		//LIMPA OS CAMPOS APÓS SALVAR
            		Utilitarios util = new Utilitarios();
@@ -698,15 +777,22 @@ public class FormsCliente extends javax.swing.JFrame{
         panel_3.add(btnSalvar);
         
         
-        //AÇÃO DO BOTÃO EDITAR CLIENTE
+        //AÇÃO DO BOTÃO EDITAR FUNCIONARIO
         JButton btnEditar = new JButton("Editar");
         btnEditar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		Clientes obj = new Clientes();
+        		Funcionarios obj = new Funcionarios();
             	obj.setNome(txtNome.getText());
             	obj.setRg(txtRg.getText());
             	obj.setCpf(txtCpf.getText());
                 obj.setEmail(txtEmail.getText());
+
+                char[] senhaArray = txtSenha.getPassword();
+                String senha = new String(senhaArray);
+                obj.setSenha(senha);
+                
+                obj.setCargo(txtCargo.getText());
+                obj.setNivel_acesso(cbNivel.getSelectedItem().toString());
             	obj.setTelefone(txtTelefone.getText());
             	obj.setCelular(txtCelular.getText());
            		obj.setCep(txtCep.getText());
@@ -718,7 +804,7 @@ public class FormsCliente extends javax.swing.JFrame{
            		obj.setEstado(cbUf.getSelectedItem().toString());
            		obj.setId(Integer.valueOf(txtCodigo.getText()));
            		
-           		ClientesDao dao = new ClientesDao();
+           		FuncionariosDao dao = new FuncionariosDao();
            		dao.Editar(obj);
            		
            		//LIMPA OS CAMPOS APÓS SALVAR
@@ -733,13 +819,13 @@ public class FormsCliente extends javax.swing.JFrame{
         panel_3.add(btnEditar);
         
         
-        //AÇÃO DO BOTÃO EXCLUIR CLIENTE
+        //AÇÃO DO BOTÃO EXCLUIR FUNCIONARIO
         JButton btnExcluir = new JButton("Excluir");
         btnExcluir.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		Clientes obj = new Clientes();
+        		Funcionarios obj = new Funcionarios();
         		obj.setId(Integer.valueOf(txtCodigo.getText()));
-        		ClientesDao dao = new ClientesDao();
+        		FuncionariosDao dao = new FuncionariosDao();
         		dao.Excluir(obj);
         		
         		Utilitarios util = new Utilitarios();
