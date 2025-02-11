@@ -5,12 +5,11 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -18,13 +17,15 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 
-public class AreaDeTrabalho extends JFrame {
+public class AreaDeTrabalho extends javax.swing.JFrame {
 	
     // INICIALIZADOR DE VERSÃO SERIALIZADA 
     private static final long serialVersionUID = 1L;
-    
     
 
     public static void main(String[] args) {
@@ -49,19 +50,17 @@ public class AreaDeTrabalho extends JFrame {
     }
 
     private void initialize() {
-        setTitle("Área de Trabalho");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    	setTitle("Área de Trabalho");
+    	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         //MAXIMIZA A JANELA AO SER ATIVADA.
-        addWindowListener(new WindowAdapter() {
+    	addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
                 setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza a janela
             }
         });
-        setVisible(true);
-        setLocationRelativeTo(null);// CENTRALIZA A JANELA NA TELA
-        setResizable(false); //IMPEDE REDIMENCIONAMENTO DA JANELA
+    	setLocationRelativeTo(null);
 
         
         
@@ -73,7 +72,16 @@ public class AreaDeTrabalho extends JFrame {
         mnNewMenu.setFont(new Font("Arial", Font.BOLD, 14));
         mnNewMenu.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconClientesAreaDeTrabalho24px.png"));
         menuBar.add(mnNewMenu);
+        
         JMenuItem mntmNewMenuItem = new JMenuItem("Formulário de Clientes");
+        mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        mntmNewMenuItem.addActionListener(new ActionListener() {
+        	//CHAMANDO O FORMSCLIENTES NA AREA DE TRABALHO
+        	public void actionPerformed(ActionEvent e) {
+        		FormsCliente formCliente = new FormsCliente();
+        		formCliente.setVisible(true);
+        	}
+        });
         mntmNewMenuItem.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu.add(mntmNewMenuItem);
 
@@ -83,7 +91,15 @@ public class AreaDeTrabalho extends JFrame {
         mnNewMenu_1.setFont(new Font("Arial", Font.BOLD, 14));
         mnNewMenu_1.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconFuncionariosAreaDeTrabalho24px.png"));
         menuBar.add(mnNewMenu_1);
+        
         JMenuItem mntmNewMenuItem_1 = new JMenuItem("Formulário de Funcionários");
+        mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        mntmNewMenuItem_1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsFuncionarios formFuncionarios = new FormsFuncionarios();
+        		formFuncionarios.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_1.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_1.add(mntmNewMenuItem_1);
 
@@ -93,7 +109,15 @@ public class AreaDeTrabalho extends JFrame {
         mnNewMenu_2.setFont(new Font("Arial", Font.BOLD, 14));
         mnNewMenu_2.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\flatIcon_iconFornecedoresAreaDeTrabalho.png"));
         menuBar.add(mnNewMenu_2);
+        
         JMenuItem mntmNewMenuItem_2 = new JMenuItem("Formulário de Fornecedores");
+        mntmNewMenuItem_2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        mntmNewMenuItem_2.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsFornecedores formFornecedores = new FormsFornecedores();
+        		formFornecedores.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_2.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_2.add(mntmNewMenuItem_2);
 

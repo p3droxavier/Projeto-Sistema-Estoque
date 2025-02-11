@@ -1,0 +1,31 @@
+Anot Project
+
+Criando classes models (explicação)
+
+-Camada de modelo & Diagrama de classe
+ _________
+|nome      | -> nome da classe (clientes)
+ ---------------
+|atributos| -> Campos da tabela do banco de dados
+ ---------------
+|métodos |-> (salvar, editar, excluir, imprimir, etc)
+ _________
+
+
+ex;                                               DAO(métodos)
+MODEL(atributos)         consultas, p/ salvar no banco
+__________                                 __________
+|  id          |    ===========>|salvar     |
+|  nome    |                                |editar      | 
+|  rg          |                                 |excluir    |
+|  cpf         |                                 |imprimir|
+|  email    |                                 __________
+|  telefone|                                          ||                                  
+|  etc...      |                                          ||
+__________                                           ||
+                                                                V
+                                                   Salvar no banco de
+                                                   dados as alterações 
+
+
+

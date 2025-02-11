@@ -7,12 +7,11 @@
 
 package br.com.system.view;
 
-import br.com.system.dao.ClientesDao;
 import br.com.system.dao.FornecedoresDao;
-import br.com.system.model.Clientes;
 import br.com.system.model.Fornecedores;
 import br.com.system.utilitarios.Utilitarios;
 import java.util.List;
+
 
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -58,7 +57,6 @@ public class FormsFornecedores extends javax.swing.JFrame{
 	//INICIALIZADOR DE VERSÃO SERIALIZADA 
 	private static final long serialVersionUID = 1L;
 	
-	private JFrame FormularioDeClientes;
     private JTextField txtCodigo;
     private JTextField txtNome;
     private JFormattedTextField txtCnpj; //FORMATADO
@@ -82,9 +80,9 @@ public class FormsFornecedores extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
                     FormsFornecedores window = new FormsFornecedores();
-                    window.FormularioDeClientes.setVisible(true);
+                    
+                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -127,26 +125,25 @@ public class FormsFornecedores extends javax.swing.JFrame{
 
     private void initialize() {
         // Create the main frame only once
-        FormularioDeClientes = new JFrame();
-        FormularioDeClientes.setTitle("Formulário de Fornecedores");
+        setTitle("Formulário de Fornecedores");
         
-        FormularioDeClientes.addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
         	@Override
         	public void windowActivated(WindowEvent e) {
         		listar();
         	}
         });
         
-        FormularioDeClientes.setResizable(false);
-        FormularioDeClientes.setBounds(100, 100, 875, 492);
+        setResizable(false);
+        setBounds(100, 100, 875, 492);
         // CENTRALIZA A JANELA NA TELA
-        FormularioDeClientes.setLocationRelativeTo(null);
-        FormularioDeClientes.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // 1° ABA DO FORMULÁRIO
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
-        FormularioDeClientes.getContentPane().add(panel, BorderLayout.WEST);
+        getContentPane().add(panel, BorderLayout.WEST);
         panel.setPreferredSize(new Dimension(320, 60));
         panel.setLayout(null);
 
@@ -163,7 +160,7 @@ public class FormsFornecedores extends javax.swing.JFrame{
         painel_guias_tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         painel_guias_tab.setFont(new Font("Arial", Font.PLAIN, 11));
         painel_guias_tab.setBackground(Color.GRAY);
-        FormularioDeClientes.getContentPane().add(painel_guias_tab, BorderLayout.CENTER);
+        getContentPane().add(painel_guias_tab, BorderLayout.CENTER);
         
         
         //PAINEL 1
@@ -615,7 +612,7 @@ public class FormsFornecedores extends javax.swing.JFrame{
         JPanel panel_3 = new JPanel();
         panel_3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         panel_3.setBackground(Color.LIGHT_GRAY);
-        FormularioDeClientes.getContentPane().add(panel_3, BorderLayout.SOUTH);
+        getContentPane().add(panel_3, BorderLayout.SOUTH);
         
         
         //{INICIO DOS BOTÕES FOOTER}

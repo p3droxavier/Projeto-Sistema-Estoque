@@ -59,7 +59,6 @@ public class FormsFuncionarios extends javax.swing.JFrame{
 	//INICIALIZADOR DE VERSÃO SERIALIZADA 
 	private static final long serialVersionUID = 1L;
 	
-	private JFrame FormularioDeFuncionarios;
     private JTextField txtCodigo;
     private JTextField txtNome;
     private JFormattedTextField txtRg; //FORMATADO
@@ -87,9 +86,9 @@ public class FormsFuncionarios extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
                     FormsFuncionarios window = new FormsFuncionarios();
-                    window.FormularioDeFuncionarios.setVisible(true);
+                    
+                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -136,26 +135,25 @@ public class FormsFuncionarios extends javax.swing.JFrame{
 
     private void initialize() {
         // Create the main frame only once
-        FormularioDeFuncionarios = new JFrame();
-        FormularioDeFuncionarios.setTitle("Formulário de Funcionarios");
+        setTitle("Formulário de Funcionarios");
         
-        FormularioDeFuncionarios.addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
         	@Override
         	public void windowActivated(WindowEvent e) {
         		listar();
         	}
         });
         
-        FormularioDeFuncionarios.setResizable(false);
-        FormularioDeFuncionarios.setBounds(100, 100, 875, 523);
+        setResizable(false);
+        setBounds(100, 100, 875, 523);
         // CENTRALIZA A JANELA NA TELA
-        FormularioDeFuncionarios.setLocationRelativeTo(null);
-        FormularioDeFuncionarios.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // 1° ABA DO FORMULÁRIO
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
-        FormularioDeFuncionarios.getContentPane().add(panel, BorderLayout.WEST);
+        getContentPane().add(panel, BorderLayout.WEST);
         panel.setPreferredSize(new Dimension(320, 60));
         panel.setLayout(null);
 
@@ -172,7 +170,7 @@ public class FormsFuncionarios extends javax.swing.JFrame{
         painel_guias_tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         painel_guias_tab.setFont(new Font("Arial", Font.PLAIN, 11));
         painel_guias_tab.setBackground(Color.GRAY);
-        FormularioDeFuncionarios.getContentPane().add(painel_guias_tab, BorderLayout.CENTER);
+        getContentPane().add(painel_guias_tab, BorderLayout.CENTER);
         
         
         //PAINEL 1
@@ -516,7 +514,7 @@ public class FormsFuncionarios extends javax.swing.JFrame{
 		
 		
 		cbNivel = new JComboBox<String>();
-		cbNivel.setModel(new DefaultComboBoxModel(new String[] {"ADMINISTRADOR", "USUÁRIO"}));
+		cbNivel.setModel(new DefaultComboBoxModel<String>(new String[] {"ADMINISTRADOR", "USUÁRIO"}));
 		cbNivel.setFont(new Font("Arial", Font.PLAIN, 12));
 		cbNivel.setBackground(Color.WHITE);
 		cbNivel.setBounds(227, 368, 135, 22);
@@ -709,7 +707,7 @@ public class FormsFuncionarios extends javax.swing.JFrame{
         JPanel panel_3 = new JPanel();
         panel_3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         panel_3.setBackground(Color.LIGHT_GRAY);
-        FormularioDeFuncionarios.getContentPane().add(panel_3, BorderLayout.SOUTH);
+        getContentPane().add(panel_3, BorderLayout.SOUTH);
         
         
         //{INICIO DOS BOTÕES FOOTER}
