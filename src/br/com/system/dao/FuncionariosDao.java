@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import br.com.system.jdbc.ConexaoBanco;
 import br.com.system.model.Funcionarios;
+import br.com.system.view.AreaDeTrabalho;
 
 public class FuncionariosDao {
 	private Connection conn;
@@ -238,6 +239,26 @@ public class FuncionariosDao {
 		return null;
 	}
 
-
 	
+	//METODO EFETUAR LOGIN DO FUNCIONARIOS
+	public void efetuarLogin(String email, String senha) {
+		try {
+			String slq = "SELECT * FROM tb_funcionarios WHERE email=? AND senha=?";
+			PreparedStatement stmt = conn.prepareStatement(slq);
+			
+			stmt.setString(1, email);
+			stmt.setString(2, senha);
+			
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				JOptionPane.showMessageDialog(null, "Seja bem Vindo ao sistema! ");
+				AreaDeTrabalho at = new AreaDeTrabalho();
+				at.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(null, "Dados Invalidos! ");
+			}
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "ERRO: Error" + e);
+		}
+	}
 }
