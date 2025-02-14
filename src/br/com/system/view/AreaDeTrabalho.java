@@ -188,14 +188,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         };
         
         getContentPane().add(painel_desktop, BorderLayout.CENTER); // Adiciona o painel de desktop à janela
-        
-       
-        
-        
-        
-        
-        
-        
+              
     }    
     
 }

@@ -224,7 +224,7 @@ public class FormsCliente extends javax.swing.JFrame{
         btnPesquisar.setFont(new Font("Arial", Font.BOLD, 11));
         
         txtNome = new JTextField();
-        //BUSCA AS INFOERMAÇÕES DO BANCO AO PRECIONAR ENTER
+        //BUSCA AS INFOERMAÇÕES DO BANCO AO PRESSIONAR ENTER
         txtNome.addKeyListener(new KeyAdapter() {
         	@Override
         	public void keyPressed(KeyEvent e) {
@@ -538,7 +538,7 @@ public class FormsCliente extends javax.swing.JFrame{
         txtNomeConsultaCliente.setColumns(10);
         txtNomeConsultaCliente.setBounds(65, 11, 326, 20);
         painel_guias.add(txtNomeConsultaCliente);
-        //FILTRAGEM DE CLIENTES AO PRECIONAR O BOTÃO
+        //FILTRAGEM DE CLIENTES AO PRESSIONAR O BOTÃO
         JButton btnPesquisaCliente = new JButton("pesquisar");
         btnPesquisaCliente.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
