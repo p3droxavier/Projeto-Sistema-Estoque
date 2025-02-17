@@ -102,7 +102,7 @@ private Connection conn;
 	
 	
 	//METODO DE BUSCAR FORNECEDOR
-	public Fornecedores BuscarForecedores(String nome) {
+	public Fornecedores BuscarFornecedores(String nome) {
 	//RETORNA UM OBJETO DO TIPO 'FORNECEDOR'
 		try {
 			String sql = "SELECT * FROM tb_fornecedores WHERE nome =?";

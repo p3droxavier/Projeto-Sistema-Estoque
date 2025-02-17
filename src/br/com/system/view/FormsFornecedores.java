@@ -192,7 +192,7 @@ public class FormsFornecedores extends javax.swing.JFrame{
         		Fornecedores obj = new Fornecedores();
         		FornecedoresDao dao = new FornecedoresDao();
         		
-        		obj = dao.BuscarForecedores(nome);
+        		obj = dao.BuscarFornecedores(nome);
         		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
         		if(obj.getNome() != null) {
         			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
@@ -231,7 +231,7 @@ public class FormsFornecedores extends javax.swing.JFrame{
             		Fornecedores obj = new Fornecedores();
             		FornecedoresDao dao = new FornecedoresDao();
             		
-            		obj = dao.BuscarForecedores(nome);
+            		obj = dao.BuscarFornecedores(nome);
             		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
             		if(obj.getNome() != null) {
             			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO

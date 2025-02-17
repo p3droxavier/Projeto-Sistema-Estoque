@@ -5,41 +5,48 @@
 
 package br.com.system.view;
 
-import br.com.system.dao.ClientesDao;
-import br.com.system.model.Clientes;
-import br.com.system.utilitarios.Utilitarios;
-import java.util.List;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Color;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.SwingConstants;
-import javax.swing.border.MatteBorder;
-import javax.swing.table.TableColumnModel;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.ImageIcon;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionListener;
 //import javax.swing.BorderFactory;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.MatteBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+
+import br.com.system.dao.ClientesDao;
+import br.com.system.dao.FornecedoresDao;
+import br.com.system.dao.ProdutosDao;
+import br.com.system.model.Clientes;
+import br.com.system.model.Fornecedores;
+import br.com.system.model.Produtos;
+import br.com.system.utilitarios.Utilitarios;
 
 
 
@@ -77,28 +84,20 @@ public class FormsProdutos extends javax.swing.JFrame{
     }
     
     
-    //LISTAGEM DE USUARIOS NA TABELA
+    //LISTAGEM DE PRODUTOS NA TABELA
     public void listar() {
-    	ClientesDao dao = new ClientesDao();
-    	List<Clientes> lista = dao.Listar();
+    	ProdutosDao dao = new ProdutosDao();
+    	List<Produtos> lista = dao.Listar();
     	DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
     	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
-    	for(Clientes c : lista) {
+    	for(Produtos p : lista) {
     		dados.addRow(new Object[]{
-    			c.getId(),
-    			c.getNome(),
-    			c.getRg(),
-    			c.getCpf(),
-    			c.getEmail(),
-    			c.getTelefone(),
-    			c.getCelular(),
-    			c.getCep(),
-    			c.getEndereco(),
-    			c.getNumero(),
-    			c.getComplemento(),
-    			c.getBairro(),
-    			c.getCidade(),
-    			c.getEstado()	
+    			p.getId(),
+    			p.getDescricao(),
+    			p.getPreco(),
+    			p.getQtd_estoque(),
+    			p.getFornecedores().getNome()
+    			//PODE-SE PEGAR QUALQUER ATRIBUTO DO FORNECEDOR.
     		});
     	}
     }
@@ -112,7 +111,7 @@ public class FormsProdutos extends javax.swing.JFrame{
 
     private void initialize() {
        
-        setTitle("Formulário de Clientes");
+        setTitle("Formulário de Produtos");
         
         addWindowListener(new WindowAdapter() {
         	@Override
@@ -122,7 +121,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         });
         
         setResizable(false);
-        setBounds(100, 100, 875, 492);
+        setBounds(100, 100, 808, 410);
         // CENTRALIZA A JANELA NA TELA
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -135,8 +134,8 @@ public class FormsProdutos extends javax.swing.JFrame{
         panel.setLayout(null);
 
         // TITLE LABEL
-        JLabel lblNewLabel = new JLabel("Cadastro de Clientes");
-        lblNewLabel.setBounds(0, 0, 320, 420);
+        JLabel lblNewLabel = new JLabel("Cadastro de Produtos");
+        lblNewLabel.setBounds(0, 0, 320, 332);
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setForeground(Color.WHITE);
         lblNewLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -163,7 +162,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         
         txtCodigo = new JTextField();
         txtCodigo.setEditable(false);
-        txtCodigo.setBounds(66, 36, 108, 20);
+        txtCodigo.setBounds(66, 36, 70, 20);
         txtCodigo.setColumns(10);
         
         JLabel lblDescricao = new JLabel("Descrição : ");
@@ -171,34 +170,8 @@ public class FormsProdutos extends javax.swing.JFrame{
         lblDescricao.setFont(new Font("Arial", Font.BOLD, 12));
         
         
-        //AÇÃO DO BOTÃO PESQUISAR PRODUTO
-        JButton btnPesquisar = new JButton("pesquisar");
-        btnPesquisar.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		String nome = txtDescricao.getText();
-        		Clientes obj = new Clientes();
-        		ClientesDao dao = new ClientesDao();
-        		
-        		obj = dao.BuscarCliente(nome);
-        		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
-        		if(obj.getNome() != null) {
-        			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
-        			txtDescricao.setText(obj.getNome());
-        			txtPreco.setText(obj.getEmail());
-        			txtQtdEstoque.setText(String.valueOf(obj.getNumero()));
-        			cbFornecedor.setSelectedItem(obj.getEstado());	
-        		} else {
-        			JOptionPane.showMessageDialog(null, "ERRO: Cliente não encontradao! \nVerifique se não a erros ao digitar o nome. ");
-        		}
-        	}
-        });
+ 
         
-        
-        
-        
-        btnPesquisar.setBounds(419, 64, 88, 23);
-        btnPesquisar.setBackground(Color.WHITE);
-        btnPesquisar.setFont(new Font("Arial", Font.BOLD, 11));
         
         txtDescricao = new JTextField();
         //BUSCA AS INFOERMAÇÕES DO BANCO AO PRESSIONAR ENTER
@@ -224,7 +197,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         		}
         	}
         });
-        txtDescricao.setBounds(117, 67, 286, 20);
+        txtDescricao.setBounds(92, 67, 241, 20);
         txtDescricao.setToolTipText("");
         txtDescricao.setFont(new Font("Arial", Font.PLAIN, 11));
         txtDescricao.setColumns(10);
@@ -234,18 +207,18 @@ public class FormsProdutos extends javax.swing.JFrame{
         lblPreco.setFont(new Font("Arial", Font.BOLD, 12));
         
         txtPreco = new JTextField();
-        txtPreco.setBounds(65, 96, 338, 20);
+        txtPreco.setBounds(65, 96, 70, 20);
         txtPreco.setFont(new Font("Arial", Font.PLAIN, 11));
         txtPreco.setColumns(10);
         
 		
 		
-		JLabel lblQtdEstoque = new JLabel("QTD. Estoque : ");
-		lblQtdEstoque.setBounds(20, 127, 88, 14);
+		JLabel lblQtdEstoque = new JLabel("QTD Estoque : ");
+		lblQtdEstoque.setBounds(177, 99, 88, 14);
 		lblQtdEstoque.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		txtQtdEstoque = new JTextField();
-		txtQtdEstoque.setBounds(117, 124, 286, 20);
+		txtQtdEstoque.setBounds(263, 96, 70, 20);
 		txtQtdEstoque.setColumns(10);
 		
 		
@@ -254,12 +227,60 @@ public class FormsProdutos extends javax.swing.JFrame{
 		lblNewLabel_3_1.setFont(new Font("Arial", Font.BOLD, 14));
 		
 		
-		cbFornecedor = new JComboBox<>();
 
-		cbFornecedor.setBounds(211, 169, 88, 22);
+		//PASSANDO FORNECEDORES COMO PARAMETRO PARA ELIMINAR ERRO DE TIPO
+		JComboBox<Fornecedores> cbFornecedor = new JComboBox<>(); 
+		cbFornecedor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				FornecedoresDao dao = new FornecedoresDao();
+				List<Fornecedores> lista = dao.Listar();
+				cbFornecedor.removeAllItems(); //EVITA DUPLICAÇÃO DE DADOS
+				for(Fornecedores f : lista) {
+					cbFornecedor.addItem(f);
+				}
+			}
+		});
+		
+	       //AÇÃO DO BOTÃO PESQUISAR PRODUTO
+        JButton btnPesquisar = new JButton("pesquisar");
+        btnPesquisar.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String nome = txtDescricao.getText();
+        		Produtos obj = new Produtos();
+        		ProdutosDao dao = new ProdutosDao();
+        		
+        		Fornecedores f = new Fornecedores();
+        		FornecedoresDao daof = new FornecedoresDao();
+        		
+        		obj = dao.BuscarProdutos(nome);
+        		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+        		if(obj.getDescricao() != null) {
+        			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
+        			txtDescricao.setText(obj.getDescricao());
+        			txtPreco.setText(String.valueOf(obj.getPreco()));
+        			txtQtdEstoque.setText(String.valueOf(obj.getQtd_estoque()));
+        			
+        			f = daof.BuscarFornecedores(obj.getFornecedores().getNome());
+        			cbFornecedor.getModel().setSelectedItem(f);
+        		} else {
+        			JOptionPane.showMessageDialog(null, "ERRO: Produto não encontradao! \nVerifique se não a erros ao digitar o nome do produto.");
+        		}
+        	}
+        });
+       
+        btnPesquisar.setBounds(358, 64, 88, 23);
+        btnPesquisar.setBackground(Color.WHITE);
+        btnPesquisar.setFont(new Font("Arial", Font.BOLD, 11));
+        
+		
+		
+
+
+		cbFornecedor.setBounds(102, 124, 231, 22);
 		cbFornecedor.setBackground(Color.WHITE);
 		cbFornecedor.setFont(new Font("Arial", Font.PLAIN, 11));
-		cbFornecedor.setToolTipText("Selecione o estado");
+		cbFornecedor.setToolTipText("#");
 		painel_do_produto.add(cbFornecedor);
 		
         
@@ -278,10 +299,11 @@ public class FormsProdutos extends javax.swing.JFrame{
 		painel_do_produto.add(lblPreco);
 		painel_do_produto.add(txtPreco); 
 		
-		JLabel lblFornecedor = new JLabel("Fornecedor");
+		JLabel lblFornecedor = new JLabel("Fornecedor :");
 		lblFornecedor.setFont(new Font("Arial", Font.BOLD, 12));
-		lblFornecedor.setBounds(113, 173, 65, 14);
+		lblFornecedor.setBounds(20, 128, 80, 14);
 		painel_do_produto.add(lblFornecedor);
+		
 		
 		
 		
@@ -331,7 +353,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         txtNomeConsultaCliente.setToolTipText("");
         txtNomeConsultaCliente.setFont(new Font("Arial", Font.PLAIN, 11));
         txtNomeConsultaCliente.setColumns(10);
-        txtNomeConsultaCliente.setBounds(86, 11, 305, 20);
+        txtNomeConsultaCliente.setBounds(86, 11, 219, 20);
         painel_consulta_produtos.add(txtNomeConsultaCliente);
         //FILTRAGEM DE PRODUTOS AO PRESSIONAR O BOTÃO
         JButton btnPesquisaProdutos = new JButton("pesquisar");
@@ -364,7 +386,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         });
         btnPesquisaProdutos.setFont(new Font("Arial", Font.BOLD, 11));
         btnPesquisaProdutos.setBackground(Color.WHITE);
-        btnPesquisaProdutos.setBounds(436, 9, 88, 23);
+        btnPesquisaProdutos.setBounds(369, 9, 88, 23);
         painel_consulta_produtos.add(btnPesquisaProdutos);
         
         
@@ -378,9 +400,16 @@ public class FormsProdutos extends javax.swing.JFrame{
         		painel_guias_tab.setSelectedIndex(0);
         		txtCodigo.setText(tabela.getValueAt(tabela.getSelectedRow(), 0). toString());
         		txtDescricao.setText(tabela.getValueAt(tabela.getSelectedRow(), 1). toString());
-        		txtPreco.setText(tabela.getValueAt(tabela.getSelectedRow(), 3). toString());
-        		txtQtdEstoque.setText(tabela.getValueAt(tabela.getSelectedRow(), 4). toString());
-        		cbFornecedor.setSelectedItem(tabela.getValueAt(tabela.getSelectedRow(), 5). toString());
+        		txtPreco.setText(tabela.getValueAt(tabela.getSelectedRow(), 2). toString());
+        		txtQtdEstoque.setText(tabela.getValueAt(tabela.getSelectedRow(), 3). toString());
+        		
+        		Fornecedores f = new Fornecedores();
+        		FornecedoresDao daof = new FornecedoresDao();
+        		f = daof.BuscarFornecedores(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
+        		cbFornecedor.removeAllItems();
+        		cbFornecedor.getModel().setSelectedItem(f);
+        		
+        		
         	}
         });
         
@@ -393,7 +422,7 @@ public class FormsProdutos extends javax.swing.JFrame{
             	new Object[][] {
             	},
             	new String[] {
-            		"ID", "Descrição", "Preço", "QTD Estoque", "Fornecedores"
+            		"Código", "Descrição", "Preço", "QTD Estoque", "Fornecedores"
             	}
             );
         
@@ -402,7 +431,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         tabela.setModel(modelTable1new);
         
         TableColumnModel columnModel = tabela.getColumnModel();
-     	columnModel.getColumn(0).setPreferredWidth(30);  // ID
+     	columnModel.getColumn(0).setPreferredWidth(50);  // ID
      	columnModel.getColumn(1).setPreferredWidth(150); // DESCRIÇÃO
      	columnModel.getColumn(2).setPreferredWidth(100); // PREÇO
      	columnModel.getColumn(3).setPreferredWidth(100); // QTS ESTOQUE
@@ -411,7 +440,7 @@ public class FormsProdutos extends javax.swing.JFrame{
      	
      	tabela.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     	JScrollPane scrollConsultaClientes = new JScrollPane(tabela);
-     	scrollConsultaClientes.setBounds(10, 38, 514, 338);
+     	scrollConsultaClientes.setBounds(10, 38, 447, 256);
      	painel_consulta_produtos.add(scrollConsultaClientes);
      	
      	
@@ -439,14 +468,13 @@ public class FormsProdutos extends javax.swing.JFrame{
         JButton btnSalvar = new JButton("Salvar"); 
         btnSalvar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		Clientes obj = new Clientes();
-            	obj.setNome(txtDescricao.getText());
-                obj.setEmail(txtPreco.getText());
-            	obj.setNumero(Integer.valueOf(txtQtdEstoque.getText()));
-           		obj.setEstado(cbFornecedor.getSelectedItem().toString());
+        		Produtos obj = new Produtos();
+            	obj.setDescricao(txtDescricao.getText());
+                obj.setPreco(Double.valueOf(txtPreco.getText())); //CONVERTENDO PARA DOUBLE
+            	obj.setQtd_estoque(Integer.valueOf(txtQtdEstoque.getText()));
+           		obj.setFornecedores((Fornecedores)cbFornecedor.getSelectedItem()); //CONVERTENDO PARA O TIPO FORNECEDORES
            		
-           		
-           		ClientesDao dao = new ClientesDao();
+           		ProdutosDao dao = new ProdutosDao();
            		dao.Salvar(obj); 
            		
            		Utilitarios util = new Utilitarios();
@@ -464,15 +492,19 @@ public class FormsProdutos extends javax.swing.JFrame{
         JButton btnEditar = new JButton("Editar");
         btnEditar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		Clientes obj = new Clientes();
-            	obj.setNome(txtDescricao.getText());
-                obj.setEmail(txtPreco.getText());
-            	obj.setNumero(Integer.valueOf(txtQtdEstoque.getText()));
-           		obj.setEstado(cbFornecedor.getSelectedItem().toString());
-           		obj.setId(Integer.valueOf(txtCodigo.getText()));
+        		Produtos obj = new Produtos();
+        		obj.setId(Integer.valueOf(txtCodigo.getText()));
+            	obj.setDescricao(txtDescricao.getText());
+                obj.setPreco(Double.valueOf(txtPreco.getText()));
+            	obj.setQtd_estoque(Integer.valueOf(txtQtdEstoque.getText()));
            		
-           		ClientesDao dao = new ClientesDao();
-           		dao.Editar(obj);
+    			Fornecedores f = new Fornecedores();
+    			f = (Fornecedores) cbFornecedor.getSelectedItem();
+    			obj.setFornecedores(f);
+    			
+           		
+           		ProdutosDao daop = new ProdutosDao();
+           		daop.Editar(obj);
            		
            		Utilitarios util = new Utilitarios();
         		util.LimpaTela(painel_do_produto);
@@ -488,9 +520,9 @@ public class FormsProdutos extends javax.swing.JFrame{
         JButton btnExcluir = new JButton("Excluir");
         btnExcluir.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		Clientes obj = new Clientes();
+        		Produtos obj = new Produtos();
         		obj.setId(Integer.valueOf(txtCodigo.getText()));
-        		ClientesDao dao = new ClientesDao();
+        		ProdutosDao dao = new ProdutosDao();
         		dao.Excluir(obj);
         		
         		Utilitarios util = new Utilitarios();

@@ -240,7 +240,7 @@ public class FuncionariosDao {
 	}
 
 	
-	//METODO EFETUAR LOGIN DO FUNCIONARIOS
+	//METODO EFETUAR LOGIN DO FUNCIONARIOS NO FORMSLOGIN
 	public void efetuarLogin(String email, String senha) {
 		try {
 			String slq = "SELECT * FROM tb_funcionarios WHERE email=? AND senha=?";
