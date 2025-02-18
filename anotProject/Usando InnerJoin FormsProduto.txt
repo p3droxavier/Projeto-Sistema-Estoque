@@ -1,0 +1,100 @@
+Anot Forms produto.
+
+
+cod para incompatibilidade de tipo 
+     txtCodigo.setText(String.valueOf(obj.getId()));  
+
+outro caso
+     obj.setId(Integer.valueOf(txtCodigo.getText()));
+
+
+
+
+
+- Por estar trabalhando com tabelas tb_produtos e tb_fornecedores usa-se o inner join para fazer as seguintes buscas
+-> de tb_produtos (id, descricao, preco, qtd_estoque)
+-> de tb_fornecedores(nome)
+   
+     -Juntando as tabelas.
+
+
+[ ProdutosDao ]
+//METODO LISTAR PRODUTOS (JUNTANDO 2 TABELAS)
+public List<Produtos>Listar(){
+	List<Produtos> lista = new ArrayList<>();
+	try {
+		String sql = "SELECT p.id,p.descricao,p.preco,p.qtd_estoque,f.nome FROM tb_produtos AS p INNER JOIN tb_fornecedores AS f ON(p.for_id=f.id)";
+		PreparedStatement stmt = conn.prepareStatement(sql); 
+		ResultSet rs = stmt.executeQuery();
+		//PERCORRERA TODA A LISTA
+		while(rs.next()) {
+			Produtos obj = new Produtos();
+			Fornecedores f = new Fornecedores();
+			obj.setId(rs.getInt("p.id"));
+			obj.setDescricao(rs.getString("p.descricao"));
+			obj.setPreco(rs.getDouble("p.preco"));
+			obj.setQtd_estoque(rs.getInt("p.qtd_estoque"));
+			
+			f.setNome(rs.getString("f.nome"));
+			obj.setFornecedores(f);
+			
+			lista.add(obj);
+		}
+		return lista; 
+		} catch (SQLException e) {
+		JOptionPane.showMessageDialog(null, "ERRO, ao criar a lista: " + e);
+	}
+	return null;
+}
+
+
+
+[ FormsProdutos ]
+//LISTAGEM DE PRODUTOS NA TABELA
+public void listar() {
+    ProdutosDao dao = new ProdutosDao();
+    List<Produtos> lista = dao.Listar();
+    DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); 
+    dados.setNumRows(0); 
+    for(Produtos p : lista) {
+    	dados.addRow(new Object[]{
+    		p.getId(),
+    		p.getDescricao(),
+    		p.getPreco(),
+    		p.getQtd_estoque(),
+    		p.getFornecedores().getNome()
+   		//PODE-SE PEGAR QUALQUER ATRIBUTO DO FORNECEDOR.
+   	});
+   }
+}
+
+
+Trabalhando JComboBox
+
+Listando Fornecedores
+
+-Feito os codigos de consulta, ele ira retornar o objeto (br.com.system....etc)
+  para que retorne o que quiser no ComboBox, nesse caso precisa retornar o nome do fornecedor, em Fornecedores
+
+
+[ Fornecedores ]
+@Override
+public String toString() {
+	return this.getNome();
+}
+
+Retornando o nome dos Fornecedores cadastrados no banco.
+
+
+
+
+- Para buscar da lista para o comboBox, no caso do FormsProduto muda pois esta trabalhanco com 2 objetos diferentes
+     mudando;
+     cbFornecedor.setSelectedItem(tabela.getValueAt(tabela.getSelectedRow(), 4). toString());
+
+     para;
+     Fornecedores f = new Fornecedores(); //Cria o modelo 'f'
+     FornecedoresDao daof = new FornecedoresDao(); //Cria o modelo 'daof'
+     f = daof.BuscarForecedores(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
+     cbFornecedor.removeAllItems();
+     cbFornecedor.getModel().setSelectedItem(f);//ira prgar o modelo 'f' que esta recebendo a consulta

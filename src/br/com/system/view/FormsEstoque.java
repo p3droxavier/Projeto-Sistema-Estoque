@@ -21,9 +21,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
+
+import javax.swing.*;
+import javax.swing.text.*;
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,21 +39,25 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
 //import javax.swing.event.AncestorEvent;
 //import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.MaskFormatter;
 
 import br.com.system.dao.FornecedoresDao;
 import br.com.system.dao.ProdutosDao;
 import br.com.system.model.Fornecedores;
 import br.com.system.model.Produtos;
 import br.com.system.utilitarios.Utilitarios;
+import javax.swing.JFormattedTextField;
 
 
 
 
-public class FormsProdutos extends javax.swing.JFrame{
+public class FormsEstoque extends javax.swing.JFrame{
+	int idProduto, qtd_atualizada;
     /**
 	 * 
 	 */
@@ -58,12 +66,10 @@ public class FormsProdutos extends javax.swing.JFrame{
 	
     private JTextField txtCodigo;
     private JTextField txtDescricao;
-    private JTextField txtPreco;
-    private JTextField txtQtdEstoque;
-//    private JComboBox<String> cbFornecedor; 
-    private JTextField txtNomeConsultaCliente;
+    private JTextField txtQtd_Atual;
 
     private JTable tabela;
+    private JButton btnAdicionar;
     
 
     public static void main(String[] args) {
@@ -71,7 +77,7 @@ public class FormsProdutos extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    FormsProdutos window = new FormsProdutos();
+                    FormsEstoque window = new FormsEstoque();
                     
                     window.setVisible(true);
                 } catch (Exception e) {
@@ -102,7 +108,7 @@ public class FormsProdutos extends javax.swing.JFrame{
     
 
     //INICIALIZAÇÃO
-    public FormsProdutos() {
+    public FormsEstoque() {
         initialize();
     }
     
@@ -119,7 +125,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         });
         
         setResizable(false);
-        setBounds(100, 100, 808, 410);
+        setBounds(100, 100, 808, 504);
         // CENTRALIZA A JANELA NA TELA
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -133,7 +139,7 @@ public class FormsProdutos extends javax.swing.JFrame{
 
         // TITLE LABEL
         JLabel lblNewLabel = new JLabel("Cadastro de Produtos");
-        lblNewLabel.setBounds(0, 0, 320, 332);
+        lblNewLabel.setBounds(0, 0, 320, 426);
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setForeground(Color.WHITE);
         lblNewLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -148,19 +154,19 @@ public class FormsProdutos extends javax.swing.JFrame{
         
         
         //PAINEL 1
-        JPanel painel_do_produto = new JPanel();
-        painel_do_produto.setBackground(new Color(255, 255, 255));
-        painel_guias_tab.addTab("Dados do Produto", null, painel_do_produto, null);
+        JPanel painel_do_estoque = new JPanel();
+        painel_do_estoque.setBackground(new Color(255, 255, 255));
+        painel_guias_tab.addTab("Dados do Produto", null, painel_do_estoque, null);
         painel_guias_tab.setBackgroundAt(0, Color.WHITE);
         painel_guias_tab.setEnabledAt(0, true);
         
-        JLabel lblCodigo = new JLabel("Codigo: ");
+        JLabel lblCodigo = new JLabel("Codigo : ");
         lblCodigo.setBounds(20, 39, 56, 14);
         lblCodigo.setFont(new Font("Arial", Font.BOLD, 12));
         
         txtCodigo = new JTextField();
         txtCodigo.setEditable(false);
-        txtCodigo.setBounds(66, 36, 70, 20);
+        txtCodigo.setBounds(77, 36, 70, 20);
         txtCodigo.setColumns(10);
         
         JLabel lblDescricao = new JLabel("Descrição : ");
@@ -168,56 +174,54 @@ public class FormsProdutos extends javax.swing.JFrame{
         lblDescricao.setFont(new Font("Arial", Font.BOLD, 12));
         
         
-        JLabel lblPreco = new JLabel("Preço : ");
-        lblPreco.setBounds(20, 99, 46, 14);
-        lblPreco.setFont(new Font("Arial", Font.BOLD, 12));
+        JLabel lblQtd_atual = new JLabel("Quantidade Atual :");
+        lblQtd_atual.setBounds(20, 102, 116, 14);
+        lblQtd_atual.setFont(new Font("Arial", Font.BOLD, 12));
         
-        txtPreco = new JTextField();
-        txtPreco.setBounds(65, 96, 70, 20);
-        txtPreco.setFont(new Font("Arial", Font.PLAIN, 11));
-        txtPreco.setColumns(10);
+        txtQtd_Atual = new JTextField();
+        txtQtd_Atual.setBounds(129, 100, 45, 20);
+        txtQtd_Atual.setFont(new Font("Arial", Font.PLAIN, 11));
+        txtQtd_Atual.setColumns(10);
         
 		
 		
-		JLabel lblQtdEstoque = new JLabel("QTD Estoque : ");
-		lblQtdEstoque.setBounds(177, 99, 88, 14);
-		lblQtdEstoque.setFont(new Font("Arial", Font.BOLD, 12));
+		JLabel lblQuantidade = new JLabel("Quantidade :");
+		lblQuantidade.setBounds(196, 103, 88, 14);
+		lblQuantidade.setFont(new Font("Arial", Font.BOLD, 12));
 		
-		txtQtdEstoque = new JTextField();
-		txtQtdEstoque.setBounds(263, 96, 70, 20);
-		txtQtdEstoque.setColumns(10);
+		JFormattedTextField txtQtd_nova = new JFormattedTextField();
+        txtQtd_nova.setBounds(277, 100, 45, 20);
+        
+        // CRIANDO O FILTRO PARA ACEITAR APENAS NUMEROS
+        ((AbstractDocument) txtQtd_nova.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if (string.matches("[0-9]*")) { // Aceita apenas números
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text.matches("[0-9]*")) { // Aceita apenas números
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+
+        painel_do_estoque.add(txtQtd_nova);
 		
+	
 		
-		JLabel lblNewLabel_3_1 = new JLabel("Identificação");
-		lblNewLabel_3_1.setBounds(10, 11, 108, 14);
-		lblNewLabel_3_1.setFont(new Font("Arial", Font.BOLD, 14));
+		JLabel LabelIdentificação = new JLabel("Identificação");
+		LabelIdentificação.setBounds(10, 11, 108, 14);
+		LabelIdentificação.setFont(new Font("Arial", Font.BOLD, 14));
 		
 		
 
-		//PASSANDO FORNECEDORES COMO PARAMETRO PARA ELIMINAR ERRO DE TIPO
-		JComboBox<Fornecedores> cbFornecedor = new JComboBox<>(); 
-		cbFornecedor.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				FornecedoresDao dao = new FornecedoresDao();
-				List<Fornecedores> lista = dao.Listar();
-				cbFornecedor.removeAllItems(); //EVITA DUPLICAÇÃO DE DADOS
-				for(Fornecedores f : lista) {
-					cbFornecedor.addItem(f);
-				}
-			}
-		});
-		
-		cbFornecedor.setBounds(102, 124, 231, 22);
-		cbFornecedor.setBackground(Color.WHITE);
-		cbFornecedor.setFont(new Font("Arial", Font.PLAIN, 11));
-		cbFornecedor.setToolTipText("#");
-		painel_do_produto.add(cbFornecedor);
-		
-		
-		
+
 	       //AÇÃO DO BOTÃO PESQUISAR PRODUTO
-        JButton btnPesquisar = new JButton("pesquisar");
+        JButton btnPesquisar = new JButton("Pesquisar");
         btnPesquisar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String nome = txtDescricao.getText();
@@ -232,18 +236,17 @@ public class FormsProdutos extends javax.swing.JFrame{
         		if(obj.getDescricao() != null) {
         			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
         			txtDescricao.setText(obj.getDescricao());
-        			txtPreco.setText(String.valueOf(obj.getPreco()));
-        			txtQtdEstoque.setText(String.valueOf(obj.getQtd_estoque()));
+        			txtQtd_Atual.setText(String.valueOf(obj.getPreco()));
+        			txtQtd_nova.setText(String.valueOf(obj.getQtd_estoque()));
         			
-        			f = daof.BuscarFornecedores(obj.getFornecedores().getNome());
-        			cbFornecedor.getModel().setSelectedItem(f);
+
         		} else {
         			JOptionPane.showMessageDialog(null, "ERRO: Produto não encontradao! \nVerifique se não a erros ao digitar o nome do produto.");
         		}
         	}
         });
        
-        btnPesquisar.setBounds(358, 64, 88, 23);
+        btnPesquisar.setBounds(341, 64, 116, 27);
         btnPesquisar.setBackground(Color.WHITE);
         btnPesquisar.setFont(new Font("Arial", Font.BOLD, 11));
         
@@ -259,19 +262,15 @@ public class FormsProdutos extends javax.swing.JFrame{
             		Produtos obj = new Produtos();
             		ProdutosDao dao = new ProdutosDao();
             		
-            		Fornecedores f = new Fornecedores();
-            		FornecedoresDao daof = new FornecedoresDao();
-            		
             		obj = dao.BuscarProdutos(nome);
             		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
             		if(obj.getDescricao() != null) {
             			txtCodigo.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
             			txtDescricao.setText(obj.getDescricao());
-            			txtPreco.setText(String.valueOf(obj.getPreco()));
-            			txtQtdEstoque.setText(String.valueOf(obj.getQtd_estoque()));
+            			txtQtd_Atual.setText(String.valueOf(obj.getPreco()));
+            			txtQtd_nova.setText(String.valueOf(obj.getQtd_estoque()));
             			
-            			f = daof.BuscarFornecedores(obj.getFornecedores().getNome());
-            			cbFornecedor.getModel().setSelectedItem(f);
+
             		} else {
             			JOptionPane.showMessageDialog(null, "ERRO: Produto não encontradao! \nVerifique se não a erros ao digitar o nome do produto.");
             		}
@@ -279,7 +278,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         		}
         	}
         });
-        txtDescricao.setBounds(92, 67, 241, 20);
+        txtDescricao.setBounds(92, 67, 230, 20);
         txtDescricao.setToolTipText("");
         txtDescricao.setFont(new Font("Arial", Font.PLAIN, 11));
         txtDescricao.setColumns(10);
@@ -287,112 +286,26 @@ public class FormsProdutos extends javax.swing.JFrame{
         
         
         //INCLUSÃO DOS COMPONENTES NO PAINEL
-        painel_do_produto.setLayout(null);
-		painel_do_produto.add(lblNewLabel_3_1);
-		painel_do_produto.add(lblCodigo);
-		painel_do_produto.add(txtCodigo);
-		painel_do_produto.add(lblQtdEstoque);
-		painel_do_produto.add(btnPesquisar);
-		painel_do_produto.add(txtQtdEstoque);
-		painel_do_produto.add(cbFornecedor);
-		painel_do_produto.add(lblDescricao);
-		painel_do_produto.add(txtDescricao);
-		painel_do_produto.add(lblPreco);
-		painel_do_produto.add(txtPreco); 
+        painel_do_estoque.setLayout(null);
+		painel_do_estoque.add(LabelIdentificação);
+		painel_do_estoque.add(lblCodigo);
+		painel_do_estoque.add(txtCodigo);
+		painel_do_estoque.add(lblQuantidade);
+		painel_do_estoque.add(btnPesquisar);
+		painel_do_estoque.add(lblDescricao);
+		painel_do_estoque.add(txtDescricao);
+		painel_do_estoque.add(lblQtd_atual);
+		painel_do_estoque.add(txtQtd_Atual);
 		
-		JLabel lblFornecedor = new JLabel("Fornecedor :");
-		lblFornecedor.setFont(new Font("Arial", Font.BOLD, 12));
-		lblFornecedor.setBounds(20, 128, 80, 14);
-		painel_do_produto.add(lblFornecedor);
-		
-		
-		
-		
-		//2° ABA DO FORMULÁRIO
-        JPanel painel_consulta_produtos = new JPanel();
-        painel_consulta_produtos.setBackground(Color.WHITE);
-        painel_guias_tab.addTab("Consulta de Produtos", null, painel_consulta_produtos, null);
-        painel_consulta_produtos.setLayout(null);
-        
-        JLabel lblDescricaoConsultaProduto = new JLabel("Descrição : ");
-        lblDescricaoConsultaProduto.setFont(new Font("Arial", Font.BOLD, 12));
-        lblDescricaoConsultaProduto.setBounds(9, 13, 67, 14);
-        painel_consulta_produtos.add(lblDescricaoConsultaProduto);
-        
-        txtNomeConsultaCliente = new JTextField();
-        txtNomeConsultaCliente.addKeyListener(new KeyAdapter() {
-        	@Override
-        	//FILTRAGEM DE PRODUTOS
-        	public void keyReleased(KeyEvent e) {
-        		String filtNome = "%"+txtNomeConsultaCliente.getText()+"%";
-        		ProdutosDao dao = new ProdutosDao();
-            	List<Produtos> lista = dao.Filtrar(filtNome);
-            	DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
-            	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
-            	for(Produtos p : lista) {
-            		dados.addRow(new Object[]{
-            			p.getId(),
-            			p.getDescricao(),
-            			p.getPreco(),
-            			p.getQtd_estoque(),
-            			p.getFornecedores().getNome()
-            		});
-            	}
-        	}
-        });
-        
-        
-        txtNomeConsultaCliente.setToolTipText("");
-        txtNomeConsultaCliente.setFont(new Font("Arial", Font.PLAIN, 11));
-        txtNomeConsultaCliente.setColumns(10);
-        txtNomeConsultaCliente.setBounds(86, 11, 219, 20);
-        painel_consulta_produtos.add(txtNomeConsultaCliente);
-        //FILTRAGEM DE PRODUTOS AO PRESSIONAR O BOTÃO
-        JButton btnPesquisaProdutos = new JButton("pesquisar");
-        btnPesquisaProdutos.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		String filtNome = "%"+txtNomeConsultaCliente.getText()+"%";
-        		ProdutosDao dao = new ProdutosDao();
-            	List<Produtos> lista = dao.Filtrar(filtNome);
-            	DefaultTableModel dados = (DefaultTableModel) tabela.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
-            	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
-            	for(Produtos p : lista) {
-            		dados.addRow(new Object[]{
-            			p.getId(),
-            			p.getDescricao(),
-            			p.getPreco(),
-            			p.getQtd_estoque(),
-            			p.getFornecedores().getNome()
-            		});
-            	}
-        	}
-        });
-        btnPesquisaProdutos.setFont(new Font("Arial", Font.BOLD, 11));
-        btnPesquisaProdutos.setBackground(Color.WHITE);
-        btnPesquisaProdutos.setBounds(369, 9, 88, 23);
-        painel_consulta_produtos.add(btnPesquisaProdutos);
-        
-        
-        
-       
-        
         tabela = new JTable();
         tabela.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		painel_guias_tab.setSelectedIndex(0);
+        		//'idProduto' E 'txtCodigo' AMBOS INICIAM COM 0 
+        		idProduto = Integer.parseInt(tabela.getValueAt(tabela.getSelectedRow(), 0). toString());
         		txtCodigo.setText(tabela.getValueAt(tabela.getSelectedRow(), 0). toString());
         		txtDescricao.setText(tabela.getValueAt(tabela.getSelectedRow(), 1). toString());
-        		txtPreco.setText(tabela.getValueAt(tabela.getSelectedRow(), 2). toString());
-        		txtQtdEstoque.setText(tabela.getValueAt(tabela.getSelectedRow(), 3). toString());
-        		
-        		Fornecedores f = new Fornecedores();
-        		FornecedoresDao daof = new FornecedoresDao();
-        		f = daof.BuscarFornecedores(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
-        		cbFornecedor.removeAllItems();
-        		cbFornecedor.getModel().setSelectedItem(f);
-        		
-        		
+        		txtQtd_Atual.setText(tabela.getValueAt(tabela.getSelectedRow(), 3). toString());
         	}
         });
         
@@ -407,9 +320,7 @@ public class FormsProdutos extends javax.swing.JFrame{
             	new String[] {
             		"Código", "Descrição", "Preço", "QTD Estoque", "Fornecedores"
             	}
-            );
-        
-        
+            ); 
         tabela.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));//AJUSTANDO A FONTED O HEADER
         tabela.setModel(modelTable1new);
         
@@ -421,13 +332,60 @@ public class FormsProdutos extends javax.swing.JFrame{
      	columnModel.getColumn(4).setPreferredWidth(180); // FORNECEDOR
      	
      	
+     	
+        // DEFININDO A FONTE PARA O TÍTULO DA BORDA
+     	Font font = new Font("Arial", Font.BOLD, 14);
+     	TitledBorder titledBorder = new TitledBorder("Consulta de Produtos Cadastrados");
+     	titledBorder.setTitleFont(font); 
+     	titledBorder.setTitleJustification(TitledBorder.LEADING); 
+     	titledBorder.setTitlePosition(TitledBorder.TOP); 
      	tabela.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    	JScrollPane scrollConsultaClientes = new JScrollPane(tabela);
-     	scrollConsultaClientes.setBounds(10, 38, 447, 256);
-     	painel_consulta_produtos.add(scrollConsultaClientes);
+     	JScrollPane scrollConsultaClientes = new JScrollPane(tabela);
+     	scrollConsultaClientes.setBorder(titledBorder); 
+     	painel_do_estoque.setLayout(null);
+     	scrollConsultaClientes.setBounds(10, 135, 447, 253);
+     	painel_do_estoque.add(scrollConsultaClientes);
+     	painel_do_estoque.revalidate();
+     	painel_do_estoque.repaint();
+
+     
      	
+     	btnAdicionar = new JButton("Adicionar");
+     	btnAdicionar.addActionListener(new ActionListener() {
+     	    public void actionPerformed(ActionEvent e) {
+     	        try {
+     	            int qtdAtual, qtd_nova, qtd_atualizada;
+     	            String nome = txtDescricao.getText();  // Pega o nome do produto
+     	            Produtos obj = new Produtos();
+     	            ProdutosDao daop = new ProdutosDao();
+     	            
+     	            // Pega as quantidades atuais e novas
+     	            qtdAtual = Integer.valueOf(txtQtd_Atual.getText());
+     	            qtd_nova = Integer.valueOf(txtQtd_nova.getText());
+     	            qtd_atualizada = qtdAtual + qtd_nova;
+     	        
+     	            // Busca o produto usando o nome
+     	            obj = daop.BuscarProdutos(nome);
+     	            // Atualiza a descrição no campo de texto
+     	            txtDescricao.setText(obj.getDescricao());
+     	            
+     	            // Atualiza o estoque do produto
+     	            daop.adicionarEstoque(obj.getId(), qtd_atualizada);
+     	            
+     	            // Exibe a mensagem com o nome do produto
+     	            JOptionPane.showMessageDialog(null, "Total de " + obj.getDescricao()+ " após a adição foi: "  + qtd_atualizada);
+     	        } catch (Exception err) {
+     	            JOptionPane.showMessageDialog(null, "ERRO! " + err);
+     	        }
+     	    }
+     	});
+
+     	btnAdicionar.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconBtnNew18px.png"));
+     	btnAdicionar.setFont(new Font("Arial", Font.BOLD, 11));
+     	btnAdicionar.setBounds(341, 97, 116, 27);
+     	painel_do_estoque.add(btnAdicionar);
+
      	
-    
         JPanel panel_3 = new JPanel();
         panel_3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         panel_3.setBackground(Color.LIGHT_GRAY);
@@ -439,7 +397,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         btnNovo.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		Utilitarios util = new Utilitarios();
-        		util.LimpaTela(painel_do_produto);
+        		util.LimpaTela(painel_do_estoque);
         	}
         });
         btnNovo.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconBtnNew18px.png"));
@@ -453,15 +411,14 @@ public class FormsProdutos extends javax.swing.JFrame{
         	public void actionPerformed(ActionEvent e) {
         		Produtos obj = new Produtos();
             	obj.setDescricao(txtDescricao.getText());
-                obj.setPreco(Double.valueOf(txtPreco.getText())); //CONVERTENDO PARA DOUBLE
-            	obj.setQtd_estoque(Integer.valueOf(txtQtdEstoque.getText()));
-           		obj.setFornecedores((Fornecedores)cbFornecedor.getSelectedItem()); //CONVERTENDO PARA O TIPO FORNECEDORES
+                obj.setPreco(Double.valueOf(txtQtd_Atual.getText())); //CONVERTENDO PARA DOUBLE
+            	obj.setQtd_estoque(Integer.valueOf(txtQtd_nova.getText()));
            		
            		ProdutosDao dao = new ProdutosDao();
            		dao.Salvar(obj); 
            		
            		Utilitarios util = new Utilitarios();
-        		util.LimpaTela(painel_do_produto);
+        		util.LimpaTela(painel_do_estoque);
            		
         	}
         });
@@ -478,11 +435,10 @@ public class FormsProdutos extends javax.swing.JFrame{
         		Produtos obj = new Produtos();
         		obj.setId(Integer.valueOf(txtCodigo.getText()));
             	obj.setDescricao(txtDescricao.getText());
-                obj.setPreco(Double.valueOf(txtPreco.getText()));
-            	obj.setQtd_estoque(Integer.valueOf(txtQtdEstoque.getText()));
+                obj.setPreco(Double.valueOf(txtQtd_Atual.getText()));
+            	obj.setQtd_estoque(Integer.valueOf(txtQtd_nova.getText()));
            		
     			Fornecedores f = new Fornecedores();
-    			f = (Fornecedores) cbFornecedor.getSelectedItem();
     			obj.setFornecedores(f);
     			
            		
@@ -490,7 +446,7 @@ public class FormsProdutos extends javax.swing.JFrame{
            		daop.Editar(obj);
            		
            		Utilitarios util = new Utilitarios();
-        		util.LimpaTela(painel_do_produto);
+        		util.LimpaTela(painel_do_estoque);
         	}
         });
         
@@ -509,7 +465,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         		dao.Excluir(obj);
         		
         		Utilitarios util = new Utilitarios();
-        		util.LimpaTela(painel_do_produto);
+        		util.LimpaTela(painel_do_estoque);
         	}
         });
         

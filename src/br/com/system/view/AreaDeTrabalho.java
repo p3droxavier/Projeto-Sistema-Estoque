@@ -86,6 +86,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu.add(mntmNewMenuItem);
 
         
+        
         // MENU DE FUNCIONÁRIOS
         JMenu mnNewMenu_1 = new JMenu("Funcionários");
         mnNewMenu_1.setFont(new Font("Arial", Font.BOLD, 14));
@@ -103,6 +104,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mntmNewMenuItem_1.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_1.add(mntmNewMenuItem_1);
 
+        
         
         // MENU DE FORNECEDORES
         JMenu mnNewMenu_2 = new JMenu("Fornecedores");
@@ -122,17 +124,36 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu_2.add(mntmNewMenuItem_2);
 
         
+        
         // MENU DE PRODUTOS
         JMenu mnNewMenu_3 = new JMenu("Produtos");
         mnNewMenu_3.setFont(new Font("Arial", Font.BOLD, 14));
         mnNewMenu_3.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconProdutosAreaDeTrabalho24px.png"));
         menuBar.add(mnNewMenu_3);
+        
+        JMenu mnNewMenu_7 = new JMenu("Meus Produtos");
+        mnNewMenu_7.setFont(new Font("Arial", Font.BOLD, 12));
+        mnNewMenu_3.add(mnNewMenu_7);
+        
         JMenuItem mntmNewMenuItem_3 = new JMenuItem("Controle de Estoque");
         mntmNewMenuItem_3.setFont(new Font("Arial", Font.BOLD, 12));
-        mnNewMenu_3.add(mntmNewMenuItem_3);
+        mnNewMenu_7.add(mntmNewMenuItem_3);
+        
         JMenuItem mntmNewMenuItem_4 = new JMenuItem("Consulta de Produtos");
         mntmNewMenuItem_4.setFont(new Font("Arial", Font.BOLD, 12));
-        mnNewMenu_3.add(mntmNewMenuItem_4);
+        mnNewMenu_7.add(mntmNewMenuItem_4);
+        
+        JMenuItem mntmNewMenuItem_10 = new JMenuItem("Formulário de Produtos");
+        mntmNewMenuItem_10.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsProdutos formProdutos = new FormsProdutos();
+        		formProdutos.setVisible(true);
+        	}
+        });
+        mntmNewMenuItem_10.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        mntmNewMenuItem_10.setFont(new Font("Arial", Font.BOLD, 12));
+        mnNewMenu_7.add(mntmNewMenuItem_10);
+        
 
         
         // MENU DE VENDAS
@@ -177,7 +198,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g); 
-                ImageIcon icon = new ImageIcon("C:/Users/Usuario/git/repository/Sistema_Estoque/src/imgBackgroundSystem/imgbackgroundArvoreAreaDeTrabalho.jpeg");
+                ImageIcon icon = new ImageIcon("C:/Users/Usuario/git/repository/Sistema_Estoque/src/imgBackgroundSystem/wallpaperBackGroundWindows.jpg");
                 Image image = icon.getImage();
                 if (image != null) {
                     g.drawImage(image, 0, 0, getWidth(), getHeight(), this); //DESENHANDO A IMAGEM DE FUNDO

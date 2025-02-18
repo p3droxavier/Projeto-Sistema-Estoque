@@ -1,9 +1,14 @@
 //ANOT
 /*
- ->LINHA 142 = A CONSULTA DIZ QUE O FOR_ID(TB_PRODUTOS) É IGUAL AO ID(TB_FORNECEDORES)
+ ->LINHA 142 => A CONSULTA DIZ QUE O FOR_ID(TB_PRODUTOS) É IGUAL AO ID(TB_FORNECEDORES)
    -ONDE SELECIONA O QUE QUER SER MOSTRADO NA LISTA 'p.id,p.descricao,p.preco,p.qtd_estoque,f.nome'
    
    -JOGANDO O VALOR(f.setNome(rs.getString("f.nome"));) DENTRO DO OBJETO PRODUTO.
+   
+   
+   
+  ->LINHA 196 => QTD_NOVA, SE REFERE AO CAMPO QUE SERA ADICIONADO A NOVA QUANTIA
+    - ID SE REFERE ID DO PRODUTO(IRA ALTERAR COM BASE NO ID DO PRODUTO)
  */
 
 
@@ -19,9 +24,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import br.com.system.jdbc.ConexaoBanco;
-import br.com.system.model.Clientes;
 import br.com.system.model.Fornecedores;
 import br.com.system.model.Produtos;
+import br.com.system.utilitarios.Utilitarios;
 
 public class ProdutosDao {
 	private Connection conn;
@@ -158,31 +163,27 @@ public class ProdutosDao {
 
 	
 	//METODO FILTRAR PRODUTOS
-	public List<Clientes>Filtrar(String nome){
-		List<Clientes> lista = new ArrayList<>();
+	public List<Produtos>Filtrar(String nome){
+		List<Produtos> lista = new ArrayList<>();
 		try {
-			String sql = "SELECT * FROM tb_clientes WHERE nome LIKE ?";
+			String sql = "SELECT p.id,p.descricao,p.preco,p.qtd_estoque,f.nome FROM tb_produtos AS p INNER JOIN"
+					+ " tb_fornecedores AS f ON(p.for_id=f.id) WHERE p.descricao LIKE ?";
 			PreparedStatement stmt = conn.prepareStatement(sql); 
 			stmt.setString(1, nome);
 			ResultSet rs = stmt.executeQuery();
 			
 			//PERCORRERA TODA A LISTA
 			while(rs.next()) {
-				Clientes obj = new Clientes();
-				obj.setId(rs.getInt("id"));
-				obj.setNome(rs.getString("nome"));
-				obj.setRg(rs.getString("rg"));
-				obj.setCpf(rs.getString("cpf"));
-				obj.setEmail(rs.getString("email"));
-				obj.setTelefone(rs.getString("telefone")); 
-				obj.setCelular(rs.getString("celular"));
-				obj.setCep(rs.getString("cep"));
-				obj.setEndereco(rs.getString("endereco"));
-				obj.setNumero(rs.getInt("numero"));
-				obj.setComplemento(rs.getString("complemento"));
-				obj.setBairro(rs.getString("bairro"));
-				obj.setCidade(rs.getString("cidade"));
-				obj.setEstado(rs.getString("estado"));
+				Produtos obj = new Produtos();
+				Fornecedores f = new Fornecedores();
+				obj.setId(rs.getInt("p.id"));
+				obj.setDescricao(rs.getString("p.descricao"));
+				obj.setPreco(rs.getDouble("p.preco"));
+				obj.setQtd_estoque(rs.getInt("p.qtd_estoque"));
+				
+				f.setNome(rs.getString("f.nome"));
+				obj.setFornecedores(f);
+				
 				
 				lista.add(obj);
 			}
@@ -193,4 +194,35 @@ public class ProdutosDao {
 		return null;
 	}
 	
+	
+	//ADIÇÃO AO ESTOQUE
+	public void adicionarEstoque(int id, int qtd_nova) {
+		try {
+			String sql = "UPDATE tb_produtos SET qtd_estoque=? WHERE id=?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, qtd_nova);
+			stmt.setInt(2, id);
+			stmt.execute();
+			stmt.close();
+			JOptionPane.showMessageDialog(null, "Adicionado com sucesso no estoque! ");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERRO. Erro ao adicionar no estoque!" + " \n " + e);
+		}
+	}
+	
+	
+	//BAIXA DO ESTOQUE(REGISTRO DE SAÍDA)
+	public void baixaEstoque(int id, int qtd_nova) {
+		try {
+			String sql = "UPDATE tb_produtos SET qtd_estoque=? WHERE id=?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, qtd_nova);
+			stmt.setInt(2, id);
+			stmt.execute();
+			stmt.close();
+			JOptionPane.showMessageDialog(null, "Baixa do estoque efetuada com sucesso! ");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "ERRO. Erro ao dar baixa no estoque!" + " \n " + e);
+		}
+	}
 }

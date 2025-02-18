@@ -580,7 +580,7 @@ public class FormsCliente extends javax.swing.JFrame{
         	//ADICIONANDO EVENTO DE CLICK NA TABELA
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		painel_guias_tab.setSelectedIndex(0);//NO CASO REPRESENTA A 1° ABA
+        		painel_guias_tab.setSelectedIndex(0);//NO CASO REPRESENTA A 1° ABA(PAINEL)
         		txtCodigo.setText(tabela.getValueAt(tabela.getSelectedRow(), 0). toString());//DAQUI EM DIANTE REPRESETA O 2°
         		txtNome.setText(tabela.getValueAt(tabela.getSelectedRow(), 1). toString());
         		txtRg.setText(tabela.getValueAt(tabela.getSelectedRow(), 2). toString());
