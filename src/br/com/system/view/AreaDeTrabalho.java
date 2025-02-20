@@ -1,3 +1,13 @@
+//ANOT COD
+
+/*
+
+  EM 'consultProdutos.painel_guias.setSelectedIndex(1);' PROX LINHA 155
+  EXISTE UM ERRO INICIAL, POIS AO BUSCAR TAO ELEMENTO ELE NÃO É ACHADO POIS EM SEU ENCAPSULAMENTO ESTA COMO 'PRIVATE'
+  
+*/
+
+
 package br.com.system.view;
 
 import java.awt.BorderLayout;
@@ -140,6 +150,13 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu_7.add(mntmNewMenuItem_3);
         
         JMenuItem mntmNewMenuItem_4 = new JMenuItem("Consulta de Produtos");
+        mntmNewMenuItem_4.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsProdutos consultProdutos = new FormsProdutos();
+//        		consultProdutos.painel_guias_tab.setSelectedIndex(1);
+        		consultProdutos.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_4.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_7.add(mntmNewMenuItem_4);
         
