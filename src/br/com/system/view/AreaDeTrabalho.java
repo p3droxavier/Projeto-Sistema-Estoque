@@ -146,6 +146,12 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu_3.add(mnNewMenu_7);
         
         JMenuItem mntmNewMenuItem_3 = new JMenuItem("Controle de Estoque");
+        mntmNewMenuItem_3.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsEstoque controlEstoque = new FormsEstoque();
+        		controlEstoque.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_3.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_7.add(mntmNewMenuItem_3);
         
@@ -153,7 +159,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mntmNewMenuItem_4.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		FormsProdutos consultProdutos = new FormsProdutos();
-//        		consultProdutos.painel_guias_tab.setSelectedIndex(1);
+        		consultProdutos.painel_guias_tab.setSelectedIndex(1);
         		consultProdutos.setVisible(true);
         	}
         });
@@ -167,7 +173,6 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         		formProdutos.setVisible(true);
         	}
         });
-        mntmNewMenuItem_10.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         mntmNewMenuItem_10.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_7.add(mntmNewMenuItem_10);
         

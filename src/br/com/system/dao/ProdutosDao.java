@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 import br.com.system.jdbc.ConexaoBanco;
 import br.com.system.model.Fornecedores;
 import br.com.system.model.Produtos;
-import br.com.system.utilitarios.Utilitarios;
 
 public class ProdutosDao {
 	private Connection conn;

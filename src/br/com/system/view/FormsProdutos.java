@@ -64,6 +64,7 @@ public class FormsProdutos extends javax.swing.JFrame{
     private JTextField txtNomeConsultaCliente;
 
     private JTable tabela;
+    public JTabbedPane painel_guias_tab;
     
 
     public static void main(String[] args) {
@@ -140,7 +141,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         panel.add(lblNewLabel);
 
       
-        JTabbedPane painel_guias_tab = new JTabbedPane(JTabbedPane.TOP);
+        painel_guias_tab = new JTabbedPane(JTabbedPane.TOP);
         painel_guias_tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         painel_guias_tab.setFont(new Font("Arial", Font.PLAIN, 11));
         painel_guias_tab.setBackground(Color.GRAY);
@@ -528,4 +529,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         //{FIM DOS BOTÕES}
 
     }
+	public JTabbedPane getPainel_guias_tab() {
+		return painel_guias_tab;
+	}
 }

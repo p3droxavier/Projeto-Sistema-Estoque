@@ -22,10 +22,10 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 
-import javax.swing.*;
+//import javax.swing.*;
 import javax.swing.text.*;
-import java.awt.*;
-import java.awt.event.*;
+//import java.awt.*;
+//import java.awt.event.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,9 +44,9 @@ import javax.swing.border.TitledBorder;
 //import javax.swing.event.AncestorListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.text.MaskFormatter;
-
-import br.com.system.dao.FornecedoresDao;
+//import javax.swing.text.MaskFormatter;
+//
+//import br.com.system.dao.FornecedoresDao;
 import br.com.system.dao.ProdutosDao;
 import br.com.system.model.Fornecedores;
 import br.com.system.model.Produtos;
@@ -228,9 +228,6 @@ public class FormsEstoque extends javax.swing.JFrame{
         		Produtos obj = new Produtos();
         		ProdutosDao dao = new ProdutosDao();
         		
-        		Fornecedores f = new Fornecedores();
-        		FornecedoresDao daof = new FornecedoresDao();
-        		
         		obj = dao.BuscarProdutos(nome);
         		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
         		if(obj.getDescricao() != null) {
@@ -335,16 +332,16 @@ public class FormsEstoque extends javax.swing.JFrame{
      	
         // DEFININDO A FONTE PARA O TÍTULO DA BORDA
      	Font font = new Font("Arial", Font.BOLD, 14);
-     	TitledBorder titledBorder = new TitledBorder("Consulta de Produtos Cadastrados");
+     	TitledBorder titledBorder = new TitledBorder("Produtos Cadastrados");
      	titledBorder.setTitleFont(font); 
      	titledBorder.setTitleJustification(TitledBorder.LEADING); 
      	titledBorder.setTitlePosition(TitledBorder.TOP); 
      	tabela.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-     	JScrollPane scrollConsultaClientes = new JScrollPane(tabela);
-     	scrollConsultaClientes.setBorder(titledBorder); 
+     	JScrollPane scrollConsulta = new JScrollPane(tabela);
+     	scrollConsulta.setBorder(titledBorder); 
      	painel_do_estoque.setLayout(null);
-     	scrollConsultaClientes.setBounds(10, 135, 447, 253);
-     	painel_do_estoque.add(scrollConsultaClientes);
+     	scrollConsulta.setBounds(10, 135, 447, 253);
+     	painel_do_estoque.add(scrollConsulta);
      	painel_do_estoque.revalidate();
      	painel_do_estoque.repaint();
 
@@ -359,21 +356,17 @@ public class FormsEstoque extends javax.swing.JFrame{
      	            Produtos obj = new Produtos();
      	            ProdutosDao daop = new ProdutosDao();
      	            
-     	            // Pega as quantidades atuais e novas
      	            qtdAtual = Integer.valueOf(txtQtd_Atual.getText());
      	            qtd_nova = Integer.valueOf(txtQtd_nova.getText());
      	            qtd_atualizada = qtdAtual + qtd_nova;
      	        
-     	            // Busca o produto usando o nome
      	            obj = daop.BuscarProdutos(nome);
-     	            // Atualiza a descrição no campo de texto
      	            txtDescricao.setText(obj.getDescricao());
-     	            
-     	            // Atualiza o estoque do produto
      	            daop.adicionarEstoque(obj.getId(), qtd_atualizada);
      	            
-     	            // Exibe a mensagem com o nome do produto
-     	            JOptionPane.showMessageDialog(null, "Total de " + obj.getDescricao()+ " após a adição foi: "  + qtd_atualizada);
+     	            
+     	            
+     	            JOptionPane.showMessageDialog(null, "Total de " + obj.getDescricao()+ " após a adição: "  + qtd_atualizada);
      	        } catch (Exception err) {
      	            JOptionPane.showMessageDialog(null, "ERRO! " + err);
      	        }
