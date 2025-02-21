@@ -67,7 +67,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
     	addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {
-                setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximiza a janela
+                setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
         });
     	setLocationRelativeTo(null);

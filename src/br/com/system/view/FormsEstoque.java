@@ -115,7 +115,7 @@ public class FormsEstoque extends javax.swing.JFrame{
 
     private void initialize() {
        
-        setTitle("Formulário de Produtos");
+        setTitle("Formulário Controle de Estoque");
         
         addWindowListener(new WindowAdapter() {
         	@Override
@@ -138,7 +138,7 @@ public class FormsEstoque extends javax.swing.JFrame{
         panel.setLayout(null);
 
         // TITLE LABEL
-        JLabel lblNewLabel = new JLabel("Cadastro de Produtos");
+        JLabel lblNewLabel = new JLabel("Controle de Estoque");
         lblNewLabel.setBounds(0, 0, 320, 426);
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setForeground(Color.WHITE);
@@ -293,6 +293,7 @@ public class FormsEstoque extends javax.swing.JFrame{
 		painel_do_estoque.add(txtDescricao);
 		painel_do_estoque.add(lblQtd_atual);
 		painel_do_estoque.add(txtQtd_Atual);
+		
 		
         tabela = new JTable();
         tabela.addMouseListener(new MouseAdapter() {
