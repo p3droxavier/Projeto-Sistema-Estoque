@@ -113,7 +113,7 @@ public class ClientesDao {
 	}
 	
 	
-	//METODO DE BUSCAR CLIENTE
+	//METODO DE BUSCAR CLIENTE PELO NOME
 	public Clientes BuscarCliente(String nome) {
 	//RETORNA UM OBJETO DO TIPO 'CLIENTES'
 		try {
@@ -149,6 +149,39 @@ public class ClientesDao {
 		//PEDE QUE RETORNE ALGO, MAS NÃO PRECISO, POR ISSO RETORNA NULL
 		return null;
 	}
+	
+	//METODO DE BUSCAR CLIENTE PELO CPF
+	public Clientes BuscarClienteCPF(String cpf) {
+			try {
+				String sql = "SELECT * FROM tb_clientes WHERE cpf=?";
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				stmt.setString(1, cpf);
+				ResultSet rs = stmt.executeQuery();
+				Clientes obj = new Clientes();
+				if(rs.next()) {
+					obj.setId(rs.getInt("id"));
+					obj.setNome(rs.getString("nome"));
+					obj.setRg(rs.getString("rg"));
+					obj.setCpf(rs.getString("cpf"));
+					obj.setEmail(rs.getString("email"));
+					obj.setTelefone(rs.getString("telefone"));
+					obj.setCelular(rs.getString("celular"));
+					obj.setCep(rs.getString("cep"));
+					obj.setEndereco(rs.getString("endereco"));
+					obj.setNumero(rs.getInt("numero"));
+					obj.setComplemento(rs.getString("complemento"));
+					obj.setBairro(rs.getString("bairro"));
+					obj.setCidade(rs.getString("cidade"));
+					obj.setEstado(rs.getString("estado"));
+				}
+				//RETORNA OBJETO DO TIPO CLIENTE
+				return obj;
+			} catch (SQLException erro) {
+				JOptionPane.showMessageDialog(null, "ERRO: Erro ao buscar Cliente!!" +  erro);
+			}
+			return null;
+		}
+	
 	
 	
 	//METODO LISTAR CLIENTE

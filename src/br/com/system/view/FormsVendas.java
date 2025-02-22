@@ -6,12 +6,24 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,8 +37,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.text.MaskFormatter;
 
+import br.com.system.dao.ClientesDao;
+import br.com.system.dao.ProdutosDao;
+import br.com.system.model.Clientes;
+import br.com.system.model.Produtos;
+import br.com.system.utilitarios.Utilitarios;
+
 
 public class FormsVendas extends javax.swing.JFrame {
+	
+	Clientes obj = new Clientes();
 	
     // INICIALIZADOR DE VERSÃO SERIALIZADA
     private static final long serialVersionUID = 1L;
@@ -35,12 +55,13 @@ public class FormsVendas extends javax.swing.JFrame {
     private JTextField textEncontreProdutoAqui;
     private JTable tabela_de_produtos;
     private JTable tabela_carrinho_compra;
-    private JTextField textCodigoProduto;
-    private JTextField textNomeProduto;
-    private JTextField textPrecoProduto;
-    private JTextField textEstoque;
-    private JTextField textQtdProduto;
+    private JTextField txtCodigoProduto;
+    private JTextField txtNomeProduto;
+    private JTextField txtPrecoProduto;
+    private JTextField txtEstoque;
+    private JTextField txtQtdProduto;
     private JTextField textTotalVenda;
+    private  JFormattedTextField txtData;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -55,14 +76,51 @@ public class FormsVendas extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void listar() {
+    	ProdutosDao dao = new ProdutosDao();
+    	List<Produtos> lista = dao.Listar();
+    	DefaultTableModel dados = (DefaultTableModel) tabela_de_produtos.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
+    	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
+    	for(Produtos p : lista) {
+    		dados.addRow(new Object[]{
+    			p.getId(),
+    			p.getDescricao(),
+    			p.getPreco(),
+    			p.getQtd_estoque(),
+    			p.getFornecedores().getNome()
+    			//PODE-SE PEGAR QUALQUER ATRIBUTO DO FORNECEDOR.
+    		});
+    	}
+    }
+    
 
+    
     // INICIALIZAÇÃO
     public FormsVendas() {
-    	getContentPane().setBackground(SystemColor.controlHighlight);
         initialize();
     }
 
+    
     private void initialize() {
+    	addWindowListener(new WindowAdapter() {
+    		@Override
+    		public void windowActivated(WindowEvent e) {
+    			Date dataAtual = new Date();
+    			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss");
+    			String dataFormatada = formato.format(dataAtual);
+    			txtData.setText(dataFormatada);
+    		}
+    	});
+    	
+    	
+    	 addWindowListener(new WindowAdapter() {
+         	@Override
+         	public void windowActivated(WindowEvent e) {
+         		listar();
+         	}
+         });
+    	 
         setTitle("Ponto de Vendas");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -72,7 +130,8 @@ public class FormsVendas extends javax.swing.JFrame {
         
         SpringLayout springLayout = new SpringLayout();
         getContentPane().setLayout(springLayout);
-
+        getContentPane().setBackground(SystemColor.controlHighlight);
+        
         //HEADER
         JPanel painel_header = new JPanel();
         springLayout.putConstraint(SpringLayout.NORTH, painel_header, 0, SpringLayout.NORTH, getContentPane());
@@ -94,7 +153,7 @@ public class FormsVendas extends javax.swing.JFrame {
         gbc.fill = GridBagConstraints.BOTH;     // PREENCHE O ESPACO
 
         JLabel lblNewLabel = new JLabel("Ponto de Vendas", SwingConstants.CENTER);
-        lblNewLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        lblNewLabel.setFont(new Font("Arial", Font.BOLD, 28));
         lblNewLabel.setForeground(new Color(255, 255, 255));
         painel_header.add(lblNewLabel, gbc);
         
@@ -102,7 +161,7 @@ public class FormsVendas extends javax.swing.JFrame {
         springLayout.putConstraint(SpringLayout.NORTH, grid_box01, 1, SpringLayout.SOUTH, painel_header);
         springLayout.putConstraint(SpringLayout.WEST, grid_box01, 0, SpringLayout.WEST, getContentPane());
         springLayout.putConstraint(SpringLayout.SOUTH, grid_box01, -250, SpringLayout.SOUTH, getContentPane());
-        springLayout.putConstraint(SpringLayout.EAST, grid_box01, 707, SpringLayout.WEST, getContentPane());
+        springLayout.putConstraint(SpringLayout.EAST, grid_box01, 682, SpringLayout.WEST, getContentPane());
         grid_box01.setBackground(Color.WHITE);
         getContentPane().add(grid_box01);
         grid_box01.setLayout(null);
@@ -118,7 +177,7 @@ public class FormsVendas extends javax.swing.JFrame {
         grid_box01.add(lblNomeCliente);
         
         textNomeCliente = new JTextField();
-        textNomeCliente.setBounds(108, 36, 331, 20);
+        textNomeCliente.setBounds(108, 36, 309, 20);
         grid_box01.add(textNomeCliente);
         textNomeCliente.setColumns(10);
         
@@ -128,6 +187,25 @@ public class FormsVendas extends javax.swing.JFrame {
         grid_box01.add(lblCpfCliente);
         
         JFormattedTextField txtCpfCliente = new JFormattedTextField();
+        txtCpfCliente.addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyPressed(KeyEvent e) {
+            	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+            		String cpf = txtCpfCliente.getText();
+
+                	ClientesDao dao = new ClientesDao();
+               		
+               		obj = dao.BuscarClienteCPF(cpf);
+               		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+               		if(obj.getCpf() != null) {
+               			textNomeCliente.setText(obj.getNome());
+               		} else {
+               			JOptionPane.showMessageDialog(null, "ERRO: Cpf invalido! ");
+               		}
+           			
+           		}
+       	}
+        });
         txtCpfCliente.setBounds(107, 64, 110, 20);
         try {
         	MaskFormatter mask = new MaskFormatter("###.###.### / ##");
@@ -140,20 +218,21 @@ public class FormsVendas extends javax.swing.JFrame {
         
         
         
-        JLabel lblDataNascCliente = new JLabel("Data de Nascimento :");
-        lblDataNascCliente.setFont(new Font("Arial", Font.BOLD, 12));
-        lblDataNascCliente.setBounds(237, 68, 124, 14);
-        grid_box01.add(lblDataNascCliente);
+        JLabel lblData = new JLabel("Data :");
+        lblData.setFont(new Font("Arial", Font.BOLD, 12));
+        lblData.setBounds(467, 68, 40, 14);
+        grid_box01.add(lblData);
         
-        JFormattedTextField txtDataNascCliente = new JFormattedTextField();
-        txtDataNascCliente.setBounds(365, 65, 74, 20);
-        try {
-			MaskFormatter mask = new MaskFormatter("## / ## / ####");
-			mask.setValidCharacters("0123456789");
-			txtDataNascCliente.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mask));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        txtData = new JFormattedTextField();
+        txtData.setEnabled(false);
+        txtData.setBounds(505, 64, 128, 20);
+//        try {
+//			MaskFormatter mask = new MaskFormatter("## / ## / ####");
+//			mask.setValidCharacters("0123456789");
+//			txtDataNascCliente.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mask));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
         
         //VERIFICAÇÃO DE MÊS~
 //        txtDataNascCliente.addFocusListener(new FocusAdapter() {
@@ -178,7 +257,7 @@ public class FormsVendas extends javax.swing.JFrame {
 //        	}
 //        });
         
-        grid_box01.add(txtDataNascCliente);
+        grid_box01.add(txtData);
         
         
         
@@ -188,18 +267,61 @@ public class FormsVendas extends javax.swing.JFrame {
         grid_box01.add(lblEncontreProdutoAqui);
         
         textEncontreProdutoAqui = new JTextField();
+        textEncontreProdutoAqui.addKeyListener(new KeyAdapter() {
+        	@Override
+        	public void keyReleased(KeyEvent e) {
+        		String filtNome = "%"+textEncontreProdutoAqui.getText()+"%";
+        		ProdutosDao dao = new ProdutosDao();
+            	List<Produtos> lista = dao.Filtrar(filtNome);
+            	DefaultTableModel dados = (DefaultTableModel) tabela_de_produtos.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
+            	dados.setNumRows(0); //0 IGUAL A POSIÇÃO INICIAL DA MATRIZ
+            	for(Produtos p : lista) {
+            		dados.addRow(new Object[]{
+            			p.getId(),
+            			p.getDescricao(),
+            			p.getPreco(),
+            			p.getQtd_estoque(),
+            		});
+            		txtCodigoProduto.setEnabled(false);
+            	}
+        	}
+        });
         textEncontreProdutoAqui.setColumns(10);
-        textEncontreProdutoAqui.setBounds(237, 103, 202, 20);
+        textEncontreProdutoAqui.setBounds(237, 103, 396, 20);
         grid_box01.add(textEncontreProdutoAqui);
         
         JButton btnPesquisarClientes = new JButton("Pesquisar");
+        btnPesquisarClientes.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String cpf = txtCpfCliente.getText();
+
+            	ClientesDao dao = new ClientesDao();
+           		
+           		obj = dao.BuscarClienteCPF(cpf);
+           		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+           		if(obj.getCpf() != null) {
+           			textNomeCliente.setText(obj.getNome());
+           		} else {
+           			JOptionPane.showMessageDialog(null, "ERRO: Cpf invalido! ");
+           		}
+        	}
+        });
         btnPesquisarClientes.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconButtonVendasProcurar18px.png"));
         btnPesquisarClientes.setFont(new Font("Arial", Font.BOLD, 12));
-        btnPesquisarClientes.setBounds(518, 34, 119, 25);
+        btnPesquisarClientes.setBounds(286, 63, 131, 25);
         grid_box01.add(btnPesquisarClientes);
         
         
         tabela_de_produtos = new JTable();
+        tabela_de_produtos.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		txtCodigoProduto.setText(tabela_de_produtos.getValueAt(tabela_de_produtos.getSelectedRow(), 0). toString());
+        		txtNomeProduto.setText(tabela_de_produtos.getValueAt(tabela_de_produtos.getSelectedRow(), 1). toString());
+        		txtPrecoProduto.setText(tabela_de_produtos.getValueAt(tabela_de_produtos.getSelectedRow(), 2). toString());
+        		txtEstoque.setText(tabela_de_produtos.getValueAt(tabela_de_produtos.getSelectedRow(), 3). toString());
+        	}
+        });
         tabela_de_produtos.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.GRAY));
         tabela_de_produtos.setFont(new Font("Arial", Font.PLAIN, 12));
         tabela_de_produtos.setModel(new DefaultTableModel(
@@ -213,7 +335,7 @@ public class FormsVendas extends javax.swing.JFrame {
         tabela_de_produtos.getColumnModel().getColumn(1).setPreferredWidth(150);
         tabela_de_produtos.getColumnModel().getColumn(2).setPreferredWidth(100);
         tabela_de_produtos.getColumnModel().getColumn(3).setPreferredWidth(100);
-        tabela_de_produtos.getColumnModel().getColumn(4).setPreferredWidth(120);
+        tabela_de_produtos.getColumnModel().getColumn(4).setPreferredWidth(185);
         tabela_de_produtos.setBounds(69, 144, 600, 182);
         grid_box01.add(tabela_de_produtos);
         
@@ -232,9 +354,9 @@ public class FormsVendas extends javax.swing.JFrame {
      	
      	
      	JPanel grid_box03 = new JPanel();
-     	springLayout.putConstraint(SpringLayout.NORTH, grid_box03, 10, SpringLayout.SOUTH, grid_box01);
+     	springLayout.putConstraint(SpringLayout.NORTH, grid_box03, 6, SpringLayout.SOUTH, grid_box01);
      	springLayout.putConstraint(SpringLayout.SOUTH, grid_box03, 0, SpringLayout.SOUTH, getContentPane());
-     	springLayout.putConstraint(SpringLayout.EAST, grid_box03, 707, SpringLayout.WEST, getContentPane());
+     	springLayout.putConstraint(SpringLayout.EAST, grid_box03, 682, SpringLayout.WEST, getContentPane());
      	springLayout.putConstraint(SpringLayout.WEST, grid_box03, 0, SpringLayout.WEST, getContentPane());
      	grid_box03.setBackground(Color.WHITE);
      	getContentPane().add(grid_box03);
@@ -250,75 +372,124 @@ public class FormsVendas extends javax.swing.JFrame {
      	lblCodigoProduto.setBounds(59, 39, 46, 14);
      	grid_box03.add(lblCodigoProduto);
      	
-     	textCodigoProduto = new JTextField();
-     	textCodigoProduto.setBounds(115, 36, 60, 20);
-     	grid_box03.add(textCodigoProduto);
-     	textCodigoProduto.setColumns(10);
+     	txtCodigoProduto = new JTextField();
+     	txtCodigoProduto.addKeyListener(new KeyAdapter() {
+     		@Override
+     		public void keyPressed(KeyEvent e) {
+     			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+        			int id = Integer.valueOf(txtCodigoProduto.getText());
+            		Produtos obj = new Produtos();
+            		ProdutosDao dao = new ProdutosDao();
+            	
+            		obj = dao.BuscarProdutosID(id);
+            		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+            		if(obj.getId() != 0) {
+            			txtCodigoProduto.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
+            			txtNomeProduto.setText(obj.getDescricao());
+            			txtPrecoProduto.setText(String.valueOf(obj.getPreco()));
+            			txtEstoque.setText(String.valueOf(obj.getQtd_estoque()));
+            			
+            			//APÓS O TERMINO DO METODO DESATIVA O CAMPO CÓDIGO
+            			txtCodigoProduto.setEnabled(false);
+            		} else {
+            			JOptionPane.showMessageDialog(null, "ERRO: Código invalido! ");
+            		}
+        			
+        		}
+     		}
+     	});
+     	txtCodigoProduto.setBounds(115, 36, 60, 20);
+     	grid_box03.add(txtCodigoProduto);
+     	txtCodigoProduto.setColumns(10);
      	
      	JLabel lblNomeProduto = new JLabel("Produto :");
      	lblNomeProduto.setFont(new Font("Arial", Font.BOLD, 12));
      	lblNomeProduto.setBounds(59, 68, 66, 14);
      	grid_box03.add(lblNomeProduto);
      	
-     	textNomeProduto = new JTextField();
-     	textNomeProduto.setColumns(10);
-     	textNomeProduto.setBounds(115, 65, 182, 20);
-     	grid_box03.add(textNomeProduto);
+     	txtNomeProduto = new JTextField();
+     	txtNomeProduto.setEnabled(false);
+     	txtNomeProduto.setColumns(10);
+     	txtNomeProduto.setBounds(115, 65, 182, 20);
+     	grid_box03.add(txtNomeProduto);
      	
      	JLabel lblPrecoProduto = new JLabel("Preço :");
      	lblPrecoProduto.setFont(new Font("Arial", Font.BOLD, 12));
      	lblPrecoProduto.setBounds(59, 97, 46, 14);
      	grid_box03.add(lblPrecoProduto);
      	
-     	textPrecoProduto = new JTextField();
-     	textPrecoProduto.setColumns(10);
-     	textPrecoProduto.setBounds(115, 95, 116, 20);
-     	grid_box03.add(textPrecoProduto);
+     	txtPrecoProduto = new JTextField();
+     	txtPrecoProduto.setEnabled(false);
+     	txtPrecoProduto.setColumns(10);
+     	txtPrecoProduto.setBounds(115, 95, 116, 20);
+     	grid_box03.add(txtPrecoProduto);
      	
-     	textEstoque = new JTextField();
-     	textEstoque.setColumns(10);
-     	textEstoque.setBounds(310, 95, 116, 20);
-     	grid_box03.add(textEstoque);
+     	txtEstoque = new JTextField();
+     	txtEstoque.setEnabled(false);
+     	txtEstoque.setColumns(10);
+     	txtEstoque.setBounds(353, 95, 60, 20);
+     	grid_box03.add(txtEstoque);
      	
      	JLabel lblEstoque = new JLabel("Estoque :");
      	lblEstoque.setFont(new Font("Arial", Font.BOLD, 12));
-     	lblEstoque.setBounds(253, 97, 58, 14);
+     	lblEstoque.setBounds(296, 97, 58, 14);
      	grid_box03.add(lblEstoque);
      	
      	JButton btnPesquisarProduto = new JButton("Pesquisar");
+     	btnPesquisarProduto.addActionListener(new ActionListener() {
+     		public void actionPerformed(ActionEvent e) {
+     			int id = Integer.valueOf(txtCodigoProduto.getText());
+        		Produtos obj = new Produtos();
+        		ProdutosDao dao = new ProdutosDao();
+        	
+        		obj = dao.BuscarProdutosID(id);
+        		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+        		if(obj.getId() != 0) {
+        			txtCodigoProduto.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
+        			txtNomeProduto.setText(obj.getDescricao());
+        			txtPrecoProduto.setText(String.valueOf(obj.getPreco()));
+        			txtEstoque.setText(String.valueOf(obj.getQtd_estoque()));
+        			
+        			//APÓS O TERMINO DO METODO DESATIVA O CAMPO CÓDIGO
+        			txtCodigoProduto.setEnabled(false);
+        		} else {
+        			JOptionPane.showMessageDialog(null, "ERRO: Código invalido! ");
+        		}
+     		}
+     	});
      	btnPesquisarProduto.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconButtonVendasProcurar18px.png"));
      	btnPesquisarProduto.setFont(new Font("Arial", Font.BOLD, 12));
-     	btnPesquisarProduto.setBounds(337, 62, 296, 25);
+     	btnPesquisarProduto.setBounds(353, 62, 280, 25);
      	grid_box03.add(btnPesquisarProduto);
      	
-     	JLabel lblQtdProduto = new JLabel("Preço :");
+     	JLabel lblQtdProduto = new JLabel("Quantidade:");
      	lblQtdProduto.setFont(new Font("Arial", Font.BOLD, 12));
-     	lblQtdProduto.setBounds(447, 97, 46, 14);
+     	lblQtdProduto.setBounds(427, 97, 79, 14);
      	grid_box03.add(lblQtdProduto);
      	
-     	textQtdProduto = new JTextField();
-     	textQtdProduto.setColumns(10);
-     	textQtdProduto.setBounds(503, 95, 130, 20);
-     	grid_box03.add(textQtdProduto);
+     	txtQtdProduto = new JTextField();
+     	txtQtdProduto.setColumns(10);
+     	txtQtdProduto.setBounds(503, 95, 130, 20);
+     	grid_box03.add(txtQtdProduto);
      	
-     	JLabel lblNewLabel_1_1_2 = new JLabel("Desconsto em % :");
-     	lblNewLabel_1_1_2.setFont(new Font("Arial", Font.BOLD, 12));
-     	lblNewLabel_1_1_2.setBounds(393, 39, 100, 14);
-     	grid_box03.add(lblNewLabel_1_1_2);
+     	JLabel lblDesconto = new JLabel("Desconsto em % :");
+     	lblDesconto.setFont(new Font("Arial", Font.BOLD, 12));
+     	lblDesconto.setBounds(393, 39, 100, 14);
+     	grid_box03.add(lblDesconto);
      	
-     	JFormattedTextField formattedTextField_2 = new JFormattedTextField();
-     	formattedTextField_2.setBounds(503, 36, 130, 20);
-     	grid_box03.add(formattedTextField_2);
+     	JFormattedTextField txtDesconto = new JFormattedTextField();
+     	txtDesconto.setBounds(503, 36, 130, 20);
+     	grid_box03.add(txtDesconto);
      	
      	JButton btnAdicionarProduto = new JButton("Adicionar Item");
      	btnAdicionarProduto.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconBtnNew18px.png"));
-     	btnAdicionarProduto.setFont(new Font("Arial", Font.BOLD, 12));
-     	btnAdicionarProduto.setBounds(59, 139, 574, 25);
+     	btnAdicionarProduto.setFont(new Font("Arial", Font.BOLD, 18));
+     	btnAdicionarProduto.setBounds(59, 180, 574, 42);
      	grid_box03.add(btnAdicionarProduto);
      	
      	JPanel grid_box02 = new JPanel();
      	springLayout.putConstraint(SpringLayout.NORTH, grid_box02, 0, SpringLayout.SOUTH, painel_header);
-     	springLayout.putConstraint(SpringLayout.WEST, grid_box02, 10, SpringLayout.EAST, grid_box01);
+     	springLayout.putConstraint(SpringLayout.WEST, grid_box02, 6, SpringLayout.EAST, grid_box01);
      	springLayout.putConstraint(SpringLayout.SOUTH, grid_box02, -202, SpringLayout.SOUTH, getContentPane());
      	springLayout.putConstraint(SpringLayout.EAST, grid_box02, 0, SpringLayout.EAST, getContentPane());
      	grid_box02.setBackground(new Color(255, 255, 255));
@@ -365,39 +536,50 @@ public class FormsVendas extends javax.swing.JFrame {
      	JScrollPane scrollTabelaCarrinho = new JScrollPane(tabela_carrinho_compra);
      	scrollTabelaCarrinho.setBorder(titledBorderTabelaCarrinho);
      	grid_box02.setLayout(null);
-     	scrollTabelaCarrinho.setBounds(49, 39, 445, 278);
+     	scrollTabelaCarrinho.setBounds(49, 39, 491, 278);
      	grid_box02.add(scrollTabelaCarrinho);
      	
      	JPanel grid_box04 = new JPanel();
-     	springLayout.putConstraint(SpringLayout.NORTH, grid_box04, 508, SpringLayout.NORTH, getContentPane());
-     	springLayout.putConstraint(SpringLayout.WEST, grid_box04, 10, SpringLayout.EAST, grid_box03);
+     	springLayout.putConstraint(SpringLayout.NORTH, grid_box04, 0, SpringLayout.SOUTH, grid_box02);
+     	springLayout.putConstraint(SpringLayout.WEST, grid_box04, 6, SpringLayout.EAST, grid_box03);
+     	
+     	JButton btnLimparDadosProdutos = new JButton("Limaparm Campos");
+     	btnLimparDadosProdutos.addActionListener(new ActionListener() {
+     		public void actionPerformed(ActionEvent e) {
+     			Utilitarios util = new Utilitarios();
+     			util.LimpaTela(grid_box03);
+     		}
+     	});
+     	btnLimparDadosProdutos.setFont(new Font("Arial", Font.BOLD, 16));
+     	btnLimparDadosProdutos.setBounds(59, 139, 574, 36);
+     	grid_box03.add(btnLimparDadosProdutos);
+     	springLayout.putConstraint(SpringLayout.SOUTH, grid_box04, 26, SpringLayout.SOUTH, getContentPane());
      	springLayout.putConstraint(SpringLayout.EAST, grid_box04, 0, SpringLayout.EAST, getContentPane());
      	grid_box04.setBackground(new Color(255, 255, 255));
-     	springLayout.putConstraint(SpringLayout.SOUTH, grid_box04, 228, SpringLayout.SOUTH, grid_box02);
      	getContentPane().add(grid_box04);
      	grid_box04.setLayout(null);
      	
      	JLabel lblTotalVenda = new JLabel("Total da Venda");
-     	lblTotalVenda.setBounds(140, 40, 149, 17);
+     	lblTotalVenda.setBounds(187, 40, 149, 17);
      	lblTotalVenda.setFont(new Font("Arial", Font.BOLD, 20));
      	grid_box04.add(lblTotalVenda);
      	
      	textTotalVenda = new JTextField();
      	textTotalVenda.setFont(new Font("Arial", Font.PLAIN, 12));
-     	textTotalVenda.setBounds(299, 36, 107, 30);
+     	textTotalVenda.setBounds(346, 36, 107, 30);
      	grid_box04.add(textTotalVenda);
      	textTotalVenda.setColumns(10);
      	
      	JButton btnPagamento = new JButton("Pagamento");
      	btnPagamento.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconForrmaDePagamento30px.png"));
      	btnPagamento.setFont(new Font("Arial", Font.BOLD, 18));
-     	btnPagamento.setBounds(49, 81, 212, 54);
+     	btnPagamento.setBounds(75, 81, 212, 54);
      	grid_box04.add(btnPagamento);
      	
      	JButton btnCalcelar = new JButton("Cancelar");
      	btnCalcelar.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconCancelarPagamento30px.png"));
      	btnCalcelar.setFont(new Font("Arial", Font.BOLD, 18));
-     	btnCalcelar.setBounds(282, 81, 212, 54);
+     	btnCalcelar.setBounds(310, 81, 212, 54);
      	grid_box04.add(btnCalcelar);
      	grid_box02.revalidate();
      	grid_box02.repaint();
