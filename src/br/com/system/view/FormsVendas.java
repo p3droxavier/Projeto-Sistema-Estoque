@@ -77,6 +77,8 @@ public class FormsVendas extends javax.swing.JFrame {
         });
     }
     
+    
+    
     public void listar() {
     	ProdutosDao dao = new ProdutosDao();
     	List<Produtos> lista = dao.Listar();
@@ -94,6 +96,9 @@ public class FormsVendas extends javax.swing.JFrame {
     	}
     }
     
+    double preco, subtotal, total;
+    int quantidade;
+    DefaultTableModel meus_produtos;
 
     
     // INICIALIZAÇÃO
@@ -320,6 +325,8 @@ public class FormsVendas extends javax.swing.JFrame {
         		txtNomeProduto.setText(tabela_de_produtos.getValueAt(tabela_de_produtos.getSelectedRow(), 1). toString());
         		txtPrecoProduto.setText(tabela_de_produtos.getValueAt(tabela_de_produtos.getSelectedRow(), 2). toString());
         		txtEstoque.setText(tabela_de_produtos.getValueAt(tabela_de_produtos.getSelectedRow(), 3). toString());
+        		
+        		txtCodigoProduto.setEnabled(false);
         	}
         });
         tabela_de_produtos.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.GRAY));
@@ -450,7 +457,7 @@ public class FormsVendas extends javax.swing.JFrame {
         			txtPrecoProduto.setText(String.valueOf(obj.getPreco()));
         			txtEstoque.setText(String.valueOf(obj.getQtd_estoque()));
         			
-        			//APÓS O TERMINO DO METODO DESATIVA O CAMPO CÓDIGO
+        			//APÓS O TÉRMINO DO METODO DESATIVA O CAMPO CÓDIGO
         			txtCodigoProduto.setEnabled(false);
         		} else {
         			JOptionPane.showMessageDialog(null, "ERRO: Código invalido! ");
@@ -468,6 +475,7 @@ public class FormsVendas extends javax.swing.JFrame {
      	grid_box03.add(lblQtdProduto);
      	
      	txtQtdProduto = new JTextField();
+     	txtQtdProduto.setText("1");
      	txtQtdProduto.setColumns(10);
      	txtQtdProduto.setBounds(503, 95, 130, 20);
      	grid_box03.add(txtQtdProduto);
@@ -482,6 +490,43 @@ public class FormsVendas extends javax.swing.JFrame {
      	grid_box03.add(txtDesconto);
      	
      	JButton btnAdicionarProduto = new JButton("Adicionar Item");
+     	btnAdicionarProduto.addActionListener(new ActionListener() {
+     		public void actionPerformed(ActionEvent e) {
+     			String nome = txtNomeProduto.getText();
+     			Produtos obj = new Produtos();
+     			ProdutosDao daop = new ProdutosDao();
+     			//OBTEM O OBJETO PRODUTO PELO NOME
+     			obj = daop.BuscarProdutos(nome);
+     			
+     			if(obj.getDescricao() != null) {
+     				int estoque = Integer.valueOf(txtEstoque.getText());
+     				int quantidade = Integer.valueOf(txtQtdProduto.getText());
+     				
+     				preco = Double.valueOf(txtPrecoProduto.getText());
+     				quantidade = Integer.valueOf(txtQtdProduto.getText());
+     				subtotal = preco*quantidade;
+     				total+=subtotal;
+     				
+     				if(estoque>=quantidade) {
+     					textTotalVenda.setText(String.valueOf(total));
+     					meus_produtos = (DefaultTableModel)tabela_carrinho_compra.getModel();
+     					meus_produtos.addRow(new Object[] {
+     							txtCodigoProduto.getText(),
+     							txtNomeProduto.getText(),
+     							txtQtdProduto.getText(),
+     							txtPrecoProduto.getText(),
+     							subtotal//PELO FATO DE NÃO TER CAMPO, NÃO USA-SE 'GETTEXT()'
+     							
+     					});
+     				} else {
+     					JOptionPane.showMessageDialog(null, "A quantidade desejada é maior do que a quantidade do estoque! ");
+     				}
+     				
+     			}else {
+     				JOptionPane.showMessageDialog(null, "Não foi possivel adicionar ao carrinho. \n Faltam informações.");
+     			}
+     		}
+     	});
      	btnAdicionarProduto.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconBtnNew18px.png"));
      	btnAdicionarProduto.setFont(new Font("Arial", Font.BOLD, 18));
      	btnAdicionarProduto.setBounds(59, 180, 574, 42);
@@ -548,6 +593,10 @@ public class FormsVendas extends javax.swing.JFrame {
      		public void actionPerformed(ActionEvent e) {
      			Utilitarios util = new Utilitarios();
      			util.LimpaTela(grid_box03);
+     			
+     			txtCodigoProduto.setEnabled(true);
+     			txtCodigoProduto.requestFocus();
+     			
      		}
      	});
      	btnLimparDadosProdutos.setFont(new Font("Arial", Font.BOLD, 16));
@@ -565,7 +614,7 @@ public class FormsVendas extends javax.swing.JFrame {
      	grid_box04.add(lblTotalVenda);
      	
      	textTotalVenda = new JTextField();
-     	textTotalVenda.setFont(new Font("Arial", Font.PLAIN, 12));
+     	textTotalVenda.setFont(new Font("Arial", Font.BOLD, 16));
      	textTotalVenda.setBounds(346, 36, 107, 30);
      	grid_box04.add(textTotalVenda);
      	textTotalVenda.setColumns(10);
