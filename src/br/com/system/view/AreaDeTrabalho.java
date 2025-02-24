@@ -2,7 +2,7 @@
 
 /*
 
-  EM 'consultProdutos.painel_guias.setSelectedIndex(1);' PROX LINHA 155
+  EM 'consultProdutos.painel_guias.setSelectedIndex(1);' PROX LINHA 164
   EXISTE UM ERRO INICIAL, POIS AO BUSCAR TAO ELEMENTO ELE NÃO É ACHADO POIS EM SEU ENCAPSULAMENTO ESTA COMO 'PRIVATE'
   
 */
@@ -58,6 +58,8 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
     public AreaDeTrabalho() {
         initialize();
     }
+    
+    
 
     private void initialize() {
     	setTitle("Área de Trabalho");

@@ -1,6 +1,6 @@
 //ANOT CODE
 /*
-  private Fornecedores fornecedores;(linha 14)
+  private Fornecedores fornecedores;(linha 15)
   MODELANDO O RELACIONAMENTO DE TABELAS
  */
 

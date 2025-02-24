@@ -131,7 +131,7 @@ public class ProdutosDao {
 	}
 	
 	
-	//METODO DE BUSCAR PRODUTOS PELO ID
+	//METODO DE BUSCAR PRODUTOS PELO ID USADO NO 'FORMSVENDA'
 	public Produtos BuscarProdutosID(int id) {
 		try {
 			String sql = "SELECT p.id,p.descricao,p.preco,p.qtd_estoque,f.nome "

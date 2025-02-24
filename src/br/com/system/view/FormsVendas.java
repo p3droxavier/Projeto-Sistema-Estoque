@@ -1,11 +1,27 @@
+//ANOT COD
+/*
+ * telaPag.getTxtTotalVendaPagamento().setText(String.valueOf(total)); PERTO DE LINHA 650
+ * -AO PEGAR 'TxtTotalVendaPagamento()' DA UM ERRO POIS ELE COMPONENTE NO 'FormsPagamento é 'PRIVETE'
+ * -DESSA FORMA FAZ UM METODO PARA PEGAR ESSE ELEMENTO, PEGANDO O ELEMENTO AQUI COM O GET 'getTxtTotalVendaPagamento()' 
+ * -LOGO APÓS É PRECIS ALTERAR O SEU VALOR PARA 'STRING' USANDO 'String.valueOf(total)'
+ * 
+ * 
+ * PROXIMO A LINHA 663
+ * - Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
+ * - 'SwingUtilities.getWindowAncestor((Component)' BUSCA O COMPONENTE ANTIGO MAIS PROXIMO QUE SEJA UMA JANELA
+ *      E QUARDA EM 'window';
+ * */
+
 package br.com.system.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.SystemColor;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -30,6 +46,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
@@ -47,12 +64,16 @@ import br.com.system.utilitarios.Utilitarios;
 public class FormsVendas extends javax.swing.JFrame {
 	
 	Clientes obj = new Clientes();
+    double preco, subtotal, total;
+    int quantidade;
+    DefaultTableModel meus_produtos;
+
 	
     // INICIALIZADOR DE VERSÃO SERIALIZADA
     private static final long serialVersionUID = 1L;
     
-    private JTextField textNomeCliente;
-    private JTextField textEncontreProdutoAqui;
+    private JTextField txtNomeCliente;
+    private JTextField txtEncontreProdutoAqui;
     private JTable tabela_de_produtos;
     private JTable tabela_carrinho_compra;
     private JTextField txtCodigoProduto;
@@ -60,7 +81,7 @@ public class FormsVendas extends javax.swing.JFrame {
     private JTextField txtPrecoProduto;
     private JTextField txtEstoque;
     private JTextField txtQtdProduto;
-    private JTextField textTotalVenda;
+    public JTextField txtTotalVenda;
     private  JFormattedTextField txtData;
 
     public static void main(String[] args) {
@@ -96,9 +117,6 @@ public class FormsVendas extends javax.swing.JFrame {
     	}
     }
     
-    double preco, subtotal, total;
-    int quantidade;
-    DefaultTableModel meus_produtos;
 
     
     // INICIALIZAÇÃO
@@ -181,10 +199,10 @@ public class FormsVendas extends javax.swing.JFrame {
         lblNomeCliente.setBounds(61, 38, 46, 14);
         grid_box01.add(lblNomeCliente);
         
-        textNomeCliente = new JTextField();
-        textNomeCliente.setBounds(108, 36, 309, 20);
-        grid_box01.add(textNomeCliente);
-        textNomeCliente.setColumns(10);
+        txtNomeCliente = new JTextField();
+        txtNomeCliente.setBounds(108, 36, 309, 20);
+        grid_box01.add(txtNomeCliente);
+        txtNomeCliente.setColumns(10);
         
         JLabel lblCpfCliente = new JLabel("CPF :");
         lblCpfCliente.setFont(new Font("Arial", Font.BOLD, 12));
@@ -203,7 +221,7 @@ public class FormsVendas extends javax.swing.JFrame {
                		obj = dao.BuscarClienteCPF(cpf);
                		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
                		if(obj.getCpf() != null) {
-               			textNomeCliente.setText(obj.getNome());
+               			txtNomeCliente.setText(obj.getNome());
                		} else {
                			JOptionPane.showMessageDialog(null, "ERRO: Cpf invalido! ");
                		}
@@ -271,11 +289,11 @@ public class FormsVendas extends javax.swing.JFrame {
         lblEncontreProdutoAqui.setBounds(61, 106, 168, 14);
         grid_box01.add(lblEncontreProdutoAqui);
         
-        textEncontreProdutoAqui = new JTextField();
-        textEncontreProdutoAqui.addKeyListener(new KeyAdapter() {
+        txtEncontreProdutoAqui = new JTextField();
+        txtEncontreProdutoAqui.addKeyListener(new KeyAdapter() {
         	@Override
         	public void keyReleased(KeyEvent e) {
-        		String filtNome = "%"+textEncontreProdutoAqui.getText()+"%";
+        		String filtNome = "%"+txtEncontreProdutoAqui.getText()+"%";
         		ProdutosDao dao = new ProdutosDao();
             	List<Produtos> lista = dao.Filtrar(filtNome);
             	DefaultTableModel dados = (DefaultTableModel) tabela_de_produtos.getModel(); //CONVERTIDO PARA A TABELA 'DEFAULTTABLEMODEL'
@@ -291,9 +309,9 @@ public class FormsVendas extends javax.swing.JFrame {
             	}
         	}
         });
-        textEncontreProdutoAqui.setColumns(10);
-        textEncontreProdutoAqui.setBounds(237, 103, 396, 20);
-        grid_box01.add(textEncontreProdutoAqui);
+        txtEncontreProdutoAqui.setColumns(10);
+        txtEncontreProdutoAqui.setBounds(237, 103, 396, 20);
+        grid_box01.add(txtEncontreProdutoAqui);
         
         JButton btnPesquisarClientes = new JButton("Pesquisar");
         btnPesquisarClientes.addActionListener(new ActionListener() {
@@ -305,7 +323,7 @@ public class FormsVendas extends javax.swing.JFrame {
            		obj = dao.BuscarClienteCPF(cpf);
            		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
            		if(obj.getCpf() != null) {
-           			textNomeCliente.setText(obj.getNome());
+           			txtNomeCliente.setText(obj.getNome());
            		} else {
            			JOptionPane.showMessageDialog(null, "ERRO: Cpf invalido! ");
            		}
@@ -389,9 +407,9 @@ public class FormsVendas extends javax.swing.JFrame {
             		ProdutosDao dao = new ProdutosDao();
             	
             		obj = dao.BuscarProdutosID(id);
-            		//SE O OBJETO FOR DIFERENTE DE NULO É POR QUE TEM ALGO
+            		//SE O OBJETO FOR DIFERENTE DE 0 É POR QUE TEM ALGO
             		if(obj.getId() != 0) {
-            			txtCodigoProduto.setText(String.valueOf(obj.getId())); //ARRUMANDO ERRO DE ICOMPATIBILADE DE TIPO
+            			txtCodigoProduto.setText(String.valueOf(obj.getId())); 
             			txtNomeProduto.setText(obj.getDescricao());
             			txtPrecoProduto.setText(String.valueOf(obj.getPreco()));
             			txtEstoque.setText(String.valueOf(obj.getQtd_estoque()));
@@ -402,7 +420,7 @@ public class FormsVendas extends javax.swing.JFrame {
             			JOptionPane.showMessageDialog(null, "ERRO: Código invalido! ");
             		}
         			
-        		}
+        		}	
      		}
      	});
      	txtCodigoProduto.setBounds(115, 36, 60, 20);
@@ -508,7 +526,7 @@ public class FormsVendas extends javax.swing.JFrame {
      				total+=subtotal;
      				
      				if(estoque>=quantidade) {
-     					textTotalVenda.setText(String.valueOf(total));
+     					txtTotalVenda.setText(String.valueOf(total));
      					meus_produtos = (DefaultTableModel)tabela_carrinho_compra.getModel();
      					meus_produtos.addRow(new Object[] {
      							txtCodigoProduto.getText(),
@@ -588,7 +606,8 @@ public class FormsVendas extends javax.swing.JFrame {
      	springLayout.putConstraint(SpringLayout.NORTH, grid_box04, 0, SpringLayout.SOUTH, grid_box02);
      	springLayout.putConstraint(SpringLayout.WEST, grid_box04, 6, SpringLayout.EAST, grid_box03);
      	
-     	JButton btnLimparDadosProdutos = new JButton("Limaparm Campos");
+     	JButton btnLimparDadosProdutos = new JButton("Limpar Campos");
+     	btnLimparDadosProdutos.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconVassoura26px.png"));
      	btnLimparDadosProdutos.addActionListener(new ActionListener() {
      		public void actionPerformed(ActionEvent e) {
      			Utilitarios util = new Utilitarios();
@@ -613,13 +632,54 @@ public class FormsVendas extends javax.swing.JFrame {
      	lblTotalVenda.setFont(new Font("Arial", Font.BOLD, 20));
      	grid_box04.add(lblTotalVenda);
      	
-     	textTotalVenda = new JTextField();
-     	textTotalVenda.setFont(new Font("Arial", Font.BOLD, 16));
-     	textTotalVenda.setBounds(346, 36, 107, 30);
-     	grid_box04.add(textTotalVenda);
-     	textTotalVenda.setColumns(10);
+     	txtTotalVenda = new JTextField();
+     	txtTotalVenda.setEditable(false);
+     	txtTotalVenda.setFont(new Font("Arial", Font.BOLD, 16));
+     	txtTotalVenda.setBounds(346, 36, 107, 30);
+     	grid_box04.add(txtTotalVenda);
+     	txtTotalVenda.setColumns(10);
      	
      	JButton btnPagamento = new JButton("Pagamento");
+     	btnPagamento.addActionListener(new ActionListener() {
+     		public void actionPerformed(ActionEvent e) {
+     			String nome = txtNomeCliente.getText();
+     			String cpf = txtCpfCliente.getText();
+     			
+     			//VERIFICA SE OS CAMPOS ESTÃO VAZIOS
+     			if (nome.isEmpty() || cpf.isEmpty()) {
+     	            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos corretamente, incluindo o NOME e CPF.");
+     	            return; 
+     	        }
+     			
+     			obj = new Clientes();
+     			ClientesDao daoc = new ClientesDao();
+     			
+     			//PEGA O OBJETO DE CLIENTE POR INTEIRO;
+     			obj = daoc.BuscarCliente(nome);
+     			obj = daoc.BuscarClienteCPF(cpf);
+     			
+     			if(obj.getNome() != null && obj.getCpf() != null) {
+     				//OBTENDO AS VARIAVEIS GLOBAIS DE 'FormsPagamento'
+     				FormsPagamento telaPag = new FormsPagamento();
+     				telaPag.clientes = obj;
+     				telaPag.meus_produtos = meus_produtos; //se der erro veja essa parte
+     				
+     				//OBTENDO O TOTAL DA VENDA DE 'FormsVendas'
+     				telaPag.getTxtTotalVendaPagamento().setText(String.valueOf(total));
+     				//MOSTRA A TELA DE PAGAMENTO
+     				telaPag.setVisible(true);
+     				
+     				//FECHA A TELA DE VENDAS AO ABRIR A DE PAGAMENTO.
+     				Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
+     				if(window != null) {
+     					window.dispose();//FECHA A JANELA 
+     				}
+     				
+     			} else {
+     				JOptionPane.showMessageDialog(null, "Verifique se você preecheu todos os campos corretamente! \n Incluindo o NOME e CPF");
+     			}
+     		}
+     	});
      	btnPagamento.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconForrmaDePagamento30px.png"));
      	btnPagamento.setFont(new Font("Arial", Font.BOLD, 18));
      	btnPagamento.setBounds(75, 81, 212, 54);
@@ -632,9 +692,6 @@ public class FormsVendas extends javax.swing.JFrame {
      	grid_box04.add(btnCalcelar);
      	grid_box02.revalidate();
      	grid_box02.repaint();
-
-     	
-     	
-        
+   
     }
 }
