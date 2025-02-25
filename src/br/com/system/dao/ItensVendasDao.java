@@ -9,7 +9,7 @@ import br.com.system.model.ItensVendas;
 
 public class ItensVendasDao {
 	private Connection conn;
-	
+	 
 	//METODO CONSTRUTOR
 	public ItensVendasDao() {
 		this.conn = new ConexaoBanco().getConnection();

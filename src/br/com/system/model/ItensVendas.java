@@ -13,7 +13,7 @@ public class ItensVendas {
 	private Produtos produtos;
 	private int qtd;
 	private double subtotal;
-	
+	 
 	
 	public int getId() {
 		return id;

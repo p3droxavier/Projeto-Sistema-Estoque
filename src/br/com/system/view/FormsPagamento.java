@@ -44,7 +44,7 @@ public class FormsPagamento extends JFrame {
 	private JTextField txtDinheiro;
 	private JTextField txtCartao;
 	private JTextField txtCheque;
-	private JTextField txtTroco;
+	private JTextField txtTroco; 
 	private JTextField txtTotalVenda;
 
 	/**

@@ -22,7 +22,7 @@ public class VendasDao {
 	//METODOS CONSTRUTORES
 	public VendasDao() {
 		this.conn = new ConexaoBanco().getConnection();
-	}
+	} 
 	
 	
 	//METODO PARA SALVAR A VENDA
