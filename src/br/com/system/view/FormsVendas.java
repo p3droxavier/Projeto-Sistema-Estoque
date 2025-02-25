@@ -626,7 +626,7 @@ public class FormsVendas extends javax.swing.JFrame {
      	grid_box04.setBackground(new Color(255, 255, 255));
      	getContentPane().add(grid_box04);
      	grid_box04.setLayout(null);
-     	 
+     	  
      	JLabel lblTotalVenda = new JLabel("Total da Venda");
      	lblTotalVenda.setBounds(187, 40, 149, 17);
      	lblTotalVenda.setFont(new Font("Arial", Font.BOLD, 20));
