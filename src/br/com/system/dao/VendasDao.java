@@ -1,7 +1,15 @@
+//ANOT
+/*
+ * MAX(ID); O MAX RETORNA O MAIOR VALOR DE UMA COLUNA ESPECIFICA
+ * - NESSE CASO RETORNA O MAIOR VALOR DA COLUNA ID;
+ * */
+
+
 package br.com.system.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
 
@@ -13,9 +21,11 @@ public class VendasDao {
 	
 	//METODOS CONSTRUTORES
 	public VendasDao() {
-	this.conn = new ConexaoBanco().getConnection();
+		this.conn = new ConexaoBanco().getConnection();
 	}
 	
+	
+	//METODO PARA SALVAR A VENDA
 	public void Salvar(Vendas obj) {
 		try {
 			String sql = "INSERT INTO tb_vendas (cliente_id,data_venda,total_venda, observacoes) "
@@ -32,4 +42,21 @@ public class VendasDao {
 		}
 	}
 	
+	//METODO QUE RETORNA O ID DA ULTIMA VENDA
+	public int RetornoDoIdVenda() {
+		try {
+			int ultimoId = 0;
+			String sql = "SELECT MAX(id) id FROM tb_vendas";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				Vendas v = new Vendas();
+				v.setId(rs.getInt("id"));
+				 ultimoId = v.getId();
+			}
+			return ultimoId;
+		} catch (Exception e) {
+			throw new RuntimeException("ERRO. Erro ao retornar o ultimo id da venda! ");
+		}
+	}
 }

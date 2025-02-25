@@ -12,7 +12,7 @@ public class ItensVendas {
 	private Vendas vendas;
 	private Produtos produtos;
 	private int qtd;
-	private double sibtotal;
+	private double subtotal;
 	
 	
 	public int getId() {
@@ -43,11 +43,11 @@ public class ItensVendas {
 		this.qtd = qtd;
 	}
 	
-	public double getSibtotal() {
-		return sibtotal;
+	public double getSubtotal() {
+		return subtotal;
 	}
-	public void setSibtotal(double sibtotal) {
-		this.sibtotal = sibtotal;
+	public void setSubtotal(double sibtotal) {
+		this.subtotal = sibtotal;
 	}
 	
 

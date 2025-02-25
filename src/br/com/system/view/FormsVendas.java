@@ -643,9 +643,9 @@ public class FormsVendas extends javax.swing.JFrame {
      	btnPagamento.addActionListener(new ActionListener() {
      		public void actionPerformed(ActionEvent e) {
      			String nome = txtNomeCliente.getText();
-     			String cpf = txtCpfCliente.getText();
+     			String cpf = txtCpfCliente.getText(); 
      			
-     			//VERIFICA SE OS CAMPOS ESTÃO VAZIOS
+     			//VERIFICA SE OS CAMPOS NOME E EMAIL ESTÃO VAZIOS
      			if (nome.isEmpty() || cpf.isEmpty()) {
      	            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos corretamente, incluindo o NOME e CPF.");
      	            return; 
