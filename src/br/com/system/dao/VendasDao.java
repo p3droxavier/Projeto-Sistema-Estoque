@@ -10,6 +10,7 @@ package br.com.system.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -59,4 +60,8 @@ public class VendasDao {
 			throw new RuntimeException("ERRO. Erro ao retornar o ultimo id da venda! ");
 		}
 	}
+	
+	
+	//METODO LISTAR HISTÓRICO DE VENDA
+	
 }

@@ -247,6 +247,7 @@ public class FormsVendas extends javax.swing.JFrame {
         grid_box01.add(lblData);
         
         txtData = new JFormattedTextField();
+        txtData.setFont(new Font("Arial", Font.BOLD, 12));
         txtData.setEnabled(false);
         txtData.setBounds(505, 64, 128, 20);
 //        try {
@@ -304,6 +305,7 @@ public class FormsVendas extends javax.swing.JFrame {
             			p.getDescricao(),
             			p.getPreco(),
             			p.getQtd_estoque(),
+            			p.getFornecedores()
             		});
             		txtCodigoProduto.setEnabled(false);
             	}
