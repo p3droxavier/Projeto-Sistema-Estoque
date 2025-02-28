@@ -222,7 +222,7 @@ public class FormsPagamento extends JFrame {
 					
 					JOptionPane.showMessageDialog(null, "Id da ultima venda! " + v.getId());
 					
-					//S=SALVANDO ITENS DO CARRINHO
+					//SALVANDO ITENS DO CARRINHO
 					for(int i=0; i<meus_produtos.getRowCount(); i++) {
 						int qtd_estoque, qtd_comprada, qtd_atualizada;
 						

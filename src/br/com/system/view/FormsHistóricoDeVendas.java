@@ -3,11 +3,17 @@ package br.com.system.view;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,6 +25,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.text.MaskFormatter;
+
+import br.com.system.dao.VendasDao;
+import br.com.system.model.Vendas;
 
 public class FormsHistóricoDeVendas extends JFrame {
 
@@ -169,6 +178,48 @@ public class FormsHistóricoDeVendas extends JFrame {
 	     	container.add(scrollConsulta);
 	     	
 	     	JButton btnPesquisar = new JButton("Pesquisar");
+	     	btnPesquisar.addActionListener(new ActionListener() {
+	     		public void actionPerformed(ActionEvent e) {
+	     			
+	     			try {
+	     				//REMOVENDO ESPAÇOS EM BRANCO DA STRING
+	     				String dataInicioStr = txtDataInicio.getText().trim(); //pra que serve o trim
+	     				String dataFimStr = txtDataFinal.getText().trim();
+	     				
+	     				//VERIFICAÇÃO DE DATAS NÃO VAZIAS
+	     				if(dataInicioStr.isEmpty() || dataFimStr.isEmpty()) {
+	     					JOptionPane.showMessageDialog(null, "Preencha as datas corretamente. ");
+	     					return;
+	     				}
+	     				
+	     				//CONVERTENDO DATA PARA O LOCAL DATE
+	     				DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		     			LocalDate data_inicio = LocalDate.parse(txtDataInicio.getText(), formato);
+		     			LocalDate data_fim = LocalDate.parse(txtDataFinal.getText(), formato);
+		     			
+		     			//CONSULTA VENDAS COM INTERVALO DE DATAS
+		     			VendasDao vd = new VendasDao();
+		     			List<Vendas>lista = vd.HistoricoDeVendas(data_inicio, data_fim);
+		     			DefaultTableModel historico = (DefaultTableModel) tabela.getModel();
+		     			historico.setNumRows(0);
+		     			
+		     			for(Vendas v : lista) {
+		     				historico.addRow(new Object[] {
+		     					v.getId(),
+		     					v.getClientes().getNome(),
+		     					v.getData_venda(),
+		     					v.getTotal_venda(),
+		     					v.getObservacoes()
+		     				});
+		     			}
+						
+					} catch (Exception e2) {
+						 JOptionPane.showMessageDialog(null, "Erro ao processar as datas. Verifique o formato.");
+				            e2.printStackTrace();
+					}
+	     			
+	     		}
+	     	});
 	     	btnPesquisar.setFont(new Font("Arial", Font.BOLD, 12));
 	     	btnPesquisar.setBounds(419, 75, 257, 34);
 	     	container.add(btnPesquisar);
