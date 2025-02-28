@@ -19,12 +19,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.system.dao.VendasDao;
 import br.com.system.dao.ItensVendasDao;
 import br.com.system.dao.ProdutosDao;
-
+import br.com.system.dao.VendasDao;
 import br.com.system.model.Clientes;
 import br.com.system.model.ItensVendas;
 import br.com.system.model.Produtos;
@@ -64,11 +65,9 @@ public class FormsPagamento extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
+	
 	public FormsPagamento() {
-		setTitle("Pagamentos");
 		inicialize();
 		
 		//SETANDO A INICIALIZAÇÃO DOS CAMPOS COMO 0
@@ -80,6 +79,7 @@ public class FormsPagamento extends JFrame {
 	
 	
 	private void inicialize() {
+		setTitle("Pagamentos");
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.controlHighlight);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -174,18 +174,24 @@ public class FormsPagamento extends JFrame {
 		grid_box02.setLayout(null);
 		grid_box02.setBounds(233, 81, 226, 305);
 		contentPane.add(grid_box02);
-		
-		JLabel lblObs = new JLabel("Observações :");
-		lblObs.setFont(new Font("Arial", Font.BOLD, 12));
-		lblObs.setBounds(23, 27, 89, 14);
-		grid_box02.add(lblObs);
-		
+		Font fontObs = new Font("Arial", Font.BOLD, 12);
+
+		TitledBorder titledBorderObs = new TitledBorder(
+		    new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+		    "Observações",
+		    TitledBorder.LEADING,
+		    TitledBorder.TOP,
+		    null,
+		    new Color(0, 0, 0)
+		);
+		titledBorderObs.setTitleFont(fontObs);
 		JTextArea txtObs = new JTextArea();
-		txtObs.setColumns(10);
-		txtObs.setRows(10);
-		txtObs.setBorder(UIManager.getBorder("ComboBox.border"));
-		txtObs.setBounds(23, 52, 180, 97);
+		txtObs.setBounds(23, 21, 180, 172);
 		grid_box02.add(txtObs);
+		txtObs.setBorder(titledBorderObs);
+
+		
+		
 		
 		JButton btnPagar = new JButton("Pagar");
 		btnPagar.addActionListener(new ActionListener() {
@@ -263,6 +269,7 @@ public class FormsPagamento extends JFrame {
 		btnPagar.setFont(new Font("Arial", Font.BOLD, 14));
 		btnPagar.setBounds(23, 204, 180, 43);
 		grid_box02.add(btnPagar);
+
 	}
 	public JTextField getTxtTotalVendaPagamento() {
 		return txtTotalVenda;

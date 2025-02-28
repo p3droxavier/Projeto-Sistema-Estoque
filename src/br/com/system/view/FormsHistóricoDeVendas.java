@@ -1,3 +1,9 @@
+//ANOT COD
+/*
+ * DIFERENTEMENTE DAS OUTRAS TELAS AO CLICAR NA TABELA E PEGAR AS INFORMAÇÕES
+ * - NESSE CASO SERA MANDADO DE UMA TELA A OUTRA
+ * */
+
 package br.com.system.view;
 
 import java.awt.Color;
@@ -28,6 +34,8 @@ import javax.swing.text.MaskFormatter;
 
 import br.com.system.dao.VendasDao;
 import br.com.system.model.Vendas;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FormsHistóricoDeVendas extends JFrame {
 
@@ -129,20 +137,21 @@ public class FormsHistóricoDeVendas extends JFrame {
 		
 		
 		  tabela = new JTable();
-//	        tabela.addMouseListener(new MouseAdapter() {
-//	        	@Override
-//	        	public void mouseClicked(MouseEvent e) {
-//	        		//'idProduto' E 'txtCodigo' AMBOS INICIAM COM 0 
-//	        		idProduto = Integer.parseInt(tabela.getValueAt(tabela.getSelectedRow(), 0). toString());
-//	        		txtCodigo.setText(tabela.getValueAt(tabela.getSelectedRow(), 0). toString());
-//	        		txtDescricao.setText(tabela.getValueAt(tabela.getSelectedRow(), 1). toString());
-//	        		txtQtd_Atual.setText(tabela.getValueAt(tabela.getSelectedRow(), 3). toString());
-//	        	}
-//	        });
-	        
-	        
-	        tabela.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.GRAY));
-	        tabela.setFont(new Font("Arial", Font.PLAIN, 12));
+		  tabela.addMouseListener(new MouseAdapter() {
+		  	@Override
+		  	public void mouseClicked(MouseEvent e) {
+		  		FormsDetalhesVenda fdv = new FormsDetalhesVenda();
+		  		fdv.txtCodigo.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
+		  		fdv.txtCliente.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
+		  		fdv.txtDataDaVenda.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
+		  		fdv.txtTotal.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString());
+		  		fdv.txtObs.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
+		  		fdv.setVisible(true);
+		  		dispose();
+		  	}
+		  });
+	      tabela.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.GRAY));
+	      tabela.setFont(new Font("Arial", Font.PLAIN, 12));
 
 	        // MODELO TABELA 
 	        DefaultTableModel modelTable1new = new DefaultTableModel(
