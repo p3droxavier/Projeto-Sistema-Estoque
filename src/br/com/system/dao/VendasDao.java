@@ -45,6 +45,7 @@ public class VendasDao {
 			stmt.setString(2, obj.getData_venda()); 
 			stmt.setDouble(3, obj.getTotal_venda());
 			stmt.setString(4, obj.getObservacoes());
+			stmt.execute();
 			stmt.close();
 			JOptionPane.showMessageDialog(null, "Venda realizada com sucesso! ");
 		} catch (Exception e) {
