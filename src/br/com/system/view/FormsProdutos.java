@@ -120,7 +120,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         });
         
         setResizable(false);
-        setBounds(100, 100, 808, 410);
+        setBounds(100, 100, 627, 410);
         // CENTRALIZA A JANELA NA TELA
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -129,12 +129,12 @@ public class FormsProdutos extends javax.swing.JFrame{
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
         getContentPane().add(panel, BorderLayout.WEST);
-        panel.setPreferredSize(new Dimension(320, 60));
+        panel.setPreferredSize(new Dimension(240, 60));
         panel.setLayout(null);
 
         // TITLE LABEL
         JLabel lblNewLabel = new JLabel("Cadastro de Produtos");
-        lblNewLabel.setBounds(0, 0, 320, 332);
+        lblNewLabel.setBounds(0, 0, 240, 332);
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setForeground(Color.WHITE);
         lblNewLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -155,13 +155,13 @@ public class FormsProdutos extends javax.swing.JFrame{
         painel_guias_tab.setBackgroundAt(0, Color.WHITE);
         painel_guias_tab.setEnabledAt(0, true);
         
-        JLabel lblCodigo = new JLabel("Codigo: ");
+        JLabel lblCodigo = new JLabel("Codigo :");
         lblCodigo.setBounds(20, 39, 56, 14);
         lblCodigo.setFont(new Font("Arial", Font.BOLD, 12));
         
         txtCodigo = new JTextField();
         txtCodigo.setEditable(false);
-        txtCodigo.setBounds(66, 36, 70, 20);
+        txtCodigo.setBounds(75, 36, 70, 20);
         txtCodigo.setColumns(10);
         
         JLabel lblDescricao = new JLabel("Descrição : ");
@@ -170,22 +170,22 @@ public class FormsProdutos extends javax.swing.JFrame{
         
         
         JLabel lblPreco = new JLabel("Preço : ");
-        lblPreco.setBounds(20, 99, 46, 14);
+        lblPreco.setBounds(241, 134, 46, 14);
         lblPreco.setFont(new Font("Arial", Font.BOLD, 12));
         
         txtPreco = new JTextField();
-        txtPreco.setBounds(65, 96, 70, 20);
+        txtPreco.setBounds(286, 131, 70, 20);
         txtPreco.setFont(new Font("Arial", Font.PLAIN, 11));
         txtPreco.setColumns(10);
         
 		
 		
 		JLabel lblQtdEstoque = new JLabel("QTD Estoque : ");
-		lblQtdEstoque.setBounds(177, 99, 88, 14);
+		lblQtdEstoque.setBounds(20, 134, 88, 14);
 		lblQtdEstoque.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		txtQtdEstoque = new JTextField();
-		txtQtdEstoque.setBounds(263, 96, 70, 20);
+		txtQtdEstoque.setBounds(106, 131, 70, 20);
 		txtQtdEstoque.setColumns(10);
 		
 		
@@ -209,7 +209,7 @@ public class FormsProdutos extends javax.swing.JFrame{
 			}
 		});
 		
-		cbFornecedor.setBounds(102, 124, 231, 22);
+		cbFornecedor.setBounds(106, 98, 250, 22);
 		cbFornecedor.setBackground(Color.WHITE);
 		cbFornecedor.setFont(new Font("Arial", Font.PLAIN, 11));
 		cbFornecedor.setToolTipText("#");
@@ -218,7 +218,7 @@ public class FormsProdutos extends javax.swing.JFrame{
 		
 		
 	       //AÇÃO DO BOTÃO PESQUISAR PRODUTO
-        JButton btnPesquisar = new JButton("pesquisar");
+        JButton btnPesquisar = new JButton("Pesquisar");
         btnPesquisar.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String nome = txtDescricao.getText();
@@ -244,7 +244,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         	}
         });
        
-        btnPesquisar.setBounds(358, 64, 88, 23);
+        btnPesquisar.setBounds(268, 64, 88, 23);
         btnPesquisar.setBackground(Color.WHITE);
         btnPesquisar.setFont(new Font("Arial", Font.BOLD, 11));
         
@@ -280,7 +280,7 @@ public class FormsProdutos extends javax.swing.JFrame{
         		}
         	}
         });
-        txtDescricao.setBounds(92, 67, 241, 20);
+        txtDescricao.setBounds(106, 66, 152, 20);
         txtDescricao.setToolTipText("");
         txtDescricao.setFont(new Font("Arial", Font.PLAIN, 11));
         txtDescricao.setColumns(10);
@@ -303,7 +303,7 @@ public class FormsProdutos extends javax.swing.JFrame{
 		
 		JLabel lblFornecedor = new JLabel("Fornecedor :");
 		lblFornecedor.setFont(new Font("Arial", Font.BOLD, 12));
-		lblFornecedor.setBounds(20, 128, 80, 14);
+		lblFornecedor.setBounds(20, 102, 80, 14);
 		painel_do_produto.add(lblFornecedor);
 		
 		
@@ -424,7 +424,7 @@ public class FormsProdutos extends javax.swing.JFrame{
      	
      	tabela.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     	JScrollPane scrollConsultaClientes = new JScrollPane(tabela);
-     	scrollConsultaClientes.setBounds(10, 38, 447, 256);
+     	scrollConsultaClientes.setBounds(10, 38, 346, 256);
      	painel_consulta_produtos.add(scrollConsultaClientes);
      	
      	

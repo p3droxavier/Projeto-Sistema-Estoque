@@ -32,7 +32,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.text.MaskFormatter;
 
+import br.com.system.dao.ItensVendasDao;
 import br.com.system.dao.VendasDao;
+import br.com.system.model.ItensVendas;
 import br.com.system.model.Vendas;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -65,16 +67,17 @@ public class FormsHistóricoDeVendas extends JFrame {
 	 */
 	
 	public FormsHistóricoDeVendas() {
-		setTitle("Histórico de Vendas");
 		initialize();
 	}
 	
 	
 	
 	public void initialize() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setTitle("Histórico de Vendas");
 		setBounds(100, 100, 808, 457);
 		container = new JPanel();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		container.setBackground(new Color(255, 255, 255));
 		container.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -140,14 +143,39 @@ public class FormsHistóricoDeVendas extends JFrame {
 		  tabela.addMouseListener(new MouseAdapter() {
 		  	@Override
 		  	public void mouseClicked(MouseEvent e) {
+		  		//QUANDO CLICADO REDIRECIONA PARA 'FormsDetalhesVenda'
 		  		FormsDetalhesVenda fdv = new FormsDetalhesVenda();
 		  		fdv.txtCodigo.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
 		  		fdv.txtCliente.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
 		  		fdv.txtDataDaVenda.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
 		  		fdv.txtTotal.setText(tabela.getValueAt(tabela.getSelectedRow(), 3).toString());
 		  		fdv.txtObs.setText(tabela.getValueAt(tabela.getSelectedRow(), 4).toString());
+		  		
+		  		/*
+		  		 * E QUANDO REDIRECIONADO CARREGA AS INFORMAÇÕES DA COMPRA
+		  		 * - A QUANTIDADE DE PRODUTOS COMPRADOS, ETC
+		  		 * 
+		  		 * */
+		  		
+		  		//CRIAÇÃO DE UMA VARIAVEL INTEIRA QUE RECEBE O CODIGO DO PRODUTO
+		  		int venda_id = Integer.valueOf(fdv.txtCodigo.getText());
+		  		ItensVendasDao dao = new ItensVendasDao();
+		  		
+		  		//USA O 'VENDA_ID'(CODIGO DA VENDA) COMO PARAMETRO
+		  		List<ItensVendas>lista = dao.ListarItens(venda_id);
+		  		DefaultTableModel dados = (DefaultTableModel) fdv.tabela.getModel();
+		  		for(ItensVendas i:lista) {
+		  			dados.addRow(new Object[] {
+		  					i.getProdutos().getId(),
+		  					i.getProdutos().getDescricao(),
+		  					i.getQtd(),
+		  					i.getProdutos().getPreco(),
+		  					i.getSubtotal()
+		  			});
+		  		}
+		  		 
 		  		fdv.setVisible(true);
-		  		dispose();
+		  		
 		  	}
 		  });
 	      tabela.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.GRAY));

@@ -35,7 +35,7 @@ public class FormsDetalhesVenda extends JFrame {
 	public JTextField txtTotal;
 	public JTextField txtCliente;
 	public JTextArea txtObservacoes;
-	private JTable tabela;
+	public JTable tabela;
 	JTextArea txtObs;
 	JFormattedTextField txtDataDaVenda;
 	
@@ -60,16 +60,17 @@ public class FormsDetalhesVenda extends JFrame {
 	
 	
 	public FormsDetalhesVenda(){
-		setTitle("Detalhes da Venda");
 		inicialize();
 	}
 	
 	
 	
 	public void inicialize() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setTitle("Detalhes da Venda");
 		setBounds(100, 100, 789, 505);
 		contentPane = new JPanel();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		contentPane.setBackground(SystemColor.controlHighlight);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -97,7 +98,7 @@ public class FormsDetalhesVenda extends JFrame {
 		
 		JLabel lblDadsDoProduto = new JLabel("Dados do Produto :");
 		lblDadsDoProduto.setFont(new Font("Arial", Font.BOLD, 14));
-		lblDadsDoProduto.setBounds(20, 11, 129, 14);
+		lblDadsDoProduto.setBounds(20, 11, 143, 14);
 		grid_box01.add(lblDadsDoProduto);
 		
 		JLabel lblCodigo = new JLabel("Código :");
@@ -188,7 +189,7 @@ public class FormsDetalhesVenda extends JFrame {
 	            	new Object[][] {
 	            	},
 	            	new String[] {
-	            		"Código", "Produto", "QTD", "Preço", "Total"
+	            		"Código", "Produto", "QTD", "Preço", "Subtotal"
 	            	}
 	            ); 
 	        tabela.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));//AJUSTANDO A FONTED O HEADER
@@ -197,9 +198,9 @@ public class FormsDetalhesVenda extends JFrame {
 	        TableColumnModel columnModel = tabela.getColumnModel();
 	     	columnModel.getColumn(0).setPreferredWidth(50);  // CODIGO
 	     	columnModel.getColumn(1).setPreferredWidth(150); // PRODUTO
-	     	columnModel.getColumn(2).setPreferredWidth(100); // QTD
-	     	columnModel.getColumn(3).setPreferredWidth(100); // PREÇO
-	     	columnModel.getColumn(4).setPreferredWidth(180); // SUBTOTAL
+	     	columnModel.getColumn(2).setPreferredWidth(50); // QTD
+	     	columnModel.getColumn(3).setPreferredWidth(70); // PREÇO
+	     	columnModel.getColumn(4).setPreferredWidth(70); // SUBTOTAL
 	     	
 	     	
 	     	
