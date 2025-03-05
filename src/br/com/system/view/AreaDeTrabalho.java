@@ -28,11 +28,18 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 
 public class AreaDeTrabalho extends javax.swing.JFrame {
+	
+    public String usuarioLogado;
+    public String emailUsuarioLogado;
 	
     // INICIALIZADOR DE VERSÃO SERIALIZADA 
     private static final long serialVersionUID = 1L;
@@ -53,6 +60,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         });
     }
     
+    
 
     // INICIALIZAÇÃO
     public AreaDeTrabalho() {
@@ -60,18 +68,14 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
     }
     
     
+    
 
     private void initialize() {
     	setTitle("Área de Trabalho");
+    	setResizable(false);
     	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
-        //MAXIMIZA A JANELA AO SER ATIVADA.
-    	addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowActivated(WindowEvent e) {
-                setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
-        });
+    
     	setLocationRelativeTo(null);
 
         
@@ -202,6 +206,15 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu_5.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconConfiguraçõesAreaDeTrabalho20px.png"));
         menuBar.add(mnNewMenu_5);
         JMenuItem mntmNewMenuItem_8 = new JMenuItem("Trocar de Usuário");
+        mntmNewMenuItem_8.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsLogin login = new FormsLogin();
+        		
+        		//NÃO USA O 'THIS.DISPOSE()', POIS IRA SE REFERIR AOPROPRIO 'ACTION LISTENER'
+        		dispose();
+        		login.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_8.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_5.add(mntmNewMenuItem_8);
 
@@ -212,6 +225,19 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu_6.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconSairAreaDeTrabalho20px.png"));
         menuBar.add(mnNewMenu_6);
         JMenuItem mntmNewMenuItem_9 = new JMenuItem("Sair do Sistema");
+        mntmNewMenuItem_9.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		//MOSTRA UMA JANELA DE CONFIRMAÇÃO, 'SIM' 'NÃO' 'CANCELAR'
+        		//ONDE 'SIM' É IGUAL A POSIÇÃO '0', 'NÃO' É IGUAL A '1', E 'CANCELAR' É IGUAL A '2'.
+        		int janela = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair do sistema?");
+        		if(janela==0) {
+        			System.exit(0);
+        		}else if(janela==2) {
+        			JOptionPane.showMessageDialog(null, "Saída Cancelada! ");
+        		}
+        	}
+        });
         mntmNewMenuItem_9.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_6.add(mntmNewMenuItem_9);
         
@@ -231,8 +257,52 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
                 }
             }
         };
+        getContentPane().add(painel_desktop, BorderLayout.CENTER);
+        painel_desktop.setLayout(null);
         
-        getContentPane().add(painel_desktop, BorderLayout.CENTER); // Adiciona o painel de desktop à janela
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new java.awt.Dimension(906, 80)); 
+        painel_desktop.setLayout(new BorderLayout());
+        painel_desktop.add(panel, BorderLayout.SOUTH);
+        panel.setLayout(null);
+        
+        JLabel lblTitleStatus = new JLabel("Informações do usuário");
+        lblTitleStatus.setFont(new Font("Arial", Font.BOLD, 14));
+        lblTitleStatus.setBounds(10, 11, 166, 14);
+        panel.add(lblTitleStatus);
+        
+        JLabel lblTitleNome = new JLabel("Nome :");
+        lblTitleNome.setFont(new Font("Arial", Font.BOLD, 12));
+        lblTitleNome.setBounds(20, 31, 49, 14);
+        panel.add(lblTitleNome);
+        
+        JLabel lblTitleEmail = new JLabel("E-mail :");
+        lblTitleEmail.setFont(new Font("Arial", Font.BOLD, 12));
+        lblTitleEmail.setBounds(20, 55, 49, 14);
+        panel.add(lblTitleEmail);
+        
+        JLabel lblUserLogado = new JLabel("");
+        lblUserLogado.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblUserLogado.setBounds(69, 31, 165, 14);
+        panel.add(lblUserLogado);
+        
+        JLabel lblEmailUserLogado = new JLabel("");
+        lblEmailUserLogado.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblEmailUserLogado.setBounds(69, 55, 165, 14);
+        panel.add(lblEmailUserLogado);
+
+        
+        
+        //MAXIMIZA A JANELA AO SER ATIVADA.
+    	addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowActivated(WindowEvent e) {
+                setExtendedState(JFrame.MAXIMIZED_BOTH);
+                
+                lblUserLogado.setText(usuarioLogado);
+                lblEmailUserLogado.setText(emailUsuarioLogado);
+            }
+        });
               
     }    
     

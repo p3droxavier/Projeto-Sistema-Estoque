@@ -130,7 +130,7 @@ public class FormsVendas extends javax.swing.JFrame {
     		@Override
     		public void windowActivated(WindowEvent e) {
     			Date dataAtual = new Date();
-    			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss");
+    			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     			String dataFormatada = formato.format(dataAtual);
     			txtData.setText(dataFormatada);
     		}
@@ -250,37 +250,6 @@ public class FormsVendas extends javax.swing.JFrame {
         txtData.setFont(new Font("Arial", Font.BOLD, 12));
         txtData.setEnabled(false);
         txtData.setBounds(505, 64, 128, 20);
-//        try {
-//			MaskFormatter mask = new MaskFormatter("## / ## / ####");
-//			mask.setValidCharacters("0123456789");
-//			txtDataNascCliente.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mask));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-        
-        //VERIFICAÇÃO DE MÊS~
-//        txtDataNascCliente.addFocusListener(new FocusAdapter() {
-//        	@Override
-//        	public void focusLost(FocusEvent e) {
-//        		String data = txtDataNascCliente.getText();
-//        		
-//        		if(data.length() >= 5) {
-//        			String mes = data.substring(3,5);
-//        			
-//        			try {
-//						int mesInt = Integer.parseInt(mes);
-//						if(mesInt < 1 || mesInt >12) {
-//							JOptionPane.showMessageDialog(null, "Data invalida! Forneça um mês válida entre 01 e 12. ");
-//							txtDataNascCliente.setText("");
-//						}
-//					} catch (Exception e2) {
-//						JOptionPane.showMessageDialog(null, "Data invalida. Forneça uma data válida! ");
-//						txtDataNascCliente.setText("");
-//					}
-//        		}
-//        	}
-//        });
-        
         grid_box01.add(txtData);
         
         

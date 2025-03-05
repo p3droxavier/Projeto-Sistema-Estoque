@@ -514,7 +514,7 @@ public class FormsFuncionarios extends javax.swing.JFrame{
 		
 		
 		cbNivel = new JComboBox<String>();
-		cbNivel.setModel(new DefaultComboBoxModel<String>(new String[] {"ADMINISTRADOR", "USUÁRIO"}));
+		cbNivel.setModel(new DefaultComboBoxModel(new String[] {"Administrador", "Usuário"}));
 		cbNivel.setFont(new Font("Arial", Font.PLAIN, 12));
 		cbNivel.setBackground(Color.WHITE);
 		cbNivel.setBounds(227, 368, 135, 22);

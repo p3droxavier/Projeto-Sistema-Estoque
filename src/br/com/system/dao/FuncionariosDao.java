@@ -251,9 +251,27 @@ public class FuncionariosDao {
 			
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
-				JOptionPane.showMessageDialog(null, "Seja bem Vindo ao sistema! ");
-				AreaDeTrabalho at = new AreaDeTrabalho();
-				at.setVisible(true);
+				if(rs.getString("nivel_acesso").equals("Administrador")) {
+					AreaDeTrabalho at = new AreaDeTrabalho();
+					at.usuarioLogado = rs.getString("nome");
+					at.emailUsuarioLogado = rs.getString("email");
+					
+					JOptionPane.showMessageDialog(null, "Seja bem Vindo ao sistema! \n" +at.usuarioLogado);
+					at.setVisible(true);
+				}else if(rs.getString("nivel_acesso").equals("Usuário")){
+					AreaDeTrabalho at = new AreaDeTrabalho();
+					at.usuarioLogado = rs.getString("nome");
+					at.emailUsuarioLogado = rs.getString("email");
+					
+					//Adicionar aqui quais campos o usuario não podera ter acesso como (menu de fornecedores, funcionario, estoque, etc).
+					//Ajustar na area de trabalho os campos que serão trabalhado.
+					
+					JOptionPane.showMessageDialog(null, "Seja bem Vindo ao sistema! \n" +at.usuarioLogado);
+					at.setVisible(true);
+				}else {
+					JOptionPane.showMessageDialog(null, "Acesso Negado!");
+				}
+				
 			} else {
 				JOptionPane.showMessageDialog(null, "Dados Invalidos! ");
 			}

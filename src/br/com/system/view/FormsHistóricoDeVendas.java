@@ -223,7 +223,7 @@ public class FormsHistóricoDeVendas extends JFrame {
 	     				String dataInicioStr = txtDataInicio.getText().trim(); //pra que serve o trim
 	     				String dataFimStr = txtDataFinal.getText().trim();
 	     				
-	     				//VERIFICAÇÃO DE DATAS NÃO VAZIAS
+	     				//VERIFICAÇÃO DE DATAS VAZIAS
 	     				if(dataInicioStr.isEmpty() || dataFimStr.isEmpty()) {
 	     					JOptionPane.showMessageDialog(null, "Preencha as datas corretamente. ");
 	     					return;
