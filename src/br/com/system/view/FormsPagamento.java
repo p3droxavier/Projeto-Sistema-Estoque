@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,7 +32,7 @@ import br.com.system.model.ItensVendas;
 import br.com.system.model.Produtos;
 import br.com.system.model.Vendas;
 
-public class FormsPagamento extends JFrame {
+public class FormsPagamento extends JDialog {
 	
 	ItensVendas obj = new ItensVendas();
 	Clientes clientes = new Clientes();
@@ -56,8 +57,8 @@ public class FormsPagamento extends JFrame {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					FormsPagamento window = new FormsPagamento();
-					window.setVisible(true);
+//					FormsPagamento window = new FormsPagamento();
+//					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -67,7 +68,8 @@ public class FormsPagamento extends JFrame {
 
 
 	
-	public FormsPagamento() {
+	public FormsPagamento(java.awt.Frame parent, boolean modal) {
+		super(parent, modal);
 		inicialize();
 		
 		//SETANDO A INICIALIZAÇÃO DOS CAMPOS COMO 0
@@ -226,7 +228,7 @@ public class FormsPagamento extends JFrame {
 					vd.Salvar(v);
 					v.setId(vd.RetornoDoIdVenda());
 					
-					JOptionPane.showMessageDialog(null, "Id da ultima venda! " + v.getId());
+					//JOptionPane.showMessageDialog(null, "Id da ultima venda! " + v.getId());
 					
 					//SALVANDO ITENS DO CARRINHO
 					for(int i=0; i<meus_produtos.getRowCount(); i++) {
@@ -257,6 +259,10 @@ public class FormsPagamento extends JFrame {
 						
 						ItensVendasDao ivd = new ItensVendasDao();
 						ivd.Salvar(item);
+						
+						dispose();
+						FormsVendas formVendas = new FormsVendas();
+						formVendas.setVisible(true);
 					}
 					
 				}else{

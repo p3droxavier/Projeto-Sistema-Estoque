@@ -49,7 +49,7 @@ import br.com.system.utilitarios.Utilitarios;
 
 
 
-public class FormsProdutos extends javax.swing.JFrame{
+public class FormsProdutos extends javax.swing.JDialog{
     /**
 	 * 
 	 */
@@ -72,9 +72,9 @@ public class FormsProdutos extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    FormsProdutos window = new FormsProdutos();
-                    
-                    window.setVisible(true);
+//                    FormsProdutos window = new FormsProdutos();
+//                    
+//                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -103,7 +103,8 @@ public class FormsProdutos extends javax.swing.JFrame{
     
 
     //INICIALIZAÇÃO
-    public FormsProdutos() {
+    public FormsProdutos(java.awt.Frame parent, boolean modal) {
+    	super(parent, modal);
         initialize();
     }
     

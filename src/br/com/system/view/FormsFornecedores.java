@@ -50,7 +50,7 @@ import java.awt.event.MouseEvent;
 
 
 
-public class FormsFornecedores extends javax.swing.JFrame{
+public class FormsFornecedores extends javax.swing.JDialog{
     /**
 	 * 
 	 */
@@ -80,9 +80,9 @@ public class FormsFornecedores extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    FormsFornecedores window = new FormsFornecedores();
-                    
-                    window.setVisible(true);
+//                    FormsFornecedores window = new FormsFornecedores();
+//                    
+//                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -118,7 +118,8 @@ public class FormsFornecedores extends javax.swing.JFrame{
     
 
     //INICIALIZAÇÃO
-    public FormsFornecedores() {
+    public FormsFornecedores(java.awt.Frame parent, boolean modal) {
+    	super(parent, modal);
         initialize();
     }
     

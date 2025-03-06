@@ -631,7 +631,7 @@ public class FormsVendas extends javax.swing.JFrame {
      			
      			if(obj.getNome() != null && obj.getCpf() != null) {
      				//OBTENDO AS VARIAVEIS GLOBAIS DE 'FormsPagamento'
-     				FormsPagamento telaPag = new FormsPagamento();
+     				FormsPagamento telaPag = new FormsPagamento(FormsVendas.this, true);
      				telaPag.clientes = obj;
      				telaPag.meus_produtos = meus_produtos; //se der erro veja essa parte
      				

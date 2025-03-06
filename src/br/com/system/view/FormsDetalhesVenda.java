@@ -26,7 +26,7 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.border.EtchedBorder;
 
-public class FormsDetalhesVenda extends JFrame {
+public class FormsDetalhesVenda extends javax.swing.JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -48,8 +48,8 @@ public class FormsDetalhesVenda extends JFrame {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					FormsDetalhesVenda window = new FormsDetalhesVenda();
-					window.setVisible(true);
+//					FormsDetalhesVenda window = new FormsDetalhesVenda();
+//					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,7 +59,8 @@ public class FormsDetalhesVenda extends JFrame {
 	
 	
 	
-	public FormsDetalhesVenda(){
+	public FormsDetalhesVenda(java.awt.Frame parent, boolean modal){
+		super(parent, modal);
 		inicialize();
 	}
 	

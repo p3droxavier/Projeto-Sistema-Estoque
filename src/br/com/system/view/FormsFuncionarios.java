@@ -52,7 +52,7 @@ import javax.swing.JPasswordField;
 
 
 
-public class FormsFuncionarios extends javax.swing.JFrame{
+public class FormsFuncionarios extends javax.swing.JDialog{
     /**
 	 * 
 	 */
@@ -86,9 +86,9 @@ public class FormsFuncionarios extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    FormsFuncionarios window = new FormsFuncionarios();
-                    
-                    window.setVisible(true);
+//                    FormsFuncionarios window = new FormsFuncionarios();
+//                    
+//                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -128,7 +128,8 @@ public class FormsFuncionarios extends javax.swing.JFrame{
     
 
     //INICIALIZAÇÃO
-    public FormsFuncionarios() {
+    public FormsFuncionarios(java.awt.Frame parent, boolean modal) {
+    	super(parent, modal);
         initialize();
     }
     

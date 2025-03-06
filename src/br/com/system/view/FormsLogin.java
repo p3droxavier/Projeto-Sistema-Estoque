@@ -24,7 +24,7 @@ import javax.swing.UIManager;
 
 
 
-public class FormsLogin extends javax.swing.JFrame{
+public class FormsLogin extends javax.swing.JDialog{
 	
 	private static final long serialVersionUID = 1L;
 	private JTextField txtEmail;
@@ -37,9 +37,9 @@ public class FormsLogin extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    FormsLogin window = new FormsLogin();
-                    
-                    window.setVisible(true);
+//                    FormsLogin window = new FormsLogin();
+//                    
+//                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -47,7 +47,8 @@ public class FormsLogin extends javax.swing.JFrame{
         });
     }
     
-    public FormsLogin() {
+    public FormsLogin(java.awt.Frame parent, boolean modal) {
+    	super(parent, modal);
     	initialize();
     }
     

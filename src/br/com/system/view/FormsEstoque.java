@@ -56,7 +56,7 @@ import javax.swing.JFormattedTextField;
 
 
 
-public class FormsEstoque extends javax.swing.JFrame{
+public class FormsEstoque extends javax.swing.JDialog{
 	int idProduto, qtd_atualizada;
     /**
 	 * 
@@ -77,9 +77,9 @@ public class FormsEstoque extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    FormsEstoque window = new FormsEstoque();
-                    
-                    window.setVisible(true);
+//                    FormsEstoque window = new FormsEstoque();
+//                    
+//                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -108,7 +108,8 @@ public class FormsEstoque extends javax.swing.JFrame{
     
 
     //INICIALIZAÇÃO
-    public FormsEstoque() {
+    public FormsEstoque(java.awt.Frame parent, boolean modal) {
+    	super(parent, modal);
         initialize();
     }
     

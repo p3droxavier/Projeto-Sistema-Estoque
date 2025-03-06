@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +24,7 @@ import javax.swing.text.MaskFormatter;
 
 import br.com.system.dao.VendasDao;
 
-public class FormsTotalDoDia extends JFrame {
+public class FormsTotalDoDia extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -38,8 +39,8 @@ public class FormsTotalDoDia extends JFrame {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					FormsTotalDoDia window = new FormsTotalDoDia();
-					window.setVisible(true);
+//					FormsTotalDoDia window = new FormsTotalDoDia();
+//					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,14 +48,15 @@ public class FormsTotalDoDia extends JFrame {
 		});
 	}
 
-	public FormsTotalDoDia() {
+	public FormsTotalDoDia(java.awt.Frame parent, boolean modal) {
+		super(parent, modal);
 		initialize();
 	}
 	
 	
 	
 	public void initialize() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Total do dia");
 		setBounds(100, 100, 520, 320);
         setLocationRelativeTo(null);

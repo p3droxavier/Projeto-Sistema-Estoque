@@ -42,7 +42,6 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 
 public class AreaDeTrabalho extends javax.swing.JFrame {
@@ -115,11 +114,9 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mntmNewMenuItem.addActionListener(new ActionListener() {
         	//CHAMANDO O FORMSCLIENTES NA AREA DE TRABALHO
         	public void actionPerformed(ActionEvent e) {
-        		
         		FormsCliente formCliente = new FormsCliente(AreaDeTrabalho.this, true);
         		formCliente.setModal(rootPaneCheckingEnabled);
         		formCliente.setVisible(true);
-        		
         	}
         });
         mntmNewMenuItem.setFont(new Font("Arial", Font.BOLD, 12));
@@ -137,7 +134,8 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         menu_funcionario.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         menu_funcionario.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		FormsFuncionarios formFuncionarios = new FormsFuncionarios();
+        		FormsFuncionarios formFuncionarios = new FormsFuncionarios(AreaDeTrabalho.this, true);
+        		formFuncionarios.setModal(rootPaneCheckingEnabled);
         		formFuncionarios.setVisible(true);
         	}
         });
@@ -156,7 +154,8 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         menu_fornecedores.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         menu_fornecedores.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		FormsFornecedores formFornecedores = new FormsFornecedores();
+        		FormsFornecedores formFornecedores = new FormsFornecedores(AreaDeTrabalho.this, true);
+        		formFornecedores.setModal(rootPaneCheckingEnabled);
         		formFornecedores.setVisible(true);
         	}
         });
@@ -178,7 +177,8 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         menu_controle_estoque = new JMenuItem("Controle de Estoque");
         menu_controle_estoque.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		FormsEstoque controlEstoque = new FormsEstoque();
+        		FormsEstoque controlEstoque = new FormsEstoque(AreaDeTrabalho.this, true);
+        		controlEstoque.setModal(rootPaneCheckingEnabled);
         		controlEstoque.setVisible(true);
         	}
         });
@@ -189,7 +189,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         JMenuItem mntmNewMenuItem_4 = new JMenuItem("Consulta de Produtos");
         mntmNewMenuItem_4.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		FormsProdutos consultProdutos = new FormsProdutos();
+        		FormsProdutos consultProdutos = new FormsProdutos(AreaDeTrabalho.this, true);
         		consultProdutos.painel_guias_tab.setSelectedIndex(1);
         		consultProdutos.setVisible(true);
         	}
@@ -200,7 +200,7 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         JMenuItem mntmNewMenuItem_10 = new JMenuItem("Formulário de Produtos");
         mntmNewMenuItem_10.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		FormsProdutos formProdutos = new FormsProdutos();
+        		FormsProdutos formProdutos = new FormsProdutos(AreaDeTrabalho.this, true);
         		formProdutos.setVisible(true);
         	}
         });
@@ -215,12 +215,31 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu_4.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconVendasAreaDeTrabalho24px.png"));
         menuBar.add(mnNewMenu_4);
         JMenuItem mntmNewMenuItem_5 = new JMenuItem("Abrir PDV");
+        mntmNewMenuItem_5.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsVendas formsVendas = new FormsVendas();
+        		formsVendas.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_5.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_4.add(mntmNewMenuItem_5);
         JMenuItem mntmNewMenuItem_6 = new JMenuItem("Posição do Dia");
+        mntmNewMenuItem_6.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsTotalDoDia fomsTotalDoDia = new FormsTotalDoDia(AreaDeTrabalho.this, true);
+        		fomsTotalDoDia.setModal(rootPaneCheckingEnabled);
+        		fomsTotalDoDia.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_6.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_4.add(mntmNewMenuItem_6);
         JMenuItem mntmNewMenuItem_7 = new JMenuItem("Histórico de Vendas");
+        mntmNewMenuItem_7.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		FormsHistóricoDeVendas formsHistoricoDeVendas = new FormsHistóricoDeVendas();
+        		formsHistoricoDeVendas.setVisible(true);
+        	}
+        });
         mntmNewMenuItem_7.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_4.add(mntmNewMenuItem_7);
 
@@ -233,9 +252,10 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         JMenuItem mntmNewMenuItem_8 = new JMenuItem("Trocar de Usuário");
         mntmNewMenuItem_8.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		FormsLogin login = new FormsLogin();
+        		FormsLogin login = new FormsLogin(AreaDeTrabalho.this, true);
+        		login.setModal(rootPaneCheckingEnabled);
         		
-        		//NÃO USA O 'THIS.DISPOSE()', POIS IRA SE REFERIR AOPROPRIO 'ACTION LISTENER'
+        		//NÃO USA O 'THIS.DISPOSE()', POIS IRA SE REFERIR AO PROPRIO 'ACTION LISTENER'
         		dispose();
         		login.setVisible(true);
         	}
@@ -342,14 +362,20 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
               
     }    
 
+    
+    /*  FOI ADICIONADO PARA PODER SETTAR NO DAO, CASO O USUARIO TER O ACESSO DE 
+    *  'USUARIO', NÃO TERA ACESSO A DUAS ABAS */
+    
+    //MENU FUNCIIONARIOS
     public JMenu getAbaMenuFuncionarios() {
 		return aba_menu_funcionario;
 	}
-	
+	//MENU FORNECEDORES
 	public JMenu getAbaMenuFornecedores() {
 		return aba_menu_fornecedores;
 	}
 	
+	//PRODUTOS->MEUS PRODUTOS->CONTROLE DE ESTOQUE.
 	public JMenuItem getMenu_controle_estoque() {
 		return menu_controle_estoque;
 	}

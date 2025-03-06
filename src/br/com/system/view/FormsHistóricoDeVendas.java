@@ -144,7 +144,7 @@ public class FormsHistóricoDeVendas extends JFrame {
 		  	@Override
 		  	public void mouseClicked(MouseEvent e) {
 		  		//QUANDO CLICADO REDIRECIONA PARA 'FormsDetalhesVenda'
-		  		FormsDetalhesVenda fdv = new FormsDetalhesVenda();
+		  		FormsDetalhesVenda fdv = new FormsDetalhesVenda(FormsHistóricoDeVendas.this, true);
 		  		fdv.txtCodigo.setText(tabela.getValueAt(tabela.getSelectedRow(), 0).toString());
 		  		fdv.txtCliente.setText(tabela.getValueAt(tabela.getSelectedRow(), 1).toString());
 		  		fdv.txtDataDaVenda.setText(tabela.getValueAt(tabela.getSelectedRow(), 2).toString());
