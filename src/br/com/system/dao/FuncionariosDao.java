@@ -255,6 +255,7 @@ public class FuncionariosDao {
 					AreaDeTrabalho at = new AreaDeTrabalho();
 					at.usuarioLogado = rs.getString("nome");
 					at.emailUsuarioLogado = rs.getString("email");
+					at.nivelDeAcessoUser = rs.getString("nivel_acesso");
 					
 					JOptionPane.showMessageDialog(null, "Seja bem Vindo ao sistema! \n" +at.usuarioLogado);
 					at.setVisible(true);
@@ -262,9 +263,12 @@ public class FuncionariosDao {
 					AreaDeTrabalho at = new AreaDeTrabalho();
 					at.usuarioLogado = rs.getString("nome");
 					at.emailUsuarioLogado = rs.getString("email");
+					at.nivelDeAcessoUser = rs.getString("nivel_acesso");
 					
-					//Adicionar aqui quais campos o usuario não podera ter acesso como (menu de fornecedores, funcionario, estoque, etc).
-					//Ajustar na area de trabalho os campos que serão trabalhado.
+					//CASO A PESSOA LOGADA ESTEJA COMO 'USUARIO', TERA ACESSO LIMITADO
+					at.getAbaMenuFuncionarios().setVisible(false);
+					at.getAbaMenuFornecedores().setVisible(false);
+					at.getMenu_controle_estoque().setVisible(false);
 					
 					JOptionPane.showMessageDialog(null, "Seja bem Vindo ao sistema! \n" +at.usuarioLogado);
 					at.setVisible(true);

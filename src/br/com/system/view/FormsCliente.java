@@ -50,7 +50,7 @@ import br.com.system.utilitarios.Utilitarios;
 
 
 
-public class FormsCliente extends javax.swing.JFrame{
+public class FormsCliente extends javax.swing.JDialog{
     /**
 	 * 
 	 */
@@ -81,9 +81,9 @@ public class FormsCliente extends javax.swing.JFrame{
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    FormsCliente window = new FormsCliente();
+//                    FormsCliente window = new FormsCliente();
                     
-                    window.setVisible(true);
+//                    window.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -120,9 +120,11 @@ public class FormsCliente extends javax.swing.JFrame{
     
 
     //INICIALIZAÇÃO
-    public FormsCliente() {
+    public FormsCliente(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initialize();
     }
+
     
 
     private void initialize() {
