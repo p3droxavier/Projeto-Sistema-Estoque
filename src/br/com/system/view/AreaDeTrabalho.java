@@ -2,8 +2,17 @@
 
 /*
 
-  EM 'consultProdutos.painel_guias.setSelectedIndex(1);' PROX LINHA 164
+  EM 'consultProdutos.painel_guias.setSelectedIndex(1);' PROX LINHA 180
   EXISTE UM ERRO INICIAL, POIS AO BUSCAR TAO ELEMENTO ELE NÃO É ACHADO POIS EM SEU ENCAPSULAMENTO ESTA COMO 'PRIVATE'
+  
+  PROXIMO A LINHA 118...
+  -RESOLVENDO ERRO PASSANDO 'AreaDeTrabalho', QUE FAZ REFERENCIA A INSTANCIA ATUAL DA CLASSE AreaDeTrabalho, QUE É UM JFRAME
+  -RESOLVENDO O ERRO POIS AreaDeTrabalho  É UM JFrame,COMPATIVEL COM O TIPO ESPERADO NO CONSTRUTOR DE FormsCliente
+  -FormsCliente, AGORA, É DEPENDENTE DA AreaDeTrabalho PARA SER INICIALIZADA
+  
+  -FormsCliente formCliente = new FormsCliente(AreaDeTrabalho.this, true);   'AreaDeTrabalho.this' É PASSADO COMO 'parent(pai)' PARA FormsCliente
+  -formCliente.setModal(rootPaneCheckingEnabled);   DEFINE O FormsCliente COMO MODAL, SENDO OBRIGATORIO FECHAR ELE PARA MEXER EM OUTROS COMPONENTES
+  -formCliente.setVisible(true);
   
 */
 
@@ -40,9 +49,21 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
 	
     public String usuarioLogado;
     public String emailUsuarioLogado;
+    public String nivelDeAcessoUser;
+    
+//    public JMenuItem menu_funcionario;
+//    public JMenuItem menu_fornecedores;
+//    public JMenuItem menu_controle_estoque;
 	
     // INICIALIZADOR DE VERSÃO SERIALIZADA 
     private static final long serialVersionUID = 1L;
+    
+    private JMenu aba_menu_funcionario;
+    private JMenu aba_menu_fornecedores;
+    
+    private JMenuItem menu_funcionario;
+    private JMenuItem menu_fornecedores;
+    private JMenuItem menu_controle_estoque;
     
 
     public static void main(String[] args) {
@@ -94,8 +115,11 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mntmNewMenuItem.addActionListener(new ActionListener() {
         	//CHAMANDO O FORMSCLIENTES NA AREA DE TRABALHO
         	public void actionPerformed(ActionEvent e) {
-        		FormsCliente formCliente = new FormsCliente();
+        		
+        		FormsCliente formCliente = new FormsCliente(AreaDeTrabalho.this, true);
+        		formCliente.setModal(rootPaneCheckingEnabled);
         		formCliente.setVisible(true);
+        		
         	}
         });
         mntmNewMenuItem.setFont(new Font("Arial", Font.BOLD, 12));
@@ -104,40 +128,40 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         
         
         // MENU DE FUNCIONÁRIOS
-        JMenu mnNewMenu_1 = new JMenu("Funcionários");
-        mnNewMenu_1.setFont(new Font("Arial", Font.BOLD, 14));
-        mnNewMenu_1.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconFuncionariosAreaDeTrabalho24px.png"));
-        menuBar.add(mnNewMenu_1);
+        aba_menu_funcionario = new JMenu("Funcionários");
+        aba_menu_funcionario.setFont(new Font("Arial", Font.BOLD, 14));
+        aba_menu_funcionario.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\iconfinder_iconFuncionariosAreaDeTrabalho24px.png"));
+        menuBar.add(aba_menu_funcionario);
         
-        JMenuItem mntmNewMenuItem_1 = new JMenuItem("Formulário de Funcionários");
-        mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
-        mntmNewMenuItem_1.addActionListener(new ActionListener() {
+        menu_funcionario = new JMenuItem("Formulário de Funcionários");
+        menu_funcionario.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        menu_funcionario.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		FormsFuncionarios formFuncionarios = new FormsFuncionarios();
         		formFuncionarios.setVisible(true);
         	}
         });
-        mntmNewMenuItem_1.setFont(new Font("Arial", Font.BOLD, 12));
-        mnNewMenu_1.add(mntmNewMenuItem_1);
+        menu_funcionario.setFont(new Font("Arial", Font.BOLD, 12));
+        aba_menu_funcionario.add(menu_funcionario);
 
         
         
         // MENU DE FORNECEDORES
-        JMenu mnNewMenu_2 = new JMenu("Fornecedores");
-        mnNewMenu_2.setFont(new Font("Arial", Font.BOLD, 14));
-        mnNewMenu_2.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\flatIcon_iconFornecedoresAreaDeTrabalho.png"));
-        menuBar.add(mnNewMenu_2);
+        aba_menu_fornecedores = new JMenu("Fornecedores");
+        aba_menu_fornecedores.setFont(new Font("Arial", Font.BOLD, 14));
+        aba_menu_fornecedores.setIcon(new ImageIcon("C:\\Users\\Usuario\\git\\repository\\Sistema_Estoque\\src\\br\\com\\system\\img\\flatIcon_iconFornecedoresAreaDeTrabalho.png"));
+        menuBar.add(aba_menu_fornecedores);
         
-        JMenuItem mntmNewMenuItem_2 = new JMenuItem("Formulário de Fornecedores");
-        mntmNewMenuItem_2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
-        mntmNewMenuItem_2.addActionListener(new ActionListener() {
+        menu_fornecedores = new JMenuItem("Formulário de Fornecedores");
+        menu_fornecedores.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        menu_fornecedores.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		FormsFornecedores formFornecedores = new FormsFornecedores();
         		formFornecedores.setVisible(true);
         	}
         });
-        mntmNewMenuItem_2.setFont(new Font("Arial", Font.BOLD, 12));
-        mnNewMenu_2.add(mntmNewMenuItem_2);
+        menu_fornecedores.setFont(new Font("Arial", Font.BOLD, 12));
+        aba_menu_fornecedores.add(menu_fornecedores);
 
         
         
@@ -151,15 +175,16 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         mnNewMenu_7.setFont(new Font("Arial", Font.BOLD, 12));
         mnNewMenu_3.add(mnNewMenu_7);
         
-        JMenuItem mntmNewMenuItem_3 = new JMenuItem("Controle de Estoque");
-        mntmNewMenuItem_3.addActionListener(new ActionListener() {
+        menu_controle_estoque = new JMenuItem("Controle de Estoque");
+        menu_controle_estoque.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		FormsEstoque controlEstoque = new FormsEstoque();
         		controlEstoque.setVisible(true);
         	}
         });
-        mntmNewMenuItem_3.setFont(new Font("Arial", Font.BOLD, 12));
-        mnNewMenu_7.add(mntmNewMenuItem_3);
+        
+        menu_controle_estoque.setFont(new Font("Arial", Font.BOLD, 12));
+        mnNewMenu_7.add(menu_controle_estoque);
         
         JMenuItem mntmNewMenuItem_4 = new JMenuItem("Consulta de Produtos");
         mntmNewMenuItem_4.addActionListener(new ActionListener() {
@@ -290,6 +315,16 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
         lblEmailUserLogado.setFont(new Font("Arial", Font.PLAIN, 12));
         lblEmailUserLogado.setBounds(69, 55, 165, 14);
         panel.add(lblEmailUserLogado);
+        
+        JLabel lblTitleNivelAcesso = new JLabel("Nível de acesso atual :");
+        lblTitleNivelAcesso.setFont(new Font("Arial", Font.BOLD, 12));
+        lblTitleNivelAcesso.setBounds(274, 31, 140, 14);
+        panel.add(lblTitleNivelAcesso);
+        
+        JLabel lblNivelDeAcessoUser = new JLabel("");
+        lblNivelDeAcessoUser.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblNivelDeAcessoUser.setBounds(409, 31, 165, 14);
+        panel.add(lblNivelDeAcessoUser);
 
         
         
@@ -301,9 +336,21 @@ public class AreaDeTrabalho extends javax.swing.JFrame {
                 
                 lblUserLogado.setText(usuarioLogado);
                 lblEmailUserLogado.setText(emailUsuarioLogado);
+                lblNivelDeAcessoUser.setText(nivelDeAcessoUser);
             }
         });
               
     }    
-    
+
+    public JMenu getAbaMenuFuncionarios() {
+		return aba_menu_funcionario;
+	}
+	
+	public JMenu getAbaMenuFornecedores() {
+		return aba_menu_fornecedores;
+	}
+	
+	public JMenuItem getMenu_controle_estoque() {
+		return menu_controle_estoque;
+	}
 }
